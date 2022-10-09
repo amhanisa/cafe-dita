@@ -1,9 +1,8 @@
 // Import mazer Variables
 @import "./variables";
 
-// Bootstrap + Icons
+// Bootstrap
 @import "~bootstrap/scss/bootstrap";
-@import 'bootstrap-icons/font/bootstrap-icons.css';
 
 // Fix icon placement
 body .bi::before, [class^=bi-]::before, [class*=" bi-"]::before {
