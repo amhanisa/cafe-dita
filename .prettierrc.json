@@ -1,0 +1,14 @@
+{
+    "overrides": [
+        {
+            "files": ["*.blade.php"],
+            "options": {
+                "tabWidth": 4,
+                "printWidth": 120,
+                "parser": "blade",
+                "sortHtmlAttributes": "code-guide",
+                "wrapAttributes": "auto"
+            }
+        }
+    ]
+}
