@@ -22,8 +22,31 @@ class PatientController extends Controller
                 ->editColumn('birthday', function (Patient $patient) {
                     return Carbon::parse($patient->birthday)->age;
                 })
-                ->addColumn('status', function ($row) {
-                    $html = "<span class='badge bg-success'>Berobat Teratur</span><span class='badge bg-success'>Terkendali</span>";
+                ->addColumn('status', function (Patient $patient) {
+                    $consultations = Consultation::where('patient_id', $patient->id)->orderBy('date', 'desc')->get();
+                    $data['consultations']  = $consultations;
+
+                    $averageSystole = $consultations->avg('systole');
+                    $averageDiastole = $consultations->avg('diastole');
+
+                    if ($averageSystole >= 140 || $averageDiastole >= 90) {
+                        $html = "<span class='badge bg-danger'>Tidak Terkendali</span>";
+                    } else {
+                        $html = "<span class='badge bg-success'>Terkendali</span>";
+                    }
+
+                    $last12Months = Consultation::where('patient_id', $patient->id)->whereDate('date', '>', \Carbon\Carbon::now()->subYear())->orderBy('date', 'asc')->get();
+
+                    if (count($last12Months) > 0) {
+                        if ($this->calculate($last12Months)) {
+                            $html .= "<span class='badge bg-success'>Teratur</span>";
+                        } else {
+                            $html .= "<span class='badge bg-danger'>Tidak Teratur</span>";
+                        }
+                    } else {
+                        $html .= "<span class='badge bg-danger'>Belum Berobat</span>";
+                    }
+
                     return $html;
                 })
                 ->addColumn('action', function ($row) {
