@@ -70,7 +70,7 @@
                                         <div class="col-6">
 
                                             <a class="btn btn-block btn-secondary"
-                                                href="{{ '/consultation/' . $patient->id . '/add' }}">
+                                                href="{{ url('/patient/' . $patient->id . '/edit') }}">
                                                 Edit Pasien</a>
                                         </div>
                                         <div class="col-6">

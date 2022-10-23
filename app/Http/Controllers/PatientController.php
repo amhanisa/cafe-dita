@@ -76,5 +76,46 @@ class PatientController extends Controller
         $patient->phone_number = $request->phone_number;
 
         $patient->save();
+
+        return redirect('/patient');
+    }
+
+    public function showEditPage($id)
+    {
+        $data['patient'] = Patient::find($id);
+
+        return view('patient.edit', $data);
+    }
+
+    public function save(Request $request)
+    {
+
+        $validated = $request->validate([
+            'name' => 'required|max:255',
+            'medical_record_number' => 'required',
+            'nik' => 'required',
+            'sex' => 'required',
+            'birthday' => 'required',
+            'address' => 'required',
+            'village' => 'required',
+            'job' => 'required',
+            'phone_number' => 'string',
+        ]);
+
+        $patient = Patient::find($request->id);
+
+        $patient->name = $request->name;
+        $patient->medical_record_number = $request->medical_record_number;
+        $patient->nik = $request->nik;
+        $patient->sex = $request->sex;
+        $patient->birthday = $request->birthday;
+        $patient->address = $request->address;
+        $patient->village = $request->village;
+        $patient->job = $request->job;
+        $patient->phone_number = $request->phone_number;
+
+        $patient->save();
+
+        return redirect("/patient/$request->id");
     }
 }
