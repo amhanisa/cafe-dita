@@ -43,7 +43,9 @@
                                     </div>
                                     <div class="row mb-2">
                                         <div class="col-12 col-md-4 col-lg-4 col-xl-3 text-muted font-semibold">Alamat</div>
-                                        <div class="col-12 col-md-6 text-black">{{ $patient->address }}</div>
+                                        <div class="col-12 col-md-6 text-black">
+                                            {{ $patient->address . ', Desa ' . $patient->village }}
+                                        </div>
                                     </div>
                                     <div class="row mb-2">
                                         <div class="col-12 col-md-4 col-lg-4 col-xl-3 text-muted font-semibold">Pekerjaan
