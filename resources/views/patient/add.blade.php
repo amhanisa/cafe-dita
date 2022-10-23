@@ -127,21 +127,8 @@
                                     <div class="row mb-3">
                                         <label class="col-md-4 col-lg-2 col-form-label">Pekerjaan</label>
                                         <div class="col-md-8 col-lg-10">
-                                            <select class="choices  @error('job') is-invalid @enderror" name="job">
-                                                <option value="">Pilih Pekerjaan</option>
-                                                <option>Buluagung</option>
-                                                <option>Jati</option>
-                                                <option>Jatiprahu</option>
-                                                <option>Karangan</option>
-                                                <option>Kayen</option>
-                                                <option>Kedungsigit</option>
-                                                <option>Kerjo</option>
-                                                <option>Ngentrong</option>
-                                                <option>Salamrejo</option>
-                                                <option>Suko Wetan</option>
-                                                <option>Sumber</option>
-                                                <option>Sumberingin</option>
-                                            </select>
+                                            <input class="form-control form-control-lg @error('job') is-invalid @enderror"
+                                                name="job" type="text" value="{{ old('job') }}">
                                             @error('job')
                                                 <span class="validation-error"> {{ $message }} </span>
                                             @enderror
@@ -181,10 +168,12 @@
 @push('script')
     <script src="https://cdn.jsdelivr.net/npm/choices.js@9.0.1/public/assets/scripts/choices.min.js"></script>
     <script>
-        const choices = document.querySelectorAll('.choices');
-        choices.forEach(choice => {
-            new Choices(choice)
-        });
+        let selectedVillage = @json(old('village'));
+
+        const choices = new Choices(document.querySelector('.choices'));
+        if (selectedVillage) {
+            choices.setChoiceByValue(selectedVillage)
+        }
     </script>
 @endpush
 

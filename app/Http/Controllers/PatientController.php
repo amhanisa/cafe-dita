@@ -60,7 +60,7 @@ class PatientController extends Controller
             'address' => 'required',
             'village' => 'required',
             'job' => 'required',
-            'phone_number' => 'numeric',
+            'phone_number' => 'string',
         ]);
 
         $patient = new Patient();
