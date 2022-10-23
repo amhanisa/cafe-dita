@@ -19,9 +19,9 @@ Route::get('/', function () {
 });
 
 Route::get('/patient', [PatientController::class, 'index']);
-Route::get('/patient/{id}', [PatientController::class, 'show']);
 Route::get('/patient/add', [PatientController::class, 'add']);
 Route::post('/patient/store', [PatientController::class, 'store']);
+Route::post('/patient/delete', [PatientController::class, 'destroy']);
+Route::get('/patient/{id}', [PatientController::class, 'show']);
 Route::get('/patient/{id}/edit', [PatientController::class, 'showEditPage']);
 Route::post('/patient/{id}/edit', [PatientController::class, 'save']);
-Route::post('/patient/delete', [PatientController::class, 'destroy']);
