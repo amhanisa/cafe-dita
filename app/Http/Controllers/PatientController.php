@@ -118,4 +118,15 @@ class PatientController extends Controller
 
         return redirect("/patient/$request->id");
     }
+
+    public function destroy(Request $request)
+    {
+        $patientId = $request->id;
+
+        $patient = Patient::find($patientId);
+
+        $patient->delete();
+
+        return redirect('patient');
+    }
 }

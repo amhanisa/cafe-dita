@@ -4,6 +4,7 @@
     <link href="https://cdn.datatables.net/1.12.1/css/dataTables.bootstrap5.min.css" rel="stylesheet">
     <link href="https://cdn.datatables.net/responsive/2.3.0/css/responsive.dataTables.min.css" rel="stylesheet">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/apexcharts/3.36.0/apexcharts.min.css" rel="stylesheet">
+    <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 @endpush
 
 @section('content')
@@ -76,10 +77,13 @@
                                                 Edit Pasien</a>
                                         </div>
                                         <div class="col-6">
-
-                                            <a class="btn btn-block btn-danger"
-                                                href="{{ '/consultation/' . $patient->id . '/add' }}">
-                                                Hapus Pasien</a>
+                                            <form id="delete-form" action="{{ url('patient/delete') }}" method="POST">
+                                                @csrf
+                                                <input name="id" type="hidden" value="{{ $patient->id }}">
+                                            </form>
+                                            <button class="btn btn-block btn-danger" id="delete-patient">
+                                                Hapus Pasien
+                                            </button>
                                         </div>
 
                                     </div>
@@ -884,6 +888,24 @@
                 //     searchable: false,
                 // }]
             });
+
+            $('#delete-patient').click(function() {
+                let form = $("#delete-form");
+                event.preventDefault();
+                Swal.fire({
+                        title: `Apakah anda yakin menghapus data pasien ini?`,
+                        text: "Jika anda menghapus, data tidak dapat dikembalikan",
+                        icon: "warning",
+                        buttons: true,
+                        showCancelButton: true,
+                        dangerMode: true,
+                    })
+                    .then((willDelete) => {
+                        if (willDelete.isConfirmed) {
+                            form.submit();
+                        }
+                    });
+            })
         });
 
         var areaOptions = {
@@ -982,5 +1004,7 @@
 
         area.render()
     </script>
+
+    <script></script>
 @endpush
 

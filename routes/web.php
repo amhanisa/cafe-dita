@@ -24,3 +24,4 @@ Route::get('/patient/add', [PatientController::class, 'add']);
 Route::post('/patient/store', [PatientController::class, 'store']);
 Route::get('/patient/{id}/edit', [PatientController::class, 'showEditPage']);
 Route::post('/patient/{id}/edit', [PatientController::class, 'save']);
+Route::post('/patient/delete', [PatientController::class, 'destroy']);
