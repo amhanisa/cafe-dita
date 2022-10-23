@@ -62,11 +62,19 @@
                                 <div class="col-lg-4">
                                     <div class="mb-3">
                                         <h6 class="text-muted">Status Berobat</h6>
-                                        <button class="btn btn-block btn-outline-success">Berobat Teratur</button>
+                                        @if ($berobatStatus)
+                                            <button class="btn btn-block btn-outline-success">Berobat Teratur</button>
+                                        @else
+                                            <button class="btn btn-block btn-outline-danger">Tidak Berobat Teratur</button>
+                                        @endif
                                     </div>
                                     <div class="mb-3">
                                         <h6 class="text-muted">Status Hipertensi</h6>
-                                        <button class="btn btn-block btn-outline-success">Terkendali</button>
+                                        @if ($hypertensionStatus)
+                                            <button class="btn btn-block btn-outline-danger">Tidak Terkendali</button>
+                                        @else
+                                            <button class="btn btn-block btn-outline-success">Terkendali</button>
+                                        @endif
                                     </div>
                                     <div class="row justify-content-between mb-3">
                                         <h6 class="text-muted">Action</h6>
@@ -124,33 +132,19 @@
                                         <span class="small fw-light">(mmHg)</span>
                                     </th>
                                     <th>Obat</th>
+                                    <th>Keterangan</th>
                                     <th>Action</th>
                                 </thead>
                                 <tbody>
-                                    <tr>
-                                        <td>2022-10-01</td>
-                                        <td>190/100</td>
-                                        <td>Paracetamol x3</td>
-                                        <td>Edit</td>
-                                    </tr>
-                                    <tr>
-                                        <td>2022-10-01</td>
-                                        <td>190/100</td>
-                                        <td>Paracetamol x3</td>
-                                        <td>Edit</td>
-                                    </tr>
-                                    <tr>
-                                        <td>2022-10-01</td>
-                                        <td>190/100</td>
-                                        <td>Paracetamol x3</td>
-                                        <td>Edit</td>
-                                    </tr>
-                                    <tr>
-                                        <td>2022-10-01</td>
-                                        <td>190/100</td>
-                                        <td>Paracetamol x3</td>
-                                        <td>Edit</td>
-                                    </tr>
+                                    @foreach ($consultations as $consultation)
+                                        <tr>
+                                            <td>{{ $consultation->date }}</td>
+                                            <td>{{ $consultation->systole . '/' . $consultation->diastole }}</td>
+                                            <td>{{ $consultation->medicine }}</td>
+                                            <td>{{ $consultation->note }}</td>
+                                            <td>Edit</td>
+                                        </tr>
+                                    @endforeach
                                 </tbody>
                             </table>
 
@@ -858,34 +852,9 @@
     <script>
         $(document).ready(function() {
             $('#consultations-table').DataTable({
-                // serverSide: true,
-                // processing: true,
-                // responsive: true,
-                // ajax: 'patient',
-                // dataSrc: 'data',
-                // columns: [{
-                //     data: 'name'
-                // }, {
-                //     data: 'medical_record_number'
-                // }, {
-                //     data: 'nik'
-                // }, {
-                //     data: 'sex'
-                // }, {
-                //     data: 'birthday'
-                // }, {
-                //     data: 'address'
-                // }, {
-                //     data: 'village'
-                // }, {
-                //     data: 'job'
-                // }, {
-                //     data: 'phone_number'
-                // }, {
-                //     data: 'action',
-                //     orderable: false,
-                //     searchable: false,
-                // }]
+                order: [
+                    [0, 'desc']
+                ],
             });
 
             $('#delete-patient').click(function() {
@@ -1006,4 +975,3 @@
 
     <script></script>
 @endpush
-
