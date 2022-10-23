@@ -1,5 +1,4 @@
 // Mazer internal JS. Include this in your project to get
-
 import "./components/dark";
 
 import PerfectScrollbar from "perfect-scrollbar";

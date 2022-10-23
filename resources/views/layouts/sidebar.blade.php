@@ -58,7 +58,7 @@
             <img class="asd" src="" alt="">
             <li class="sidebar-title">Menu</li>
 
-            <li class="sidebar-item active">
+            <li class="sidebar-item {{ request()->is('/') ? 'active' : '' }}">
                 <a class="sidebar-link" href="/">
                     <svg class="bi bi-grid-fill" xmlns="http://www.w3.org/2000/svg" width="16" height="16"
                         fill="currentColor" viewBox="0 0 16 16">
@@ -69,8 +69,8 @@
                 </a>
             </li>
 
-            <li class="sidebar-item">
-                <a class="sidebar-link" href="#">
+            <li class="sidebar-item {{ request()->is('patient*') ? 'active' : '' }}">
+                <a class="sidebar-link" href="/patient">
                     <svg class="bi bi-people-fill" xmlns="http://www.w3.org/2000/svg" width="16" height="16"
                         fill="currentColor" viewBox="0 0 16 16">
                         <path d="M7 14s-1 0-1-1 1-4 5-4 5 3 5 4-1 1-1 1H7zm4-6a3 3 0 1 0 0-6 3 3 0 0 0 0 6z" />

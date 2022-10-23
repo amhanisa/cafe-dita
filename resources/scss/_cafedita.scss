@@ -1,0 +1,51 @@
+.validation-error {
+    color: $form-feedback-invalid-color;
+    font-size: 0.875em;
+}
+
+// FIX hehes
+.choices {
+    margin-bottom: 0;
+}
+
+.choices__inner {
+    padding: 0.55rem 1rem;
+}
+
+.choices__list {
+    padding: 0;
+}
+
+.choices__item {
+    font-size: 1.05rem;
+}
+
+table.dataTable td {
+    padding: 15px 8px;
+}
+
+//Icon
+.true-icon {
+    content: "";
+    height: 20px;
+    width: 20px;
+    display: block;
+    background-image: url("../icon/check.svg");
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-position: bottom center, 50%, 50%;
+    margin: auto;
+}
+
+.false-icon {
+    content: "";
+    height: 20px;
+    width: 20px;
+    display: block;
+    color: green;
+    background-image: url("../icon/x.svg");
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-position: bottom center, 50%, 50%;
+    margin: auto;
+}
