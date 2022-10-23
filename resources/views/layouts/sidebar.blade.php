@@ -83,8 +83,8 @@
 
             </li>
 
-            <li class="sidebar-item">
-                <a class="sidebar-link" href="#">
+            <li class="sidebar-item {{ request()->is('consultation*') ? 'active' : '' }}">
+                <a class="sidebar-link" href="{{ url('consultation') }}">
                     <svg class="bi bi-activity" xmlns="http://www.w3.org/2000/svg" width="16" height="16"
                         fill="currentColor" viewBox="0 0 16 16">
                         <path fill-rule="evenodd"
@@ -152,4 +152,3 @@
         </ul>
     </div>
 </div>
-
