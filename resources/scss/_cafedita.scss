@@ -3,9 +3,21 @@
     font-size: 0.875em;
 }
 
-// FIX hehe
+// FIX hehes
 .choices {
     margin-bottom: 0;
+}
+
+.choices_inner {
+    padding: 0.55rem 1rem;
+}
+
+.choices__list {
+    padding: 0;
+}
+
+.choices__item {
+    font-size: 1.05rem;
 }
 
 table.dataTable td {
