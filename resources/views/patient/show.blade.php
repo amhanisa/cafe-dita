@@ -124,30 +124,31 @@
                                 <a class="btn btn-primary" href="{{ '/consultation/' . $patient->id . '/add' }}">Tambah
                                     Konsultasi</a>
                             </div>
-                            <table class="table" id="consultations-table">
-                                <thead>
-                                    <th>Tanggal Konsultasi</th>
-                                    <th>Tensi Darah
-                                        <br>
-                                        <span class="small fw-light">(mmHg)</span>
-                                    </th>
-                                    <th>Obat</th>
-                                    <th>Keterangan</th>
-                                    <th>Action</th>
-                                </thead>
-                                <tbody>
-                                    @foreach ($consultations as $consultation)
-                                        <tr>
-                                            <td>{{ $consultation->date }}</td>
-                                            <td>{{ $consultation->systole . '/' . $consultation->diastole }}</td>
-                                            <td>{{ $consultation->medicine }}</td>
-                                            <td>{{ $consultation->note }}</td>
-                                            <td>Edit</td>
-                                        </tr>
-                                    @endforeach
-                                </tbody>
-                            </table>
-
+                            <div class="table-responsive">
+                                <table class="table" id="consultations-table">
+                                    <thead>
+                                        <th>Tanggal Konsultasi</th>
+                                        <th>Tensi Darah
+                                            <br>
+                                            <span class="small fw-light">(mmHg)</span>
+                                        </th>
+                                        <th>Obat</th>
+                                        <th>Keterangan</th>
+                                        <th>Action</th>
+                                    </thead>
+                                    <tbody>
+                                        @foreach ($consultations as $consultation)
+                                            <tr>
+                                                <td>{{ $consultation->date }}</td>
+                                                <td>{{ $consultation->systole . '/' . $consultation->diastole }}</td>
+                                                <td>{{ $consultation->medicine }}</td>
+                                                <td>{{ $consultation->note }}</td>
+                                                <td>Edit</td>
+                                            </tr>
+                                        @endforeach
+                                    </tbody>
+                                </table>
+                            </div>
                         </div>
                     </div>
                 </div>
