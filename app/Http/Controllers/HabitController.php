@@ -49,6 +49,6 @@ class HabitController extends Controller
             );
         }
 
-        dd($request->patient_id, $request->date, $request);
+        return redirect('patient/' . $request->patient_id);
     }
 }
