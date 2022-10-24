@@ -164,8 +164,8 @@
                             <div class="col-12 col-md-4 col-xl-4 col-xxl-2">
                                 <div class="input-group mb-3">
                                     <label class="input-group-text">Tahun</label>
-                                    <select class="form-select">
-                                        <option selected>2022</option>
+                                    <select class="form-select" id="habit-selector">
+                                        <option>2022</option>
                                         <option>2021</option>
                                         <option>2020</option>
                                         <option>2019</option>
@@ -469,6 +469,15 @@
             })
         })
         area.render()
+
+        const year = @json($year);
+
+        $('#habit-selector').val(year).change();
+
+        $('#habit-selector').change(function() {
+            const link = window.location.href.split('?')[0] + '?year=' + this.value;
+            window.location.replace(link);
+        })
     </script>
 
     <script></script>
