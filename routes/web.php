@@ -30,3 +30,6 @@ Route::get('/patient/{id}/edit', [PatientController::class, 'showEditPage']);
 Route::post('/patient/{id}/edit', [PatientController::class, 'save']);
 
 Route::get('/consultation', [ConsultationController::class, 'index']);
+
+Route::get('/habit/edit', [HabitController::class, 'showEditPage']);
+Route::post('/habit/edit', [HabitController::class, 'store']);

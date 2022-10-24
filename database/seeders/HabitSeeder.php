@@ -2,6 +2,7 @@
 
 namespace Database\Seeders;
 
+use App\Models\Habit;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 
@@ -14,6 +15,17 @@ class HabitSeeder extends Seeder
      */
     public function run()
     {
-        //
+        Habit::create([
+            'name' => 'Makan Buah & Sayur'
+        ]);
+        Habit::create([
+            'name' => 'Rutin Olahraga'
+        ]);
+        Habit::create([
+            'name' => 'Tidak Merokok'
+        ]);
+        Habit::create([
+            'name' => 'Rutin Minum Obat'
+        ]);
     }
 }

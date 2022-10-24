@@ -4,7 +4,9 @@ namespace App\Http\Controllers;
 
 use App\DataTables\PatientsDataTable;
 use App\Models\Consultation;
+use App\Models\Habit;
 use App\Models\Patient;
+use App\Models\PatientHabit;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Yajra\DataTables\Facades\DataTables;
@@ -85,6 +87,10 @@ class PatientController extends Controller
 
         $data['berobatStatus'] = $this->calculate($last12Months);
         $data['hypertensionStatus'] = $hypertensionStatus;
+
+        $data['patientHabits'] = Habit::with(['patientHabit' => function ($query) use ($id) {
+            $query->where('patient_id', $id)->where('year', 2022)->orderBy('month', 'asc');
+        }])->get();
 
         return view('patient.show', $data);
     }
