@@ -12,8 +12,7 @@ class ConsultationController extends Controller
     {
         if ($request->ajax()) {
             $consultations = Consultation::with('patient')
-                ->orderBy('date', 'desc')
-                ->get();
+                ->orderBy('date', 'desc');
 
             return DataTables::of($consultations)
                 ->addIndexColumn()

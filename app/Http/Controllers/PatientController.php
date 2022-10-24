@@ -15,7 +15,7 @@ class PatientController extends Controller
     {
         if ($request->ajax()) {
 
-            $patients = Patient::all();
+            $patients = Patient::query();
 
             return DataTables::of($patients)
                 ->addIndexColumn()
