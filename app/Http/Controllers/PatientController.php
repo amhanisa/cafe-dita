@@ -89,6 +89,25 @@ class PatientController extends Controller
         return view('patient.show', $data);
     }
 
+    function getTensionHistory(Request $request)
+    {
+        $consultations = Consultation::where('patient_id', $request->patientId)->orderBy('date', 'asc')->get();
+
+        $systole = [];
+        $diastole = [];
+        $date = [];
+
+        foreach ($consultations as $consultation) {
+            array_push($systole, $consultation->systole);
+            array_push($diastole, $consultation->diastole);
+            array_push($date, $consultation->date);
+        }
+
+        $data = ['systole' => $systole, 'diastole' => $diastole, 'date' => $date];
+
+        return json_encode($data);
+    }
+
     function calculate($last12Months)
     {
         $firstDate = $last12Months[0]->date;

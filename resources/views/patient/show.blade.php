@@ -876,18 +876,10 @@
             })
         });
 
+        let patientId = @json($patient->id)
+
         var areaOptions = {
-            series: [{
-                    name: "Sistol",
-                    data: [160, 130, 145, 155, 150, 145, 150],
-                    color: '#2E93fA'
-                },
-                {
-                    name: "Diastol",
-                    data: [80, 85, 95, 90, 85, 100, 95],
-                    color: '#66DA26'
-                },
-            ],
+            series: [],
             chart: {
                 height: 350,
                 type: "line",
@@ -952,24 +944,40 @@
             },
             xaxis: {
                 type: "datetime",
-                categories: [
-                    "2018-09-01T00:00:00.000Z",
-                    "2018-09-19T01:30:00.000Z",
-                    "2018-09-20T02:30:00.000Z",
-                    "2018-09-22T03:30:00.000Z",
-                    "2018-09-30T04:30:00.000Z",
-                    "2018-10-19T05:30:00.000Z",
-                    "2018-11-19T06:30:00.000Z",
-                ],
             },
             tooltip: {
                 x: {
-                    format: "dd/MM/yy HH:mm",
+                    format: "dd MMMM yyyy",
                 },
             },
+            noData: {
+                text: 'Loading...'
+            }
         }
         var area = new ApexCharts(document.querySelector("#area"), areaOptions)
 
+        $.get(`/patient/getTensionHistory?patientId=${patientId}`).then(result => {
+            let data = JSON.parse(result);
+
+            console.log(data.date)
+
+            area.updateSeries([{
+                name: 'Sistol',
+                data: data.systole,
+                color: '#2E93fA'
+            }, {
+                name: 'Diastol',
+                data: data.diastole,
+                color: '#66DA26'
+            }])
+
+
+            area.updateOptions({
+                xaxis: {
+                    categories: data.date
+                }
+            })
+        })
         area.render()
     </script>
 
