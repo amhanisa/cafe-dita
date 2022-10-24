@@ -181,83 +181,99 @@
                                         <th style="min-width: 180px;" rowspan="2">Kebiasaan</th>
                                         <th colspan="4">Januari
                                             <a
-                                                href="{{ url('habit/edit?patient=' . $patient->id . '&year=2022&month=1') }}">edit</a>
+                                                href="{{ url('habit/edit?patient=' . $patient->id . '&year=2022&month=1') }}">
+                                                edit
+                                            </a>
                                         </th>
-                                        <th colspan="4">Februari</th>
-                                        <th colspan="4">Maret</th>
-                                        <th colspan="4">April</th>
-                                        <th colspan="4">Mei</th>
-                                        <th colspan="4">Juni</th>
-                                        <th colspan="4">Juli</th>
-                                        <th colspan="4">Agustus</th>
-                                        <th colspan="4">September</th>
-                                        <th colspan="4">Oktober</th>
-                                        <th colspan="4">November</th>
-                                        <th colspan="4">Desember</th>
+                                        <th colspan="4">Februari
+                                            <a
+                                                href="{{ url('habit/edit?patient=' . $patient->id . '&year=2022&month=2') }}">
+                                                edit
+                                            </a>
+                                        </th>
+                                        <th colspan="4">Maret
+                                            <a
+                                                href="{{ url('habit/edit?patient=' . $patient->id . '&year=2022&month=3') }}">
+                                                edit
+                                            </a>
+                                        </th>
+                                        <th colspan="4">April
+                                            <a
+                                                href="{{ url('habit/edit?patient=' . $patient->id . '&year=2022&month=4') }}">
+                                                edit
+                                            </a>
+                                        </th>
+                                        <th colspan="4">Mei
+                                            <a
+                                                href="{{ url('habit/edit?patient=' . $patient->id . '&year=2022&month=5') }}">
+                                                edit
+                                            </a>
+                                        </th>
+                                        <th colspan="4">Juni
+                                            <a
+                                                href="{{ url('habit/edit?patient=' . $patient->id . '&year=2022&month=6') }}">
+                                                edit
+                                            </a>
+                                        </th>
+                                        <th colspan="4">Juli
+                                            <a
+                                                href="{{ url('habit/edit?patient=' . $patient->id . '&year=2022&month=7') }}">
+                                                edit
+                                            </a>
+                                        </th>
+                                        <th colspan="4">Agustus
+                                            <a
+                                                href="{{ url('habit/edit?patient=' . $patient->id . '&year=2022&month=8') }}">
+                                                edit
+                                            </a>
+                                        </th>
+                                        <th colspan="4">September
+                                            <a
+                                                href="{{ url('habit/edit?patient=' . $patient->id . '&year=2022&month=9') }}">
+                                                edit
+                                            </a>
+                                        </th>
+                                        <th colspan="4">Oktober
+                                            <a
+                                                href="{{ url('habit/edit?patient=' . $patient->id . '&year=2022&month=10') }}">
+                                                edit
+                                            </a>
+                                        </th>
+                                        <th colspan="4">November
+                                            <a
+                                                href="{{ url('habit/edit?patient=' . $patient->id . '&year=2022&month=11') }}">
+                                                edit
+                                            </a>
+                                        </th>
+                                        <th colspan="4">Desember
+                                            <a
+                                                href="{{ url('habit/edit?patient=' . $patient->id . '&year=2022&month=12') }}">
+                                                edit
+                                            </a>
+                                        </th>
                                     </tr>
                                     <tr>
-                                        <th>1</th>
-                                        <th>2</th>
-                                        <th>3</th>
-                                        <th>4</th>
-                                        <th>1</th>
-                                        <th>2</th>
-                                        <th>3</th>
-                                        <th>4</th>
-                                        <th>1</th>
-                                        <th>2</th>
-                                        <th>3</th>
-                                        <th>4</th>
-                                        <th>1</th>
-                                        <th>2</th>
-                                        <th>3</th>
-                                        <th>4</th>
-                                        <th>1</th>
-                                        <th>2</th>
-                                        <th>3</th>
-                                        <th>4</th>
-                                        <th>1</th>
-                                        <th>2</th>
-                                        <th>3</th>
-                                        <th>4</th>
-                                        <th>1</th>
-                                        <th>2</th>
-                                        <th>3</th>
-                                        <th>4</th>
-                                        <th>1</th>
-                                        <th>2</th>
-                                        <th>3</th>
-                                        <th>4</th>
-                                        <th>1</th>
-                                        <th>2</th>
-                                        <th>3</th>
-                                        <th>4</th>
-                                        <th>1</th>
-                                        <th>2</th>
-                                        <th>3</th>
-                                        <th>4</th>
-                                        <th>1</th>
-                                        <th>2</th>
-                                        <th>3</th>
-                                        <th>4</th>
-                                        <th>1</th>
-                                        <th>2</th>
-                                        <th>3</th>
-                                        <th>4</th>
+                                        @for ($i = 1; $i <= 12; $i++)
+                                            <th>1</th>
+                                            <th>2</th>
+                                            <th>3</th>
+                                            <th>4</th>
+                                        @endfor
                                     </tr>
                                 </thead>
                                 <tbody>
                                     @foreach ($patientHabits as $habit)
                                         <tr>
                                             <td>{{ $habit->name }}</td>
+                                            @php($counter = 0)
                                             @for ($i = 0; $i < 12; $i++)
-                                                @isset($habit->patientHabit[$i])
-                                                    @if ($habit->patientHabit[$i]->month == $i + 1)
+                                                @isset($habit->patientHabit[$counter])
+                                                    @if ($habit->patientHabit[$counter]->month == $i + 1)
                                                         @for ($j = 1; $j <= 4; $j++)
-                                                            @if (is_null($habit->patientHabit[$i]->{"week$j"}))
+                                                            @if (is_null($habit->patientHabit[$counter]->{"week$j"}))
                                                                 <td class="p-0">
                                                                 </td>
-                                                            @elseif ($habit->patientHabit[$i]->{"week$j"} == true)
+                                                            @elseif ($habit->patientHabit[$counter]->{"week$j"} == true)
                                                                 <td class="p-0">
                                                                     <div class="true-icon"></div>
                                                                 </td>
@@ -267,6 +283,12 @@
                                                                 </td>
                                                             @endif
                                                         @endfor
+                                                        @php($counter++)
+                                                    @else
+                                                        <td class="p-0"> </td>
+                                                        <td class="p-0"> </td>
+                                                        <td class="p-0"> </td>
+                                                        <td class="p-0"> </td>
                                                     @endif
                                                 @else
                                                     <td class="p-0"> </td>
