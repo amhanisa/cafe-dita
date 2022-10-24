@@ -171,7 +171,6 @@
                                         <option>2019</option>
                                     </select>
                                 </div>
-
                             </div>
                         </div>
                         <div class="table-responsive">
@@ -179,78 +178,103 @@
                                 <thead>
                                     <tr>
                                         <th style="min-width: 180px;" rowspan="2">Kebiasaan</th>
-                                        <th colspan="4">Januari
-                                            <a
-                                                href="{{ url('habit/edit?patient=' . $patient->id . '&year=2022&month=1') }}">
+                                        <th colspan="4">
+                                            Januari
+                                            <br>
+                                            <a class="small fw-lighter"
+                                                href="{{ url('habit/edit?patient=' . $patient->id . '&year=' . $year . '&month=1') }}">
                                                 edit
                                             </a>
                                         </th>
-                                        <th colspan="4">Februari
-                                            <a
-                                                href="{{ url('habit/edit?patient=' . $patient->id . '&year=2022&month=2') }}">
+                                        <th colspan="4">
+                                            Februari
+                                            <br>
+                                            <a class="small fw-lighter"
+                                                href="{{ url('habit/edit?patient=' . $patient->id . '&year=' . $year . '&month=2') }}">
                                                 edit
                                             </a>
                                         </th>
-                                        <th colspan="4">Maret
-                                            <a
-                                                href="{{ url('habit/edit?patient=' . $patient->id . '&year=2022&month=3') }}">
+                                        <th colspan="4">
+                                            Maret
+                                            <br>
+                                            <a class="small fw-lighter"
+                                                href="{{ url('habit/edit?patient=' . $patient->id . '&year=' . $year . '&month=3') }}">
                                                 edit
                                             </a>
                                         </th>
-                                        <th colspan="4">April
-                                            <a
-                                                href="{{ url('habit/edit?patient=' . $patient->id . '&year=2022&month=4') }}">
+                                        <th colspan="4">
+                                            April
+                                            <br>
+                                            <a class="small fw-lighter"
+                                                href="{{ url('habit/edit?patient=' . $patient->id . '&year=' . $year . '&month=4') }}">
                                                 edit
                                             </a>
                                         </th>
-                                        <th colspan="4">Mei
-                                            <a
-                                                href="{{ url('habit/edit?patient=' . $patient->id . '&year=2022&month=5') }}">
+                                        <th colspan="4">
+                                            Mei
+                                            <br>
+                                            <a class="small fw-lighter"
+                                                href="{{ url('habit/edit?patient=' . $patient->id . '&year=' . $year . '&month=5') }}">
                                                 edit
                                             </a>
                                         </th>
-                                        <th colspan="4">Juni
-                                            <a
-                                                href="{{ url('habit/edit?patient=' . $patient->id . '&year=2022&month=6') }}">
+                                        <th colspan="4">
+                                            Juni
+                                            <br>
+                                            <a class="small fw-lighter"
+                                                href="{{ url('habit/edit?patient=' . $patient->id . '&year=' . $year . '&month=6') }}">
                                                 edit
                                             </a>
                                         </th>
-                                        <th colspan="4">Juli
-                                            <a
-                                                href="{{ url('habit/edit?patient=' . $patient->id . '&year=2022&month=7') }}">
+                                        <th colspan="4">
+                                            Juli
+                                            <br>
+                                            <a class="small fw-lighter"
+                                                href="{{ url('habit/edit?patient=' . $patient->id . '&year=' . $year . '&month=7') }}">
                                                 edit
                                             </a>
                                         </th>
-                                        <th colspan="4">Agustus
-                                            <a
-                                                href="{{ url('habit/edit?patient=' . $patient->id . '&year=2022&month=8') }}">
+                                        <th colspan="4">
+                                            Agustus
+                                            <br>
+                                            <a class="small fw-lighter"
+                                                href="{{ url('habit/edit?patient=' . $patient->id . '&year=' . $year . '&month=8') }}">
                                                 edit
                                             </a>
                                         </th>
-                                        <th colspan="4">September
-                                            <a
-                                                href="{{ url('habit/edit?patient=' . $patient->id . '&year=2022&month=9') }}">
+                                        <th colspan="4">
+                                            September
+                                            <br>
+                                            <a class="small fw-lighter"
+                                                href="{{ url('habit/edit?patient=' . $patient->id . '&year=' . $year . '&month=9') }}">
                                                 edit
                                             </a>
                                         </th>
-                                        <th colspan="4">Oktober
-                                            <a
-                                                href="{{ url('habit/edit?patient=' . $patient->id . '&year=2022&month=10') }}">
+                                        <th colspan="4">
+                                            Oktober
+                                            <br>
+                                            <a class="small fw-lighter"
+                                                href="{{ url('habit/edit?patient=' . $patient->id . '&year=' . $year . '&month=10') }}">
                                                 edit
                                             </a>
                                         </th>
-                                        <th colspan="4">November
-                                            <a
-                                                href="{{ url('habit/edit?patient=' . $patient->id . '&year=2022&month=11') }}">
+                                        <th colspan="4">
+                                            November
+                                            <br>
+                                            <a class="small fw-lighter"
+                                                href="{{ url('habit/edit?patient=' . $patient->id . '&year=' . $year . '&month=11') }}">
                                                 edit
                                             </a>
                                         </th>
-                                        <th colspan="4">Desember
-                                            <a
-                                                href="{{ url('habit/edit?patient=' . $patient->id . '&year=2022&month=12') }}">
+                                        <th colspan="4">
+                                            Desember
+                                            <br>
+                                            <a class="small fw-lighter"
+                                                href="{{ url('habit/edit?patient=' . $patient->id . '&year=' . $year . '&month=12') }}">
                                                 edit
                                             </a>
                                         </th>
+
                                     </tr>
                                     <tr>
                                         @for ($i = 1; $i <= 12; $i++)

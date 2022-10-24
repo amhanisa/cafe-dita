@@ -69,6 +69,8 @@ class PatientController extends Controller
 
     public function show($id)
     {
+        $year = request('year') ?? Carbon::now()->year;
+
         $data['patient'] = Patient::find($id);
 
         $consultations = Consultation::where('patient_id', $id)->orderBy('date', 'desc')->get();
@@ -88,9 +90,11 @@ class PatientController extends Controller
         $data['berobatStatus'] = $this->calculate($last12Months);
         $data['hypertensionStatus'] = $hypertensionStatus;
 
-        $data['patientHabits'] = Habit::with(['patientHabit' => function ($query) use ($id) {
-            $query->where('patient_id', $id)->where('year', 2022)->orderBy('month', 'asc');
+        $data['patientHabits'] = Habit::with(['patientHabit' => function ($query) use ($id, $year) {
+            $query->where('patient_id', $id)->where('year', $year)->orderBy('month', 'asc');
         }])->get();
+
+        $data['year'] = $year;
 
         return view('patient.show', $data);
     }
