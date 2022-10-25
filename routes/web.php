@@ -3,6 +3,7 @@
 use App\Http\Controllers\ConsultationController;
 use App\Http\Controllers\HabitController;
 use App\Http\Controllers\PatientController;
+use App\Http\Controllers\ReportController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -33,3 +34,5 @@ Route::get('/consultation', [ConsultationController::class, 'index']);
 
 Route::get('/habit/edit', [HabitController::class, 'showEditPage']);
 Route::post('/habit/edit', [HabitController::class, 'store']);
+
+Route::get('/report', [ReportController::class, 'index']);
