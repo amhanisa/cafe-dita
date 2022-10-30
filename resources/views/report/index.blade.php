@@ -27,13 +27,15 @@
                                         <div class="col-md-6">
                                             <div class="input-group mb-3">
                                                 <span class="input-group-text">Tanggal Awal</span>
-                                                <input class="form-control" name="start_date" type="date">
+                                                <input class="form-control" name="start_date" type="date"
+                                                    value="{{ request()->get('start_date') }}">
                                             </div>
                                         </div>
                                         <div class="col-md-6">
                                             <div class="input-group mb-3">
                                                 <span class="input-group-text">Tanggal Awal</span>
-                                                <input class="form-control" name="end_date" type="date">
+                                                <input class="form-control" name="end_date" type="date"
+                                                    value="{{ request()->get('end_date') }}">
                                             </div>
                                         </div>
                                     </div>
@@ -46,13 +48,15 @@
                                         <div class="col-md-6">
                                             <div class="input-group mb-3">
                                                 <span class="input-group-text">Umur Awal</span>
-                                                <input class="form-control" name="min_age" type="number">
+                                                <input class="form-control" name="min_age" type="number"
+                                                    value="{{ request()->get('min_age') }}">
                                             </div>
                                         </div>
                                         <div class="col-md-6">
                                             <div class="input-group mb-3">
                                                 <span class="input-group-text">Umur Akhir</span>
-                                                <input class="form-control" name="max_age" type="number">
+                                                <input class="form-control" name="max_age" type="number"
+                                                    value="{{ request()->get('max_age') }}">
                                             </div>
                                         </div>
                                     </div>
@@ -126,16 +130,33 @@
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    @foreach ($hypertension as $key => $village)
+                                    @foreach ($villages as $key => $village)
                                         <tr>
-                                            <td>{{ $key }}</td>
-                                            <td>{{ count($village['1']['L']) }}</td>
-                                            <td>{{ count($village['1']['P']) }}</td>
-                                            <td>{{ count($village['1']['L']) + count($village['1']['P']) }}</td>
-                                            <td>{{ count($village['0']['L']) }}</td>
-                                            <td>{{ count($village['0']['P']) }}</td>
-                                            <td>{{ count($village['0']['L']) + count($village['0']['P']) }}</td>
-
+                                            <td>{{ $village->name }}</td>
+                                            <td>{{ isset($village->treatment[1]['L']) ? $village->treatment[1]['L']->count() : 0 }}
+                                            </td>
+                                            <td>{{ isset($village->treatment[1]['P']) ? $village->treatment[1]['P']->count() : 0 }}
+                                            </td>
+                                            <td>{{ (isset($village->treatment[1]['L']) ? $village->treatment[1]['L']->count() : 0) + (isset($village->treatment[1]['P']) ? $village->treatment[1]['P']->count() : 0) }}
+                                            </td>
+                                            <td>{{ isset($village->treatment[0]['L']) ? $village->treatment[0]['L']->count() : 0 }}
+                                            </td>
+                                            <td>{{ isset($village->treatment[0]['P']) ? $village->treatment[0]['P']->count() : 0 }}
+                                            </td>
+                                            <td>{{ (isset($village->treatment[0]['L']) ? $village->treatment[0]['L']->count() : 0) + (isset($village->treatment[0]['P']) ? $village->treatment[0]['P']->count() : 0) }}
+                                            </td>
+                                            <td>{{ isset($village->hypertension[0]['L']) ? $village->hypertension[0]['L']->count() : 0 }}
+                                            </td>
+                                            <td>{{ isset($village->hypertension[0]['P']) ? $village->hypertension[0]['P']->count() : 0 }}
+                                            </td>
+                                            <td>{{ (isset($village->hypertension[0]['L']) ? $village->hypertension[0]['L']->count() : 0) + (isset($village->hypertension[0]['P']) ? $village->hypertension[0]['P']->count() : 0) }}
+                                            </td>
+                                            <td>{{ isset($village->hypertension[1]['L']) ? $village->hypertension[1]['L']->count() : 0 }}
+                                            </td>
+                                            <td>{{ isset($village->hypertension[1]['P']) ? $village->hypertension[1]['P']->count() : 0 }}
+                                            </td>
+                                            <td>{{ (isset($village->hypertension[1]['L']) ? $village->hypertension[1]['L']->count() : 0) + (isset($village->hypertension[1]['P']) ? $village->hypertension[1]['P']->count() : 0) }}
+                                            </td>
                                         </tr>
                                     @endforeach
                                 </tbody>
