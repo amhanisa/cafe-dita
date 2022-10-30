@@ -80,7 +80,7 @@
                 }, {
                     data: 'address'
                 }, {
-                    data: 'village'
+                    data: 'village_id' //TODO: fix search feature
                 }, {
                     data: 'job'
                 }, {
@@ -97,4 +97,3 @@
         });
     </script>
 @endpush
-

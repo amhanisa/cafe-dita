@@ -104,23 +104,15 @@
                                     <div class="row mb-3">
                                         <label class="col-md-4 col-lg-2 col-form-label">Desa</label>
                                         <div class="col-md-8 col-lg-10">
-                                            <select class="choices  @error('village') is-invalid @enderror"
-                                                id="village-form" name="village">
-                                                <option value="">Pilih Desa</option>
-                                                <option>Buluagung</option>
-                                                <option>Jati</option>
-                                                <option>Jatiprahu</option>
-                                                <option>Karangan</option>
-                                                <option>Kayen</option>
-                                                <option>Kedungsigit</option>
-                                                <option>Kerjo</option>
-                                                <option>Ngentrong</option>
-                                                <option>Salamrejo</option>
-                                                <option>Suko Wetan</option>
-                                                <option>Sumber</option>
-                                                <option>Sumberingin</option>
+                                            <select class="choices  @error('village_id') is-invalid @enderror"
+                                                id="village-form" name="village_id">
+                                                @foreach ($villages as $key => $village)
+                                                    <option value="{{ $village->id }}"
+                                                        {{ $patient->village_id == $village->id ? 'selected' : '' }}>
+                                                        {{ $village->name }}</option>
+                                                @endforeach
                                             </select>
-                                            @error('village')
+                                            @error('village_id')
                                                 <span class="validation-error"> {{ $message }} </span>
                                             @enderror
                                         </div>
@@ -171,10 +163,6 @@
 @push('script')
     <script src="https://cdn.jsdelivr.net/npm/choices.js@9.0.1/public/assets/scripts/choices.min.js"></script>
     <script>
-        let selectedVillage = @json($patient->village);
-
         const choices = new Choices(document.querySelector('.choices'));
-        choices.setChoiceByValue(selectedVillage)
     </script>
 @endpush
-

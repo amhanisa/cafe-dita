@@ -7,6 +7,7 @@ use App\Models\Consultation;
 use App\Models\Habit;
 use App\Models\Patient;
 use App\Models\PatientHabit;
+use App\Models\Village;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Yajra\DataTables\Facades\DataTables;
@@ -23,6 +24,9 @@ class PatientController extends Controller
                 ->addIndexColumn()
                 ->editColumn('birthday', function (Patient $patient) {
                     return Carbon::parse($patient->birthday)->age;
+                })
+                ->editColumn('village_id', function (Patient $patient) {
+                    return $patient->village->name;
                 })
                 ->addColumn('status', function (Patient $patient) {
                     $consultations = Consultation::where('patient_id', $patient->id)->orderBy('date', 'desc')->get();
@@ -64,14 +68,15 @@ class PatientController extends Controller
 
     public function add()
     {
-        return view('patient.add');
+        $data['villages'] = Village::all();
+        return view('patient.add', $data);
     }
 
     public function show($id)
     {
         $year = request('year') ?? Carbon::now()->year;
 
-        $data['patient'] = Patient::find($id);
+        $data['patient'] = Patient::with('village')->find($id);
 
         $consultations = Consultation::where('patient_id', $id)->orderBy('date', 'desc')->get();
         $data['consultations']  = $consultations;
@@ -178,7 +183,7 @@ class PatientController extends Controller
             'sex' => 'required',
             'birthday' => 'required',
             'address' => 'required',
-            'village' => 'required',
+            'village_id' => 'required',
             'job' => 'required',
             'phone_number' => 'string',
         ]);
@@ -191,7 +196,7 @@ class PatientController extends Controller
         $patient->sex = $request->sex;
         $patient->birthday = $request->birthday;
         $patient->address = $request->address;
-        $patient->village = $request->village;
+        $patient->village_id = $request->village_id;
         $patient->job = $request->job;
         $patient->phone_number = $request->phone_number;
 
@@ -203,6 +208,7 @@ class PatientController extends Controller
     public function showEditPage($id)
     {
         $data['patient'] = Patient::find($id);
+        $data['villages'] = Village::all();
 
         return view('patient.edit', $data);
     }
@@ -217,7 +223,7 @@ class PatientController extends Controller
             'sex' => 'required',
             'birthday' => 'required',
             'address' => 'required',
-            'village' => 'required',
+            'village_id' => 'required',
             'job' => 'required',
             'phone_number' => 'string',
         ]);
@@ -230,7 +236,7 @@ class PatientController extends Controller
         $patient->sex = $request->sex;
         $patient->birthday = $request->birthday;
         $patient->address = $request->address;
-        $patient->village = $request->village;
+        $patient->village_id = $request->village_id;
         $patient->job = $request->job;
         $patient->phone_number = $request->phone_number;
 

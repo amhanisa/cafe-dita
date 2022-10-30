@@ -1,5 +1,6 @@
 <?php
 
+use App\Models\Village;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
@@ -21,7 +22,7 @@ return new class extends Migration
             $table->char('sex', 1);
             $table->date('birthday');
             $table->string('address');
-            $table->string('village');
+            $table->foreignIdFor(Village::class);
             $table->string('job');
             $table->string('phone_number')->nullable();
             $table->timestamps();

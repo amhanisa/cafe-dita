@@ -11,7 +11,12 @@ class Patient extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['name', 'medical_record_number', 'nik', 'sex', 'birthday', 'address', 'village', 'job', 'phone_number'];
+    protected $fillable = ['name', 'medical_record_number', 'nik', 'sex', 'birthday', 'address', 'village_id', 'job', 'phone_number'];
+
+    public function village()
+    {
+        return $this->belongsTo(Village::class);
+    }
 
     public function consultation()
     {

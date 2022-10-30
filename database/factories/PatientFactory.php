@@ -2,6 +2,7 @@
 
 namespace Database\Factories;
 
+use App\Models\Village;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
@@ -16,21 +17,6 @@ class PatientFactory extends Factory
      */
     public function definition()
     {
-        $villages = [
-            'Buluagung',
-            'Jati',
-            'Jatiprahu',
-            'Karangan',
-            'Kayen',
-            'Kedungsigit',
-            'Kerjo',
-            'Ngentrong',
-            'Salamrejo',
-            'Suko Wetan',
-            'Sumber',
-            'Sumberingin',
-        ];
-
         return [
             'name' => fake("id_ID")->name(),
             'medical_record_number' => fake()->unique()->numberBetween(10000, 99999),
@@ -38,7 +24,7 @@ class PatientFactory extends Factory
             'sex' => fake()->randomElement(['L', 'P']),
             'birthday' => fake()->dateTimeInInterval('-70 years', '+55 years'),
             'address' => fake('id_ID')->streetAddress(),
-            'village' => fake()->randomElement($villages),
+            'village_id' => fake()->randomElement(Village::pluck('id')),
             'phone_number' => fake('id_ID')->phoneNumber(),
             'job' => fake('id_ID')->jobTitle(),
         ];
