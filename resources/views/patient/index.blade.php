@@ -80,7 +80,7 @@
                 }, {
                     data: 'address'
                 }, {
-                    data: 'village_id' //TODO: fix search feature
+                    data: 'village.name'
                 }, {
                     data: 'job'
                 }, {

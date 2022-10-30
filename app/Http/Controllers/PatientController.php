@@ -18,15 +18,12 @@ class PatientController extends Controller
     {
         if ($request->ajax()) {
 
-            $patients = Patient::query();
+            $patients = Patient::with('village');
 
             return DataTables::of($patients)
                 ->addIndexColumn()
                 ->editColumn('birthday', function (Patient $patient) {
                     return Carbon::parse($patient->birthday)->age;
-                })
-                ->editColumn('village_id', function (Patient $patient) {
-                    return $patient->village->name;
                 })
                 ->addColumn('status', function (Patient $patient) {
                     $consultations = Consultation::where('patient_id', $patient->id)->orderBy('date', 'desc')->get();
