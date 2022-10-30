@@ -125,6 +125,10 @@ class PatientController extends Controller
 
     function calculate($last12Months)
     {
+        if (count($last12Months) < 1) {
+            return false;
+        }
+
         $firstDate = $last12Months[0]->date;
         $year = $this->getYear($firstDate);
         $month = $this->getMonth($firstDate);
