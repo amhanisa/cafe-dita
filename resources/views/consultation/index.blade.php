@@ -16,7 +16,7 @@
                     <div class="card-content">
                         <div class="card-body">
                             <div class="mb-3">
-                                <!-- <a class="btn btn-primary" href="/patient/add">Tambah Pasien</a> -->
+                                <a class="btn btn-primary" href="{{ url('consultation/import') }}">Impor Data Konsultasi</a>
                             </div>
                             <table class="table" id="consultations-table">
                                 <thead>

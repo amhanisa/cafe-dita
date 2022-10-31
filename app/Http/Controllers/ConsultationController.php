@@ -29,4 +29,9 @@ class ConsultationController extends Controller
 
         return view('consultation.index');
     }
+
+    public function showImportPage()
+    {
+        return view('consultation.import');
+    }
 }
