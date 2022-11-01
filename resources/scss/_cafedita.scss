@@ -49,3 +49,44 @@ table.dataTable td {
     background-position: bottom center, 50%, 50%;
     margin: auto;
 }
+
+.check-icon {
+    content: "";
+    height: 20px;
+    width: 20px;
+    display: inline-block;
+    background-image: url("../icon/check-circle.svg");
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-position: bottom center, 50%, 50%;
+    margin: auto;
+}
+
+.exclamation-icon {
+    content: "";
+    height: 20px;
+    width: 20px;
+    display: inline-block;
+    background-image: url("../icon/exclamation-circle.svg");
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-position: bottom center, 50%, 50%;
+    margin: auto;
+}
+
+//callout
+.callout {
+    padding: 1.25rem;
+    background-color: var(--bd-callout-bg, var(--bs-gray-100));
+    border-left: 0.25rem solid var(--bd-callout-border, var(--bs-gray-300));
+}
+
+.callout-info {
+    --bd-callout-bg: rgba(var(--bs-info-rgb), 0.075);
+    --bd-callout-border: rgba(var(--bs-info-rgb), 0.5);
+}
+
+.callout-danger {
+    --bd-callout-bg: rgba(var(--bs-danger-rgb), 0.075);
+    --bd-callout-border: rgba(var(--bs-danger-rgb), 0.5);
+}

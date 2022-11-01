@@ -61,19 +61,50 @@
                                 </div>
                                 <div class="col-lg-4">
                                     <div class="mb-3">
-                                        <h6 class="text-muted">Status Berobat</h6>
                                         @if ($berobatStatus)
-                                            <button class="btn btn-block btn-outline-success">Berobat Teratur</button>
+                                            <div class="callout callout-info d-flex justify-content-between mb-3">
+                                                <span class="text-sm fw-bold text-uppercase text-muted">Status
+                                                    Berobat</span>
+                                                <div class="d-flex align-items-center">
+                                                    <span class="fw-bold text-uppercase text-end">
+                                                        Teratur
+                                                    </span>
+                                                    <span class="check-icon ms-2"></span>
+                                                </div>
+                                            </div>
                                         @else
-                                            <button class="btn btn-block btn-outline-danger">Tidak Berobat Teratur</button>
+                                            <div class="callout callout-danger d-flex justify-content-between mb-3">
+                                                <span class="text-sm fw-bold text-uppercase text-muted">Status
+                                                    Berobat</span>
+                                                <div class="d-flex align-items-center">
+                                                    <span class="fw-bold text-uppercase text-end">Tidak
+                                                        Teratur</span>
+                                                    <span class="exclamation-icon ms-2"></span>
+                                                </div>
+                                            </div>
                                         @endif
                                     </div>
                                     <div class="mb-3">
-                                        <h6 class="text-muted">Status Hipertensi</h6>
                                         @if ($hypertensionStatus)
-                                            <button class="btn btn-block btn-outline-danger">Tidak Terkendali</button>
+                                            <div class="callout callout-danger d-flex justify-content-between mb-3">
+                                                <span class="text-sm fw-bold text-uppercase text-muted">Status
+                                                    Hipertensi</span>
+                                                <div class="d-flex align-items-center">
+                                                    <span class="fw-bold text-uppercase text-end">Tidak Terkendali</span>
+                                                    <span class="exclamation-icon ms-2"></span>
+                                                </div>
+                                            </div>
                                         @else
-                                            <button class="btn btn-block btn-outline-success">Terkendali</button>
+                                            <div class="callout callout-info d-flex justify-content-between mb-3">
+                                                <span class="text-sm fw-bold text-uppercase text-muted">Status
+                                                    Hipertensi</span>
+                                                <div class="d-flex align-items-center">
+                                                    <span class="fw-bold text-uppercase text-end">
+                                                        Terkendali
+                                                    </span>
+                                                    <span class="check-icon ms-2"></span>
+                                                </div>
+                                            </div>
                                         @endif
                                     </div>
                                     <div class="row justify-content-between mb-3">
