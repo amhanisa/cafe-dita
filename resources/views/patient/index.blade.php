@@ -17,30 +17,29 @@
                         <div class="card-body">
                             <div class="mb-3">
                                 <a class="btn btn-primary" href="/patient/add">Tambah Pasien</a>
+                                @include('patient.filter')
                             </div>
-                            <table class="table" id="patients-table">
-                                <thead>
-                                    <th>No</th>
-                                    <th>Nama</th>
-                                    <th>No Rekam Medis</th>
-                                    <th>NIK</th>
-                                    <th>Jenis Kelamin</th>
-                                    <th>Umur
-                                        <br>
-                                        <span class="small fw-light">(tahun)</span>
-                                    </th>
-                                    <th>Alamat</th>
-                                    <th>Desa</th>
-                                    <th>Pekerjaan</th>
-                                    <th>No Telepon</th>
-                                    <th>Status</th>
-                                    <th>Action</th>
-                                </thead>
-                                <tbody>
-
-                                </tbody>
-                            </table>
-
+                            <div class="table-responsive">
+                                <table class="table" id="patients-table">
+                                    <thead>
+                                        <th>No</th>
+                                        <th>Nama</th>
+                                        <th>No Rekam Medis</th>
+                                        <th>NIK</th>
+                                        <th>Jenis Kelamin</th>
+                                        <th>Umur
+                                            <br>
+                                            <span class="small fw-light">(tahun)</span>
+                                        </th>
+                                        <th>Alamat</th>
+                                        <th>Desa</th>
+                                        <th>Pekerjaan</th>
+                                        <th>No Telepon</th>
+                                        <th>Status</th>
+                                        <th>Action</th>
+                                    </thead>
+                                </table>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -53,47 +52,66 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.1/jquery.min.js"></script>
     <script src="https://cdn.datatables.net/1.12.1/js/jquery.dataTables.min.js"></script>
     <script src="https://cdn.datatables.net/1.12.1/js/dataTables.bootstrap5.min.js"></script>
-    <script src="https://cdn.datatables.net/responsive/2.3.0/js/dataTables.responsive.min.js"></script>
 
-    <script>
-        $(document).ready(function() {
-            $('#patients-table').DataTable({
-                serverSide: true,
-                processing: true,
-                responsive: true,
-                ajax: 'patient',
-                dataSrc: 'data',
-                columns: [{
+    <script type="text/javascript">
+        var datatable = $('#patients-table').DataTable({
+            serverSide: true,
+            processing: true,
+            responsive: true,
+            scrollX: true,
+            ajax: {
+                url: "{{ route('datatable.patient') }}",
+                data: function(data) {
+                    data.status_id = $('#status_id').val();
+                }
+            },
+            columns: [{
                     data: 'DT_RowIndex',
                     orderable: false,
-                    searchable: false,
-                }, {
+                    searchable: false
+                },
+                {
                     data: 'name'
-                }, {
+                },
+                {
                     data: 'medical_record_number'
-                }, {
+                },
+                {
                     data: 'nik'
-                }, {
+                },
+                {
                     data: 'sex'
-                }, {
+                },
+                {
                     data: 'birthday'
-                }, {
+                },
+                {
                     data: 'address'
-                }, {
+                },
+                {
                     data: 'village.name'
-                }, {
+                },
+                {
                     data: 'job'
-                }, {
+                },
+                {
                     data: 'phone_number'
-                }, {
+                },
+                {
                     data: 'status',
-                    render: null,
-                }, {
+                    render: null
+                },
+                {
                     data: 'action',
                     orderable: false,
                     searchable: false,
-                }]
-            });
+                }
+            ]
+        });
+
+        $('#form-filter').on('submit', function(e) {
+            e.preventDefault();
+            datatable.draw();
         });
     </script>
 @endpush

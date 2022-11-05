@@ -17,47 +17,6 @@ class PatientController extends Controller
     public function index(Request $request)
     {
         if ($request->ajax()) {
-
-            $patients = Patient::with('village');
-
-            return DataTables::of($patients)
-                ->addIndexColumn()
-                ->editColumn('birthday', function (Patient $patient) {
-                    return Carbon::parse($patient->birthday)->age;
-                })
-                ->addColumn('status', function (Patient $patient) {
-                    $consultations = Consultation::where('patient_id', $patient->id)->orderBy('date', 'desc')->get();
-                    $data['consultations']  = $consultations;
-
-                    $averageSystole = $consultations->avg('systole');
-                    $averageDiastole = $consultations->avg('diastole');
-
-                    if ($averageSystole >= 140 || $averageDiastole >= 90) {
-                        $html = "<span class='badge bg-danger'>Tidak Terkendali</span>";
-                    } else {
-                        $html = "<span class='badge bg-success'>Terkendali</span>";
-                    }
-
-                    $last12Months = Consultation::where('patient_id', $patient->id)->whereDate('date', '>', \Carbon\Carbon::now()->subYear())->orderBy('date', 'asc')->get();
-
-                    if (count($last12Months) > 0) {
-                        if ($this->calculate($last12Months)) {
-                            $html .= "<span class='badge bg-success'>Teratur</span>";
-                        } else {
-                            $html .= "<span class='badge bg-danger'>Tidak Teratur</span>";
-                        }
-                    } else {
-                        $html .= "<span class='badge bg-danger'>Belum Berobat</span>";
-                    }
-
-                    return $html;
-                })
-                ->addColumn('action', function ($row) {
-                    $html = "<a href='patient/$row->id' class='btn btn-xs btn-secondary'>View</a> ";
-                    return $html;
-                })
-                ->rawColumns(['status', 'action'])
-                ->toJson();
         }
 
         return view('patient.index');
@@ -255,5 +214,66 @@ class PatientController extends Controller
         $patient->delete();
 
         return redirect('patient');
+    }
+
+    public function getAjaxDatatable(Request $request)
+    {
+        $subConsulation = Consultation::selectRaw('patient_id, AVG(systole) as avg_systole, AVG(diastole) as avg_diastole')
+            ->groupBy('patient_id');
+        $patients = Patient::with('village')
+            ->joinSub($subConsulation, 'sub', function ($join) {
+                $join->on('patients.id', '=', 'sub.patient_id');
+            })
+            ->when(request('status_id'), function ($query) use ($request) {
+                // Tidak Terkendali
+                if ($request->status_id == '1') {
+                    $query->where('sub.avg_systole', '>=', 140)
+                        ->Where('sub.avg_diastole', '>=', 90);
+                } else if ($request->status_id == '2') {
+                    $query->where('sub.avg_systole', '<', 140)
+                        ->where('sub.avg_diastole', '<', 90);
+                }
+            });
+
+        return datatables()::of($patients)
+            ->addIndexColumn()
+            ->editColumn('birthday', function (Patient $patient) {
+                return Carbon::parse($patient->birthday)->age;
+            })
+            ->addColumn('status', function ($data) {
+                $status = array();
+                if ($data->avg_systole >= 140 && $data->avg_diastole >= 90) {
+                    // $html = 'S: ' . $averageSystole . '- D:' . $averageDiastole . 'Tidak Terkendali';
+                    $html = "<span class='badge bg-danger'>Tidak Terkendali</span>";
+                    array_push($status, $html);
+                } else {
+                    // $html = 'S: ' . $averageSystole . '- D:' . $averageDiastole . 'Terkendali';
+                    $html = "<span class='badge bg-success'>Terkendali</span>";
+                    array_push($status, $html);
+                }
+
+                $last12Months = Consultation::where('patient_id', $data->id)->whereDate('date', '>', \Carbon\Carbon::now()->subYear())->orderBy('date', 'asc')->get();
+
+                if (count($last12Months) > 0) {
+                    if ($this->calculate($last12Months)) {
+                        $html = "<span class='badge bg-success'>Teratur</span>";
+                        array_push($status, $html);
+                    } else {
+                        $html = "<span class='badge bg-danger'>Tidak Teratur</span>";
+                        array_push($status, $html);
+                    }
+                } else {
+                    $html = "<span class='badge bg-danger'>Belum Berobat</span>";
+                    array_push($status, $html);
+                }
+
+                return implode(' ', $status);
+            })
+            ->addColumn('action', function ($row) {
+                $html = "<a href='patient/$row->id' class='btn btn-xs btn-secondary'>View</a> ";
+                return $html;
+            })
+            ->rawColumns(['status', 'action'])
+            ->make(true);
     }
 }

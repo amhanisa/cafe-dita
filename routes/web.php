@@ -22,7 +22,7 @@ Route::get('/', function () {
     return view('dashboard');
 });
 
-Route::get('/patient', [PatientController::class, 'index']);
+Route::get('/patient', [PatientController::class, 'index'])->name('patien.index');
 Route::get('/patient/add', [PatientController::class, 'add']);
 Route::post('/patient/store', [PatientController::class, 'store']);
 Route::post('/patient/delete', [PatientController::class, 'destroy']);
@@ -40,3 +40,7 @@ Route::post('/habit/edit', [HabitController::class, 'store']);
 Route::get('/report', [ReportController::class, 'index']);
 
 Route::get('/user', [UserController::class, 'index']);
+
+Route::group(['prefix' => 'datatable'], function () {
+    Route::get('patient', [PatientController::class, 'getAjaxDatatable'])->name('datatable.patient');
+});

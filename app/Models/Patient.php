@@ -23,6 +23,18 @@ class Patient extends Model
         return $this->hasMany(Consultation::class);
     }
 
+    public function getAvgSystoleAttribute()
+    {
+        return $this->consultation()
+            ->avg('systole');
+    }
+
+    public function getAvgDiastoleAttribute()
+    {
+        return $this->consultation()
+            ->avg('diastole');
+    }
+
     public static function getPatientsForReport($startDate, $endDate, $minAge, $maxAge)
     {
         $query = <<<EOD
