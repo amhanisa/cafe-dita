@@ -16,40 +16,40 @@ class VillageSeeder extends Seeder
     public function run()
     {
         Village::create([
-            'name' => 'Buluagung'
+            'name' => 'BULUAGUNG'
         ]);
         Village::create([
-            'name' => 'Jati'
+            'name' => 'JATI'
         ]);
         Village::create([
-            'name' => 'Jatiprahu'
+            'name' => 'JATIPRAHU'
         ]);
         Village::create([
-            'name' => 'Karangan'
+            'name' => 'KARANGAN'
         ]);
         Village::create([
-            'name' => 'Kayen'
+            'name' => 'KAYEN'
         ]);
         Village::create([
-            'name' => 'Kedungsigit'
+            'name' => 'KEDUNGSIGIT'
         ]);
         Village::create([
-            'name' => 'Kerjo'
+            'name' => 'KERJO'
         ]);
         Village::create([
-            'name' => 'Ngentrong'
+            'name' => 'NGENTRONG'
         ]);
         Village::create([
-            'name' => 'Salamrejo'
+            'name' => 'SALAMREJO'
         ]);
         Village::create([
-            'name' => 'Suko Wetan'
+            'name' => 'SUKOWETAN'
         ]);
         Village::create([
-            'name' => 'Sumber'
+            'name' => 'SUMBER'
         ]);
         Village::create([
-            'name' => 'Sumberingin'
+            'name' => 'SUMBERINGIN'
         ]);
     }
 }
