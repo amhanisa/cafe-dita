@@ -22,11 +22,15 @@
                             </p>
                             <div class="row justify-content-center">
                                 <div class="col-md-6 border border-1 rounded-4 p-4">
-                                    <form action="{{ url('consultation/import') }}" method="post"
+                                    <form class="row row-cols-lg-auto g-3 align-items-center justify-content-center"
+                                        action="{{ url('consultation/import') }}" method="post"
                                         enctype='multipart/form-data'>
-                                        <input class="basic-filepond" type="file">
-                                        <div class="d-flex justify-content-center">
-                                            <input class="btn btn-primary" type="submit" value="Upload">
+                                        @csrf
+                                        <div class="col-12">
+                                            <input class="form-control" id="formFile" name="import_file" type="file">
+                                        </div>
+                                        <div class="col-12">
+                                            <button class="btn btn-primary" type="submit">Upload</button>
                                         </div>
                                     </form>
                                 </div>
@@ -39,13 +43,4 @@
         </section>
     </div>
 @endsection
-
-@push('script')
-    <script src="https://unpkg.com/filepond/dist/filepond.min.js"></script>
-    <script src="https://unpkg.com/jquery-filepond/filepond.jquery.js"></script>
-
-    <script>
-        $('.basic-filepond').filepond();
-    </script>
-@endpush
 

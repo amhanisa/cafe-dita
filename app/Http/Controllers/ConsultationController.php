@@ -2,8 +2,10 @@
 
 namespace App\Http\Controllers;
 
+use App\Imports\ConsultationsImport;
 use App\Models\Consultation;
 use Illuminate\Http\Request;
+use Maatwebsite\Excel\Facades\Excel;
 use Yajra\DataTables\Facades\DataTables;
 
 class ConsultationController extends Controller
@@ -33,5 +35,13 @@ class ConsultationController extends Controller
     public function showImportPage()
     {
         return view('consultation.import');
+    }
+
+    public function storeImportedConsultations(Request $request)
+    {
+        // dd($request->file('import_file'));
+        Excel::import(new ConsultationsImport(), $request->file('import_file'));
+
+        return redirect('consultation');
     }
 }

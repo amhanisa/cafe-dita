@@ -9,6 +9,8 @@ class Consultation extends Model
 {
     use HasFactory;
 
+    protected $fillable = ['patient_id', 'date', 'systole', 'diastole', 'medicine', 'note'];
+
     public function patient()
     {
         return $this->belongsTo(Patient::class);
