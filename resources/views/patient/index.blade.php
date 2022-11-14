@@ -17,7 +17,6 @@
                         <div class="card-body">
                             <div class="mb-3">
                                 <a class="btn btn-primary" href="/patient/add">Tambah Pasien</a>
-                                @include('patient.filter')
                             </div>
                             <div class="table-responsive">
                                 <table class="table" id="patients-table">
@@ -61,9 +60,6 @@
             scrollX: true,
             ajax: {
                 url: "{{ route('datatable.patient') }}",
-                data: function(data) {
-                    data.status_id = $('#status_id').val();
-                }
             },
             columns: [{
                     data: 'DT_RowIndex',
@@ -107,11 +103,6 @@
                     searchable: false,
                 }
             ]
-        });
-
-        $('#form-filter').on('submit', function(e) {
-            e.preventDefault();
-            datatable.draw();
         });
     </script>
 @endpush

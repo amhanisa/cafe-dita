@@ -16,9 +16,6 @@ class PatientController extends Controller
 {
     public function index(Request $request)
     {
-        if ($request->ajax()) {
-        }
-
         return view('patient.index');
     }
 
@@ -223,16 +220,6 @@ class PatientController extends Controller
         $patients = Patient::with('village')
             ->joinSub($subConsulation, 'sub', function ($join) {
                 $join->on('patients.id', '=', 'sub.patient_id');
-            })
-            ->when(request('status_id'), function ($query) use ($request) {
-                // Tidak Terkendali
-                if ($request->status_id == '1') {
-                    $query->where('sub.avg_systole', '>=', 140)
-                        ->Where('sub.avg_diastole', '>=', 90);
-                } else if ($request->status_id == '2') {
-                    $query->where('sub.avg_systole', '<', 140)
-                        ->where('sub.avg_diastole', '<', 90);
-                }
             });
 
         return datatables()::of($patients)
