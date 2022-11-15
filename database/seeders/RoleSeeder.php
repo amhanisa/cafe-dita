@@ -16,7 +16,7 @@ class RoleSeeder extends Seeder
     public function run()
     {
         Role::create([
-            'name' => 'Petugas Cafe DITA'
+            'name' => 'Petugas Puskesmas'
         ]);
         Role::create([
             'name' => 'Kader Cafe DITA'
