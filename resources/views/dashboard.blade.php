@@ -8,7 +8,7 @@
         <section class="row">
             <div class="col mb-3">
 
-                Halo, User
+                Halo, {{ Auth::user()->name }}
             </div>
         </section>
         <section>

@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\AuthController;
 use App\Http\Controllers\ConsultationController;
 use App\Http\Controllers\HabitController;
 use App\Http\Controllers\PatientController;
@@ -18,30 +19,39 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/', function () {
-    return view('dashboard');
+Route::group(['middleware' => 'guest'], function () {
+    Route::get('/login', [AuthController::class, 'showLoginPage'])->name('login');
+    Route::post('/login', [AuthController::class, 'authenticate']);
 });
 
-Route::get('/patient', [PatientController::class, 'index'])->name('patien.index');
-Route::get('/patient/add', [PatientController::class, 'add']);
-Route::post('/patient/store', [PatientController::class, 'store']);
-Route::post('/patient/delete', [PatientController::class, 'destroy']);
-Route::get('/patient/getTensionHistory', [PatientController::class, 'getTensionHistory']);
-Route::get('/patient/{id}', [PatientController::class, 'show']);
-Route::get('/patient/{id}/edit', [PatientController::class, 'showEditPage']);
-Route::post('/patient/{id}/edit', [PatientController::class, 'save']);
+Route::group(['middleware' => 'auth'], function () {
+    Route::post('/logout', [AuthController::class, 'logout']);
 
-Route::get('/consultation', [ConsultationController::class, 'index']);
-Route::get('/consultation/import', [ConsultationController::class, 'showImportPage']);
-Route::post('/consultation/import', [ConsultationController::class, 'storeImportedConsultations']);
+    Route::get('/', function () {
+        return view('dashboard');
+    });
 
-Route::get('/habit/edit', [HabitController::class, 'showEditPage']);
-Route::post('/habit/edit', [HabitController::class, 'store']);
+    Route::get('/patient', [PatientController::class, 'index'])->name('patien.index');
+    Route::get('/patient/add', [PatientController::class, 'add']);
+    Route::post('/patient/store', [PatientController::class, 'store']);
+    Route::post('/patient/delete', [PatientController::class, 'destroy']);
+    Route::get('/patient/getTensionHistory', [PatientController::class, 'getTensionHistory']);
+    Route::get('/patient/{id}', [PatientController::class, 'show']);
+    Route::get('/patient/{id}/edit', [PatientController::class, 'showEditPage']);
+    Route::post('/patient/{id}/edit', [PatientController::class, 'save']);
 
-Route::get('/report', [ReportController::class, 'index']);
+    Route::get('/consultation', [ConsultationController::class, 'index']);
+    Route::get('/consultation/import', [ConsultationController::class, 'showImportPage']);
+    Route::post('/consultation/import', [ConsultationController::class, 'storeImportedConsultations']);
 
-Route::get('/user', [UserController::class, 'index']);
+    Route::get('/habit/edit', [HabitController::class, 'showEditPage']);
+    Route::post('/habit/edit', [HabitController::class, 'store']);
 
-Route::group(['prefix' => 'datatable'], function () {
-    Route::get('patient', [PatientController::class, 'getAjaxDatatable'])->name('datatable.patient');
+    Route::get('/report', [ReportController::class, 'index']);
+
+    Route::get('/user', [UserController::class, 'index']);
+
+    Route::group(['prefix' => 'datatable'], function () {
+        Route::get('patient', [PatientController::class, 'getAjaxDatatable'])->name('datatable.patient');
+    });
 });
