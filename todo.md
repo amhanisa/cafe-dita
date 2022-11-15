@@ -1,7 +1,7 @@
 ## Artifact To Do List
 
 [ ] dashboard view
-[ ] add auth and middleware
+[x] add auth and middleware
 [ ] refactor model method in controller
 [ ] consultation function
 [ ] export report
