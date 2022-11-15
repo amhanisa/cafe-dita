@@ -1,11 +1,11 @@
 ## Artifact To Do List
 
+[ ] hypertension status calculation
 [ ] dashboard view
 [x] add auth and middleware
 [ ] refactor model method in controller
 [ ] consultation function
 [ ] export report
-[ ] hypertension status
 
 ## Document To Do List
 
