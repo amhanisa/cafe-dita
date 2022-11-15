@@ -41,15 +41,15 @@ Route::group(['middleware' => 'auth'], function () {
     Route::post('/patient/{id}/edit', [PatientController::class, 'save']);
 
     Route::get('/consultation', [ConsultationController::class, 'index']);
-    Route::get('/consultation/import', [ConsultationController::class, 'showImportPage']);
-    Route::post('/consultation/import', [ConsultationController::class, 'storeImportedConsultations']);
+    Route::get('/consultation/import', [ConsultationController::class, 'showImportPage'])->middleware('role:admin');;
+    Route::post('/consultation/import', [ConsultationController::class, 'storeImportedConsultations'])->middleware('role:admin');;
 
     Route::get('/habit/edit', [HabitController::class, 'showEditPage']);
     Route::post('/habit/edit', [HabitController::class, 'store']);
 
-    Route::get('/report', [ReportController::class, 'index']);
+    Route::get('/report', [ReportController::class, 'index'])->middleware('role:admin');
 
-    Route::get('/user', [UserController::class, 'index']);
+    Route::get('/user', [UserController::class, 'index'])->middleware('role:admin');
 
     Route::group(['prefix' => 'datatable'], function () {
         Route::get('patient', [PatientController::class, 'getAjaxDatatable'])->name('datatable.patient');
