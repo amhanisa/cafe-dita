@@ -39,8 +39,8 @@
                                         <div class="col-12 col-md-4 col-lg-4 col-xl-3 text-muted font-semibold">Tanggal
                                             Lahir</div>
                                         <div class="col-12 col-md-6 text-black">{{ $patient->birthday }}
-                                            ({{ \Carbon\Carbon::parse($patient->birthday)->age }}
-                                            tahun)</div>
+                                            ({{ \Carbon\Carbon::parse($patient->birthday)->age }} tahun)
+                                        </div>
                                     </div>
                                     <div class="row mb-2">
                                         <div class="col-12 col-md-4 col-lg-4 col-xl-3 text-muted font-semibold">Alamat</div>
@@ -61,10 +61,11 @@
                                 </div>
                                 <div class="col-lg-4">
                                     <div class="mb-3">
-                                        @if ($berobatStatus)
+                                        @if ($treatmentStatus)
                                             <div class="callout callout-info d-flex justify-content-between mb-3">
-                                                <span class="text-sm fw-bold text-uppercase text-muted">Status
-                                                    Berobat</span>
+                                                <span class="text-sm fw-bold text-uppercase text-muted">
+                                                    Status Berobat
+                                                </span>
                                                 <div class="d-flex align-items-center">
                                                     <span class="fw-bold text-uppercase text-end">
                                                         Teratur
@@ -74,11 +75,13 @@
                                             </div>
                                         @else
                                             <div class="callout callout-danger d-flex justify-content-between mb-3">
-                                                <span class="text-sm fw-bold text-uppercase text-muted">Status
-                                                    Berobat</span>
+                                                <span class="text-sm fw-bold text-uppercase text-muted">
+                                                    Status Berobat
+                                                </span>
                                                 <div class="d-flex align-items-center">
-                                                    <span class="fw-bold text-uppercase text-end">Tidak
-                                                        Teratur</span>
+                                                    <span class="fw-bold text-uppercase text-end">
+                                                        Tidak Teratur
+                                                    </span>
                                                     <span class="exclamation-icon ms-2"></span>
                                                 </div>
                                             </div>
@@ -87,8 +90,9 @@
                                     <div class="mb-3">
                                         @if ($hypertensionStatus)
                                             <div class="callout callout-danger d-flex justify-content-between mb-3">
-                                                <span class="text-sm fw-bold text-uppercase text-muted">Status
-                                                    Hipertensi</span>
+                                                <span class="text-sm fw-bold text-uppercase text-muted">
+                                                    Status Hipertensi
+                                                </span>
                                                 <div class="d-flex align-items-center">
                                                     <span class="fw-bold text-uppercase text-end">Tidak Terkendali</span>
                                                     <span class="exclamation-icon ms-2"></span>
@@ -96,8 +100,9 @@
                                             </div>
                                         @else
                                             <div class="callout callout-info d-flex justify-content-between mb-3">
-                                                <span class="text-sm fw-bold text-uppercase text-muted">Status
-                                                    Hipertensi</span>
+                                                <span class="text-sm fw-bold text-uppercase text-muted">
+                                                    Status Hipertensi
+                                                </span>
                                                 <div class="d-flex align-items-center">
                                                     <span class="fw-bold text-uppercase text-end">
                                                         Terkendali

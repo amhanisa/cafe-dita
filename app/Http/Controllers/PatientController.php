@@ -14,7 +14,7 @@ use Yajra\DataTables\Facades\DataTables;
 
 class PatientController extends Controller
 {
-    public function index(Request $request)
+    public function index()
     {
         return view('patient.index');
     }
@@ -27,29 +27,31 @@ class PatientController extends Controller
 
     public function show($id)
     {
-        $year = request('year') ?? Carbon::now()->year;
-
         $data['patient'] = Patient::with('village')->find($id);
 
-        $consultations = Consultation::where('patient_id', $id)->orderBy('date', 'desc')->get();
-        $data['consultations']  = $consultations;
+        $data['consultations'] = Consultation::where('patient_id', $id)
+            ->orderBy('date', 'desc')
+            ->get();
 
-        $averageSystole = $consultations->avg('systole');
-        $averageDiastole = $consultations->avg('diastole');
+        $last3MonthsConsultations = Consultation::where('patient_id', $id)
+            ->whereDate('date', '>', \Carbon\Carbon::now()->subMonths(3))
+            ->orderBy('date', 'asc')
+            ->get();
 
-        if ($averageSystole >= 140 || $averageDiastole >= 90) {
-            $hypertensionStatus = true;
-        } else {
-            $hypertensionStatus = false;
-        }
+        $last12MonthsConsultations = Consultation::where('patient_id', $id)
+            ->whereDate('date', '>', \Carbon\Carbon::now()->subYear())
+            ->orderBy('date', 'asc')
+            ->get();
 
-        $last12Months = Consultation::where('patient_id', $id)->whereDate('date', '>', \Carbon\Carbon::now()->subYear())->orderBy('date', 'asc')->get();
+        $data['hypertensionStatus'] = $this->checkHypertensionStatus($last3MonthsConsultations);
+        $data['treatmentStatus'] = $this->checkTreatmentStatus($last12MonthsConsultations);
 
-        $data['berobatStatus'] = $this->calculate($last12Months);
-        $data['hypertensionStatus'] = $hypertensionStatus;
+        $year = request('year') ?? Carbon::now()->year;
 
         $data['patientHabits'] = Habit::with(['patientHabit' => function ($query) use ($id, $year) {
-            $query->where('patient_id', $id)->where('year', $year)->orderBy('month', 'asc');
+            $query->where('patient_id', $id)
+                ->where('year', $year)
+                ->orderBy('month', 'asc');
         }])->get();
 
         $data['year'] = $year;
@@ -76,33 +78,70 @@ class PatientController extends Controller
         return json_encode($data);
     }
 
-    function calculate($last12Months)
+    // Cara menentukan status hipertensi
+    // Cek data konsultasi 3 bulan terakhir
+    // Jika selama 3 bulan nilainya dibawah batas 140/90
+    // Maka ditetapkan hipertensi terkendali (false)
+    // Jika nilai diatas batas 140/90
+    // Maka ditetapkan hipertensi tidak terkendali (true)
+    function checkHypertensionStatus($last3MonthsConsultations)
     {
-        if (count($last12Months) < 1) {
+        if ($last3MonthsConsultations->count() < 1) {
+            return true;
+        }
+
+        $groupedConsultations = $last3MonthsConsultations->groupBy(function ($item) {
+            return Carbon::createFromFormat('Y-m-d', $item->date)->format('Y-m');
+        });
+
+        if ($groupedConsultations->count() < 3) {
+            return true;
+        }
+
+        foreach ($last3MonthsConsultations as $consultation) {
+            if ($consultation->systole >= 140 || $consultation->diastole >= 90) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    // Cara menentukan status berobat
+    // Cek data konsultasi 12 bulan terakhir
+    // Jika selama 12 bulan ada 3 bulan berobat berturut
+    // Maka ditetapkan berobat teratur (true)
+    // Jika tidak ditetapkan berobat tidak teratur (false)
+    function checkTreatmentStatus($last12MonthsConsultations)
+    {
+        if ($last12MonthsConsultations->count() < 1) {
             return false;
         }
 
-        $firstDate = $last12Months[0]->date;
-        $year = $this->getYear($firstDate);
-        $month = $this->getMonth($firstDate);
-
-        $iteration = 0;
+        $firstDate = $last12MonthsConsultations[0]->date;
+        $firstYear = $this->getYear($firstDate);
 
         $data = [];
-        $lenght = $last12Months->count();
+        $lenght = $last12MonthsConsultations->count();
 
         // Ubah Tanggal Menjadi Bulan Saja Menghilangkan Tahun
         // Agar Bisa Dikalkulasi
+        // 2022-11 -> 11
+        // 2022-12 -> 12
+        // 2023-01 -> 13
+        // 2024-02 -> 14
         for ($i = 0; $i < $lenght; $i++) {
-            $monthData = $this->getMonth($last12Months[$i]->date);
-            $yearData = $this->getYear($last12Months[$i]->date);
+            $consultationMonth = $this->getMonth($last12MonthsConsultations[$i]->date);
+            $consultationYear = $this->getYear($last12MonthsConsultations[$i]->date);
 
-            if ($yearData == $year) {
-                $data[$i] = $monthData;
+            if ($consultationYear == $firstYear) {
+                $data[$i] = $consultationMonth;
             } else {
-                $data[$i] = $monthData + 12;
+                $data[$i] = $consultationMonth + 12;
             }
         }
+
+        $iteration = 0;
 
         // Cek Array Apakah Ada 3 Angka Yang Berurutan
         for ($i = 0; $i < count($data) - 1; $i++) {
@@ -120,12 +159,12 @@ class PatientController extends Controller
         return false;
     }
 
-    public function getMonth($string)
+    function getMonth($string)
     {
         return (int)substr($string, 5, 2);
     }
 
-    public function getYear($string)
+    function getYear($string)
     {
         return (int)substr($string, 0, 4);
     }
