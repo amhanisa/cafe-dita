@@ -2,10 +2,12 @@
 
 namespace App\Http\Controllers;
 
+use App\Exports\ReportExport;
 use App\Models\Patient;
 use App\Models\Village;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
+use Maatwebsite\Excel\Facades\Excel;
 
 class ReportController extends Controller
 {
@@ -137,5 +139,30 @@ class ReportController extends Controller
     function getYear($string)
     {
         return (int)substr($string, 0, 4);
+    }
+
+    public function exportReport(Request $request)
+    {
+        // TODO: Set batas-batas yg memungkinkan dari 4 variabel ini
+        $startDate = $request->get('start_date') ?? '2010-01-01';
+        $endDate = $request->get('end_date') ?? Carbon::now()->format('Y-m-d');
+        $minAge = $request->get('min_age') ?? 0;
+        $maxAge = $request->get('max_age') ?? 100;
+
+        $patients = Patient::getPatientsForReport($startDate, $endDate, $minAge, $maxAge);
+
+        $calculatedPatients = $this->calculatePatientsStatus($patients, $endDate);
+
+        $villages = Village::all();
+
+        $hypertension = $calculatedPatients->groupBy(['village_id', 'hypertension_status', 'sex']);
+        $treatment = $calculatedPatients->groupBy(['village_id', 'treatment_status', 'sex']);
+
+        $villages->map(function ($village, $key) use ($hypertension, $treatment) {
+            $village->hypertension = $hypertension[$village->id];
+            $village->treatment = $treatment[$village->id];
+        });
+
+        return Excel::download(new ReportExport($villages), 'report.xlsx');
     }
 }

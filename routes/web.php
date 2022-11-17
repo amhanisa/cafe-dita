@@ -53,6 +53,7 @@ Route::group(['middleware' => 'auth'], function () {
     Route::post('/habit/edit', [HabitController::class, 'store']);
 
     Route::get('/report', [ReportController::class, 'index'])->middleware('role:admin');
+    Route::get('/report/export', [ReportController::class, 'exportReport'])->middleware('role:admin');
 
     Route::get('/user', [UserController::class, 'index'])->middleware('role:admin');
     Route::get('/user/add', [UserController::class, 'showAddUserPage'])->middleware('role:admin');
