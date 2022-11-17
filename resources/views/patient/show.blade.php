@@ -43,6 +43,17 @@
                                         </div>
                                     </div>
                                     <div class="row mb-2">
+                                        <div class="col-12 col-md-4 col-lg-4 col-xl-3 text-muted font-semibold">Jenis
+                                            Kelamin</div>
+                                        <div class="col-12 col-md-6 text-black">
+                                            @if ($patient->sex == 'L')
+                                                Laki - laki
+                                            @else
+                                                Perempuan
+                                            @endif
+                                        </div>
+                                    </div>
+                                    <div class="row mb-2">
                                         <div class="col-12 col-md-4 col-lg-4 col-xl-3 text-muted font-semibold">Alamat</div>
                                         <div class="col-12 col-md-6 text-black">
                                             {{ $patient->address . ', Desa ' . $patient->village->name }}
@@ -115,10 +126,10 @@
                                     <div class="row justify-content-between mb-3">
                                         <h6 class="text-muted">Action</h6>
                                         <div class="col-6">
-
                                             <a class="btn btn-block btn-secondary"
                                                 href="{{ url('/patient/' . $patient->id . '/edit') }}">
-                                                Edit Pasien</a>
+                                                Edit Pasien
+                                            </a>
                                         </div>
                                         <div class="col-6">
                                             <form id="delete-form" action="{{ url('patient/delete') }}" method="POST">
