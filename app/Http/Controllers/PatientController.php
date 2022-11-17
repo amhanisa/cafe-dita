@@ -254,12 +254,7 @@ class PatientController extends Controller
 
     public function getAjaxDatatable(Request $request)
     {
-        $subConsulation = Consultation::selectRaw('patient_id, AVG(systole) as avg_systole, AVG(diastole) as avg_diastole')
-            ->groupBy('patient_id');
-        $patients = Patient::with('village')
-            ->joinSub($subConsulation, 'sub', function ($join) {
-                $join->on('patients.id', '=', 'sub.patient_id');
-            });
+        $patients = Patient::with('village');
 
         return datatables()::of($patients)
             ->addIndexColumn()
@@ -268,28 +263,33 @@ class PatientController extends Controller
             })
             ->addColumn('status', function ($data) {
                 $status = array();
-                if ($data->avg_systole >= 140 && $data->avg_diastole >= 90) {
-                    // $html = 'S: ' . $averageSystole . '- D:' . $averageDiastole . 'Tidak Terkendali';
+
+                $last3MonthsConsultations = Consultation::where('patient_id', $data->id)
+                    ->whereDate('date', '>', \Carbon\Carbon::now()->subMonths(3))
+                    ->orderBy('date', 'asc')
+                    ->get();
+
+                $last12MonthsConsultations = Consultation::where('patient_id', $data->id)
+                    ->whereDate('date', '>', \Carbon\Carbon::now()->subYear())
+                    ->orderBy('date', 'asc')
+                    ->get();
+
+                $hypertensionStatus = $this->checkHypertensionStatus($last3MonthsConsultations);
+                $treatmentStatus = $this->checkTreatmentStatus($last12MonthsConsultations);
+
+                if ($hypertensionStatus) {
                     $html = "<span class='badge bg-danger'>Tidak Terkendali</span>";
                     array_push($status, $html);
                 } else {
-                    // $html = 'S: ' . $averageSystole . '- D:' . $averageDiastole . 'Terkendali';
                     $html = "<span class='badge bg-success'>Terkendali</span>";
                     array_push($status, $html);
                 }
 
-                $last12Months = Consultation::where('patient_id', $data->id)->whereDate('date', '>', \Carbon\Carbon::now()->subYear())->orderBy('date', 'asc')->get();
-
-                if (count($last12Months) > 0) {
-                    if ($this->calculate($last12Months)) {
-                        $html = "<span class='badge bg-success'>Teratur</span>";
-                        array_push($status, $html);
-                    } else {
-                        $html = "<span class='badge bg-danger'>Tidak Teratur</span>";
-                        array_push($status, $html);
-                    }
+                if ($treatmentStatus) {
+                    $html = "<span class='badge bg-success'>Teratur</span>";
+                    array_push($status, $html);
                 } else {
-                    $html = "<span class='badge bg-danger'>Belum Berobat</span>";
+                    $html = "<span class='badge bg-danger'>Tidak Teratur</span>";
                     array_push($status, $html);
                 }
 
