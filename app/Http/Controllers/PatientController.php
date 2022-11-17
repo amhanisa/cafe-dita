@@ -48,7 +48,7 @@ class PatientController extends Controller
 
         $year = request('year') ?? Carbon::now()->year;
 
-        $data['patientHabits'] = Habit::with(['patientHabit' => function ($query) use ($id, $year) {
+        $data['patientHabits'] = Habit::with(['patientHabits' => function ($query) use ($id, $year) {
             $query->where('patient_id', $id)
                 ->where('year', $year)
                 ->orderBy('month', 'asc');

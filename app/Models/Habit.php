@@ -9,7 +9,7 @@ class Habit extends Model
     protected $table = 'habits';
     public $timestamps = false;
 
-    public function patientHabit()
+    public function patientHabits()
     {
         return $this->hasMany(PatientHabit::class);
     }

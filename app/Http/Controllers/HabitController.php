@@ -17,7 +17,7 @@ class HabitController extends Controller
         $month = $request->query('month');
 
         $data['patient'] = Patient::find($patientId);
-        $data['habits'] =  Habit::with(['patientHabit' => function ($query) use ($patientId, $year, $month) {
+        $data['habits'] =  Habit::with(['patientHabits' => function ($query) use ($patientId, $year, $month) {
             $query->where('patient_id', $patientId)->where('year', $year)->where('month', $month);
         }])->get();
         $data['year'] = $year;
