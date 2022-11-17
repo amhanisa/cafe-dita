@@ -5,7 +5,7 @@
 [x] add auth and middleware
 [ ] refactor model method in controller
 [x] consultation function
-[ ] export report
+[x] export report
 [x] user
 
 ## Document To Do List
