@@ -344,13 +344,13 @@
                                             <td>{{ $habit->name }}</td>
                                             @php($counter = 0)
                                             @for ($i = 0; $i < 12; $i++)
-                                                @isset($habit->patientHabit[$counter])
-                                                    @if ($habit->patientHabit[$counter]->month == $i + 1)
+                                                @isset($habit->patientHabits[$counter])
+                                                    @if ($habit->patientHabits[$counter]->month == $i + 1)
                                                         @for ($j = 1; $j <= 4; $j++)
-                                                            @if (is_null($habit->patientHabit[$counter]->{"week$j"}))
+                                                            @if (is_null($habit->patientHabits[$counter]->{"week$j"}))
                                                                 <td class="p-0">
                                                                 </td>
-                                                            @elseif ($habit->patientHabit[$counter]->{"week$j"} == true)
+                                                            @elseif ($habit->patientHabits[$counter]->{"week$j"} == true)
                                                                 <td class="p-0">
                                                                     <div class="true-icon"></div>
                                                                 </td>

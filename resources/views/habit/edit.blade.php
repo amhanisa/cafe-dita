@@ -62,8 +62,8 @@
                                                         <tbody>
                                                             <tr>
                                                                 @for ($i = 1; $i <= 4; $i++)
-                                                                    @isset($habit->patientHabit[0])
-                                                                        @if (is_null($habit->patientHabit[0]->{"week$i"}))
+                                                                    @isset($habit->patientHabits[0])
+                                                                        @if (is_null($habit->patientHabits[0]->{"week$i"}))
                                                                             <td>
                                                                                 <div class="form-check">
                                                                                     <input class="form-check-input"
@@ -82,7 +82,7 @@
                                                                                     </label>
                                                                                 </div>
                                                                             </td>
-                                                                        @elseif($habit->patientHabit[0]->{"week$i"} == true)
+                                                                        @elseif($habit->patientHabits[0]->{"week$i"} == true)
                                                                             <td>
                                                                                 <div class="form-check">
                                                                                     <input class="form-check-input"
