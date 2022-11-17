@@ -179,7 +179,12 @@
                                                 <td>{{ $consultation->systole . '/' . $consultation->diastole }}</td>
                                                 <td>{{ $consultation->medicine }}</td>
                                                 <td>{{ $consultation->note }}</td>
-                                                <td>Edit</td>
+                                                <td>
+                                                    <a class="btn btn-secondary"
+                                                        href="{{ '/consultation/' . $consultation->id . '/edit' }}">
+                                                        Edit
+                                                    </a>
+                                                </td>
                                             </tr>
                                         @endforeach
                                     </tbody>
