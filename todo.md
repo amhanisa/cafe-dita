@@ -1,6 +1,6 @@
 ## Artifact To Do List
 
-[ ] hypertension status calculation
+[x] hypertension status calculation
 [ ] dashboard view
 [x] add auth and middleware
 [ ] refactor model method in controller
