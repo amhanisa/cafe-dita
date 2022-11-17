@@ -18,7 +18,7 @@ class Patient extends Model
         return $this->belongsTo(Village::class);
     }
 
-    public function consultation()
+    public function consultations()
     {
         return $this->hasMany(Consultation::class);
     }
@@ -54,7 +54,7 @@ class Patient extends Model
 
         $patientsId = array_column($patientList, 'id');
 
-        return (new static)::with(['consultation' => function ($query) use ($endDate) {
+        return (new static)::with(['consultations' => function ($query) use ($endDate) {
             $query->whereBetween('date', [Carbon::parse($endDate)->subYear(), $endDate])->orderBy('date', 'asc');
         }])->whereIn('id', $patientsId)->get();
     }
