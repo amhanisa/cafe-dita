@@ -4,7 +4,7 @@
 [ ] dashboard view
 [x] add auth and middleware
 [ ] refactor model method in controller
-[ ] consultation function
+[x] consultation function
 [ ] export report
 
 ## Document To Do List
