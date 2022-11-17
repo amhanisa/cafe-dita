@@ -6,6 +6,7 @@
 [ ] refactor model method in controller
 [x] consultation function
 [ ] export report
+[x] user
 
 ## Document To Do List
 

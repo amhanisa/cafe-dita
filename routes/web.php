@@ -55,6 +55,11 @@ Route::group(['middleware' => 'auth'], function () {
     Route::get('/report', [ReportController::class, 'index'])->middleware('role:admin');
 
     Route::get('/user', [UserController::class, 'index'])->middleware('role:admin');
+    Route::get('/user/add', [UserController::class, 'showAddUserPage'])->middleware('role:admin');
+    Route::post('/user/store', [UserController::class, 'storeUser'])->middleware('role:admin');
+    Route::post('/user/delete', [UserController::class, 'destroyUser'])->middleware('role:admin');
+    Route::get('/user/{id}/edit', [UserController::class, 'showEditUserPage'])->middleware('role:admin');
+    Route::post('/user/{id}/update', [UserController::class, 'updateUser'])->middleware('role:admin');
 
     Route::group(['prefix' => 'datatable'], function () {
         Route::get('patient', [PatientController::class, 'getAjaxDatatable'])->name('datatable.patient');
