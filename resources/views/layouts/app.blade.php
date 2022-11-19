@@ -11,10 +11,10 @@
     @vite('resources/scss/app.scss')
     @vite('resources/scss/themes/dark/app-dark.scss')
     @stack('style-after')
-    @include('sweetalert::alert', ['cdn' => 'https://cdn.jsdelivr.net/npm/sweetalert2@11'])
 </head>
 
 <body>
+    @include('sweetalert::alert', ['cdn' => 'https://cdn.jsdelivr.net/npm/sweetalert2@11'])
     <div id="app">
         <div class="active" id="sidebar">@include('layouts.sidebar')</div>
         <div id="main">
