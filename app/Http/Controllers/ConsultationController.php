@@ -14,20 +14,6 @@ class ConsultationController extends Controller
     public function showListConsultationPage(Request $request)
     {
         if ($request->ajax()) {
-            $consultations = Consultation::with('patient')
-                ->orderBy('date', 'desc');
-
-            return DataTables::of($consultations)
-                ->addIndexColumn()
-                ->addColumn('bloodtension', function ($row) {
-                    return $row->systole . '/' . $row->diastole;
-                })
-                ->addColumn('action', function ($row) {
-                    $html = "<a href='patient/$row->patient_id' class='btn btn-xs btn-secondary'>View</a> ";
-                    return $html;
-                })
-                ->rawColumns(['action'])
-                ->toJson();
         }
 
         return view('consultation.index');
@@ -106,5 +92,23 @@ class ConsultationController extends Controller
         $consultation->delete();
 
         return redirect("patient/" . $consultation->patient_id)->with('toast_success', 'Data konsultasi berhasil dihapus');
+    }
+
+    public function getAjaxDatatable()
+    {
+        $consultations = Consultation::with('patient')
+            ->orderBy('date', 'desc');
+
+        return DataTables::of($consultations)
+            ->addIndexColumn()
+            ->addColumn('bloodtension', function ($row) {
+                return $row->systole . '/' . $row->diastole;
+            })
+            ->addColumn('action', function ($row) {
+                $html = "<a href='patient/$row->patient_id' class='btn btn-xs btn-secondary'>View</a> ";
+                return $html;
+            })
+            ->rawColumns(['action'])
+            ->toJson();
     }
 }

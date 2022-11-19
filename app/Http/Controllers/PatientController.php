@@ -256,7 +256,7 @@ class PatientController extends Controller
     {
         $patients = Patient::with('village');
 
-        return datatables()::of($patients)
+        return DataTables::of($patients)
             ->addIndexColumn()
             ->editColumn('birthday', function (Patient $patient) {
                 return Carbon::parse($patient->birthday)->age;

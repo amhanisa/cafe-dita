@@ -2,7 +2,6 @@
 
 @push('style-before')
     <link href="https://cdn.datatables.net/1.12.1/css/dataTables.bootstrap5.min.css" rel="stylesheet">
-    <link href="https://cdn.datatables.net/responsive/2.3.0/css/responsive.dataTables.min.css" rel="stylesheet">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/apexcharts/3.36.0/apexcharts.min.css" rel="stylesheet">
 @endpush
 
@@ -171,7 +170,7 @@
                                     Konsultasi</a>
                             </div>
                             <div class="table-responsive">
-                                <table class="table" id="consultations-table">
+                                <table class="table" id="consultations-table" width="100%">
                                     <thead>
                                         <th>Tanggal Konsultasi</th>
                                         <th>Tensi Darah
@@ -395,12 +394,12 @@
 @push('script')
     <script src="https://cdn.datatables.net/1.12.1/js/jquery.dataTables.min.js"></script>
     <script src="https://cdn.datatables.net/1.12.1/js/dataTables.bootstrap5.min.js"></script>
-    <script src="https://cdn.datatables.net/responsive/2.3.0/js/dataTables.responsive.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/apexcharts/3.36.0/apexcharts.min.js"></script>
 
     <script>
         $(document).ready(function() {
             $('#consultations-table').DataTable({
+                scrollX: true,
                 order: [
                     [0, 'desc']
                 ],

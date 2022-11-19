@@ -2,7 +2,6 @@
 
 @push('style-before')
     <link href="https://cdn.datatables.net/1.12.1/css/dataTables.bootstrap5.min.css" rel="stylesheet">
-    <link href="https://cdn.datatables.net/responsive/2.3.0/css/responsive.dataTables.min.css" rel="stylesheet">
 @endpush
 
 @section('content')
@@ -18,25 +17,23 @@
                             <div class="mb-3">
                                 <a class="btn btn-primary" href="{{ url('consultation/import') }}">Impor Data Konsultasi</a>
                             </div>
-                            <table class="table" id="consultations-table">
-                                <thead>
-                                    <th>No</th>
-                                    <th>Tanggal Konsultasi</th>
-                                    <th>Nama Pasien</th>
-                                    <th>Tensi Darah <br>
-                                        <span class="small fw-lighter">
-                                            (mmHg)
-                                        </span>
-                                    </th>
-                                    <th>Obat</th>
-                                    <th>Keterangan </th>
-                                    <th>Action</th>
-                                </thead>
-                                <tbody>
-
-                                </tbody>
-                            </table>
-
+                            <div class="table-responsive">
+                                <table class="table" id="consultations-table" width="100%">
+                                    <thead>
+                                        <th>No</th>
+                                        <th>Tanggal Konsultasi</th>
+                                        <th>Nama Pasien</th>
+                                        <th>Tensi Darah <br>
+                                            <span class="small fw-lighter">
+                                                (mmHg)
+                                            </span>
+                                        </th>
+                                        <th>Obat</th>
+                                        <th>Keterangan </th>
+                                        <th>Action</th>
+                                    </thead>
+                                </table>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -46,10 +43,8 @@
 @endsection
 
 @push('script')
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.1/jquery.min.js"></script>
     <script src="https://cdn.datatables.net/1.12.1/js/jquery.dataTables.min.js"></script>
     <script src="https://cdn.datatables.net/1.12.1/js/dataTables.bootstrap5.min.js"></script>
-    <script src="https://cdn.datatables.net/responsive/2.3.0/js/dataTables.responsive.min.js"></script>
 
     <script>
         $(document).ready(function() {
@@ -57,8 +52,8 @@
                 serverSide: true,
                 processing: true,
                 responsive: true,
-                ajax: 'consultation',
-                dataSrc: 'data',
+                scrollX: true,
+                ajax: "{{ route('datatable.consultation') }}",
                 columns: [{
                     data: 'DT_RowIndex',
                     orderable: false,

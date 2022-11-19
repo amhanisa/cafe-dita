@@ -65,5 +65,6 @@ Route::group(['middleware' => 'auth'], function () {
 
     Route::group(['prefix' => 'datatable'], function () {
         Route::get('patient', [PatientController::class, 'getAjaxDatatable'])->name('datatable.patient');
+        Route::get('consultation', [ConsultationController::class, 'getAjaxDatatable'])->name('datatable.consultation');
     });
 });

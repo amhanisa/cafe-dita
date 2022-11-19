@@ -1,5 +1,9 @@
 @extends('layouts.app')
 
+@push('style-before')
+    <link href="https://cdn.datatables.net/1.12.1/css/dataTables.bootstrap5.min.css" rel="stylesheet">
+@endpush
+
 @section('content')
     <div class="page-heading">
         <h3>Petugas</h3>
@@ -15,7 +19,7 @@
                                     Petugas</a>
                             </div>
                             <div class="table-responsive">
-                                <table class="table" id="users-table">
+                                <table class="table" id="users-table" width="100%">
                                     <thead>
                                         <th>No</th>
                                         <th>Nama</th>
@@ -59,8 +63,15 @@
 @endsection
 
 @push('script')
+    <script src="https://cdn.datatables.net/1.12.1/js/jquery.dataTables.min.js"></script>
+    <script src="https://cdn.datatables.net/1.12.1/js/dataTables.bootstrap5.min.js"></script>
+
     <script>
         $(document).ready(function() {
+            $('#users-table').DataTable({
+                scrollX: true
+            });
+
             $('.delete-user').click(function() {
                 let user_id = $(this).data('id');
                 Swal.fire({
