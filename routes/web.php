@@ -25,11 +25,8 @@ Route::group(['middleware' => 'guest'], function () {
 });
 
 Route::group(['middleware' => 'auth'], function () {
+    Route::get('/', [AuthController::class, 'showDashboard']);
     Route::post('/logout', [AuthController::class, 'logout']);
-
-    Route::get('/', function () {
-        return view('dashboard');
-    });
 
     Route::get('/patient', [PatientController::class, 'showListPatientPage']);
     Route::get('/patient/add', [PatientController::class, 'showAddPatientPage']);
