@@ -11,6 +11,7 @@
     @vite('resources/scss/app.scss')
     @vite('resources/scss/themes/dark/app-dark.scss')
     @stack('style-after')
+    @include('sweetalert::alert', ['cdn' => 'https://cdn.jsdelivr.net/npm/sweetalert2@11'])
 </head>
 
 <body>

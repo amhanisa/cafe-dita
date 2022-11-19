@@ -1,9 +1,5 @@
 @extends('layouts.app')
 
-@push('style-before')
-    <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-@endpush
-
 @section('content')
     <div class="page-heading">
         <h3>Petugas</h3>
