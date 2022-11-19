@@ -11,7 +11,7 @@ use Yajra\DataTables\Facades\DataTables;
 
 class ConsultationController extends Controller
 {
-    public function index(Request $request)
+    public function showListConsultationPage(Request $request)
     {
         if ($request->ajax()) {
             $consultations = Consultation::with('patient')

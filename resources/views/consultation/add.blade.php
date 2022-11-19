@@ -15,7 +15,7 @@
                     </div>
                     <div class="card-content">
                         <div class="card-body">
-                            <form class="form form-horizontal" action="{{ '/consultation/' . $patient->id . '/add' }}"
+                            <form class="form form-horizontal" action="{{ '/consultation/' . $patient->id . '/store' }}"
                                 method="post">
                                 @csrf
                                 <input name="patient_id" type="hidden" value="{{ $patient->id }}">

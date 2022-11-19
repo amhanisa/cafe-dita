@@ -40,14 +40,14 @@ Route::group(['middleware' => 'auth'], function () {
     Route::get('/patient/{id}/edit', [PatientController::class, 'showEditPage']);
     Route::post('/patient/{id}/update', [PatientController::class, 'updatePatient']);
 
-    Route::get('/consultation', [ConsultationController::class, 'index']);
+    Route::get('/consultation', [ConsultationController::class, 'showListConsultationPage']);
     Route::get('/consultation/import', [ConsultationController::class, 'showImportPage'])->middleware('role:admin');
     Route::post('/consultation/import', [ConsultationController::class, 'storeImportedConsultations'])->middleware('role:admin');
 
     Route::get('/consultation/{id}/add', [ConsultationController::class, 'showAddConsultationPage']);
-    Route::post('/consultation/{id}/add', [ConsultationController::class, 'storeConsultation']);
+    Route::post('/consultation/{id}/store', [ConsultationController::class, 'storeConsultation']);
     Route::get('/consultation/{id}/edit', [ConsultationController::class, 'showEditConsultationPage']);
-    Route::post('/consultation/{id}/edit', [ConsultationController::class, 'updateConsultation']);
+    Route::post('/consultation/{id}/update', [ConsultationController::class, 'updateConsultation']);
 
     Route::get('/habit/edit', [PatientHabitController::class, 'showEditPage']);
     Route::post('/habit/edit', [PatientHabitController::class, 'store']);
