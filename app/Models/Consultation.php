@@ -16,9 +16,9 @@ class Consultation extends Model
         return $this->belongsTo(Patient::class);
     }
 
-    public static function getPatientConsultations($patient_id, $orderBy = 'desc', $limitMonths = null)
+    public static function getPatientConsultations($patientId, $orderBy = 'desc', $limitMonths = null)
     {
-        return Consultation::where('patient_id', $patient_id)
+        return Consultation::where('patient_id', $patientId)
             ->when($limitMonths, function ($query) use ($limitMonths) {
                 $query->whereDate('date', '>', \Carbon\Carbon::now()->subMonths($limitMonths));
             })
@@ -26,8 +26,8 @@ class Consultation extends Model
             ->get();
     }
 
-    public static function getConsultationWithPatient($consultation_id)
+    public static function getConsultationWithPatient($consultationId)
     {
-        return Consultation::with('patient')->find($consultation_id);
+        return Consultation::with('patient')->find($consultationId);
     }
 }

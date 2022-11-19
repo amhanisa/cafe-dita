@@ -22,7 +22,7 @@ class Habit extends Model
         }])->get();
     }
 
-    public static function getPatientHabitsMonth($patientId, $year, $month)
+    public static function getPatientHabitsByMonth($patientId, $year, $month)
     {
         return Habit::with(['patientHabits' => function ($query) use ($patientId, $year, $month) {
             $query->where('patient_id', $patientId)->where('year', $year)->where('month', $month);
