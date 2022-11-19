@@ -15,4 +15,19 @@ class Consultation extends Model
     {
         return $this->belongsTo(Patient::class);
     }
+
+    public static function getPatientConsultations($patient_id, $orderBy = 'desc', $limitMonths = null)
+    {
+        return Consultation::where('patient_id', $patient_id)
+            ->when($limitMonths, function ($query) use ($limitMonths) {
+                $query->whereDate('date', '>', \Carbon\Carbon::now()->subMonths($limitMonths));
+            })
+            ->orderBy('date', $orderBy)
+            ->get();
+    }
+
+    public static function getConsultationWithPatient($consultation_id)
+    {
+        return Consultation::with('patient')->find($consultation_id);
+    }
 }

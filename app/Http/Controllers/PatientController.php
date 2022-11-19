@@ -29,39 +29,25 @@ class PatientController extends Controller
     {
         $data['patient'] = Patient::with('village')->find($id);
 
-        $data['consultations'] = Consultation::where('patient_id', $id)
-            ->orderBy('date', 'desc')
-            ->get();
+        $data['consultations'] = Consultation::getPatientConsultations($id);
 
-        $last3MonthsConsultations = Consultation::where('patient_id', $id)
-            ->whereDate('date', '>', \Carbon\Carbon::now()->subMonths(3))
-            ->orderBy('date', 'asc')
-            ->get();
+        $last3MonthsConsultations = Consultation::getPatientConsultations($id, 'asc', 3);
 
-        $last12MonthsConsultations = Consultation::where('patient_id', $id)
-            ->whereDate('date', '>', \Carbon\Carbon::now()->subYear())
-            ->orderBy('date', 'asc')
-            ->get();
+        $last12MonthsConsultations = Consultation::getPatientConsultations($id, 'asc', 12);
 
         $data['hypertensionStatus'] = $this->checkHypertensionStatus($last3MonthsConsultations);
         $data['treatmentStatus'] = $this->checkTreatmentStatus($last12MonthsConsultations);
 
-        $year = request('year') ?? Carbon::now()->year;
+        $data['year'] = request('year') ?? Carbon::now()->year;
 
-        $data['patientHabits'] = Habit::with(['patientHabits' => function ($query) use ($id, $year) {
-            $query->where('patient_id', $id)
-                ->where('year', $year)
-                ->orderBy('month', 'asc');
-        }])->get();
-
-        $data['year'] = $year;
+        $data['patientHabits'] = Habit::getPatientHabits($id, $data['year']);
 
         return view('patient.show', $data);
     }
 
     function getAjaxTensionHistory(Request $request)
     {
-        $consultations = Consultation::where('patient_id', $request->patientId)->orderBy('date', 'asc')->get();
+        $consultations = Consultation::getPatientConsultations($request->patientId, 'asc');
 
         $systole = [];
         $diastole = [];
@@ -264,15 +250,9 @@ class PatientController extends Controller
             ->addColumn('status', function ($data) {
                 $status = array();
 
-                $last3MonthsConsultations = Consultation::where('patient_id', $data->id)
-                    ->whereDate('date', '>', \Carbon\Carbon::now()->subMonths(3))
-                    ->orderBy('date', 'asc')
-                    ->get();
+                $last3MonthsConsultations = Consultation::getPatientConsultations($data->id, 'asc', 3);
 
-                $last12MonthsConsultations = Consultation::where('patient_id', $data->id)
-                    ->whereDate('date', '>', \Carbon\Carbon::now()->subYear())
-                    ->orderBy('date', 'asc')
-                    ->get();
+                $last12MonthsConsultations = Consultation::getPatientConsultations($data->id, 'asc', 12);
 
                 $hypertensionStatus = $this->checkHypertensionStatus($last3MonthsConsultations);
                 $treatmentStatus = $this->checkTreatmentStatus($last12MonthsConsultations);

@@ -17,9 +17,7 @@ class PatientHabitController extends Controller
         $month = $request->query('month');
 
         $data['patient'] = Patient::find($patientId);
-        $data['habits'] =  Habit::with(['patientHabits' => function ($query) use ($patientId, $year, $month) {
-            $query->where('patient_id', $patientId)->where('year', $year)->where('month', $month);
-        }])->get();
+        $data['habits'] =  Habit::getPatientHabitsMonth($patientId, $year, $month);
         $data['year'] = $year;
         $data['month'] = $month;
         $data['monthName'] = date("F", mktime(0, 0, 0, $month, 10));;
