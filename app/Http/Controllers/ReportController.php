@@ -38,7 +38,7 @@ class ReportController extends Controller
         return view('report.index', $data);
     }
 
-    public function calculatePatientsStatus($patients, $endDate)
+    function calculatePatientsStatus($patients, $endDate)
     {
         foreach ($patients as $patient) {
             $last3MonthsConsultations = $patient->consultations->whereBetween('date', [Carbon::parse($endDate)->subMonths(3), $endDate]);

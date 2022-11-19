@@ -59,7 +59,7 @@ class PatientController extends Controller
         return view('patient.show', $data);
     }
 
-    function getTensionHistory(Request $request)
+    function getAjaxTensionHistory(Request $request)
     {
         $consultations = Consultation::where('patient_id', $request->patientId)->orderBy('date', 'asc')->get();
 

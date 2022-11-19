@@ -22,6 +22,7 @@
                             <form class="form form-horizontal" action="{{ '/user/' . $user->id . '/update' }}"
                                 method="post">
                                 @csrf
+                                <input name="id" type="hidden" value="{{ $user->id }}">
                                 <div class="form-body">
                                     <div class="row mb-3">
                                         <label class="col-md-4 col-lg-2 col-form-label">Nama Lengkap</label>

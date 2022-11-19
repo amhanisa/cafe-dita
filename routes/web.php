@@ -35,7 +35,7 @@ Route::group(['middleware' => 'auth'], function () {
     Route::get('/patient/add', [PatientController::class, 'showAddPatientPage']);
     Route::post('/patient/store', [PatientController::class, 'storePatient']);
     Route::post('/patient/delete', [PatientController::class, 'destroyPatient']);
-    Route::get('/patient/getTensionHistory', [PatientController::class, 'getTensionHistory']);
+    Route::get('/patient/getTensionHistory', [PatientController::class, 'getAjaxTensionHistory']);
     Route::get('/patient/{id}', [PatientController::class, 'showDetailPatientPage']);
     Route::get('/patient/{id}/edit', [PatientController::class, 'showEditPage']);
     Route::post('/patient/{id}/update', [PatientController::class, 'updatePatient']);
@@ -56,7 +56,7 @@ Route::group(['middleware' => 'auth'], function () {
     Route::get('/report', [ReportController::class, 'showReportPage'])->middleware('role:admin');
     Route::get('/report/export', [ReportController::class, 'exportReport'])->middleware('role:admin');
 
-    Route::get('/user', [UserController::class, 'index'])->middleware('role:admin');
+    Route::get('/user', [UserController::class, 'showListUserPage'])->middleware('role:admin');
     Route::get('/user/add', [UserController::class, 'showAddUserPage'])->middleware('role:admin');
     Route::post('/user/store', [UserController::class, 'storeUser'])->middleware('role:admin');
     Route::post('/user/delete', [UserController::class, 'destroyUser'])->middleware('role:admin');

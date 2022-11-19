@@ -8,7 +8,7 @@ use Illuminate\Http\Request;
 
 class UserController extends Controller
 {
-    public function index()
+    public function showListUserPage()
     {
         $data['users'] = User::with('role')->get();
 
@@ -49,16 +49,16 @@ class UserController extends Controller
         return view('user.edit', $data);
     }
 
-    public function updateUser(Request $request, $user_id)
+    public function updateUser(Request $request)
     {
         $request->validate([
-            'username' => 'required|unique:users,username,' . $user_id,
+            'username' => 'required|unique:users,username,' . $request->id,
             'name' => 'required',
             'password' => 'confirmed',
             'role_id' => 'required',
         ]);
 
-        $user = User::find($user_id);
+        $user = User::find($request->id);
         $user->username = $request->username;
         $user->name = $request->name;
         if ($request->password) {
