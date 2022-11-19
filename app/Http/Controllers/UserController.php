@@ -38,7 +38,7 @@ class UserController extends Controller
         $user->role_id = $request->role_id;
         $user->save();
 
-        return redirect('/user');
+        return redirect('/user')->with('toast_success', 'Data petugas berhasil ditambah');
     }
 
     public function showEditUserPage($user_id)
@@ -67,13 +67,13 @@ class UserController extends Controller
         $user->role_id = $request->role_id;
         $user->save();
 
-        return redirect('/user');
+        return redirect('/user')->with('toast_success', 'Data petugas berhasil diubah');
     }
 
     public function destroyUser(Request $request)
     {
         User::destroy($request->id);
 
-        return redirect('/user');
+        return redirect('/user')->with('toast_success', 'Data petugas berhasil dihapus');
     }
 }

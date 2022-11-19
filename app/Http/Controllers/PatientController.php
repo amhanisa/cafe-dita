@@ -198,7 +198,7 @@ class PatientController extends Controller
 
         $patient->save();
 
-        return redirect('/patient');
+        return redirect('/patient')->with('toast_success', 'Data pasien berhasil ditambah');
     }
 
     public function showEditPage($id)
@@ -238,7 +238,7 @@ class PatientController extends Controller
 
         $patient->save();
 
-        return redirect("/patient/$request->id");
+        return redirect("/patient/$request->id")->with('toast_success', 'Data pasien berhasil diubah');
     }
 
     public function destroyPatient(Request $request)
@@ -249,7 +249,7 @@ class PatientController extends Controller
 
         $patient->delete();
 
-        return redirect('patient');
+        return redirect('patient')->with('toast_success', 'Data pasien berhasil dihapus');
     }
 
     public function getAjaxDatatable(Request $request)

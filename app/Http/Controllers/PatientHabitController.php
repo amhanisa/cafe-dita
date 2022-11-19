@@ -49,6 +49,7 @@ class PatientHabitController extends Controller
             );
         }
 
-        return redirect('patient/' . $request->patient_id . '?year=' . $request->year);
+        return redirect('patient/' . $request->patient_id . '?year=' . $request->year)
+            ->with('toast_success', 'Data kebiasaan pasien berhasil disimpan');
     }
 }

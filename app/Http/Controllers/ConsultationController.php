@@ -43,7 +43,7 @@ class ConsultationController extends Controller
         // dd($request->file('import_file'));
         Excel::import(new ConsultationsImport(), $request->file('import_file'));
 
-        return redirect('consultation')->with('toast_success', 'Data konsultasi berhasil diimpor');;
+        return redirect('consultation')->with('toast_success', 'Data konsultasi berhasil diimpor');
     }
 
     public function showAddConsultationPage($patient_id)
@@ -70,7 +70,7 @@ class ConsultationController extends Controller
         $consultation->note = $request->note;
         $consultation->save();
 
-        return redirect("/patient/" . $request->patient_id)->with('toast_success', 'Data konsultasi berhasil ditambah');;
+        return redirect("/patient/" . $request->patient_id)->with('toast_success', 'Data konsultasi berhasil ditambah');
     }
 
     public function showEditConsultationPage($consultation_id)
@@ -96,7 +96,7 @@ class ConsultationController extends Controller
         $consultation->note = $request->note;
         $consultation->save();
 
-        return redirect("/patient/" . $consultation->patient_id)->with('toast_success', 'Data konsultasi berhasil diubah');;
+        return redirect("/patient/" . $consultation->patient_id)->with('toast_success', 'Data konsultasi berhasil diubah');
     }
 
     public function destroyConsultation(Request $request)
