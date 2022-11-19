@@ -13,9 +13,6 @@ class ConsultationController extends Controller
 {
     public function showListConsultationPage(Request $request)
     {
-        if ($request->ajax()) {
-        }
-
         return view('consultation.index');
     }
 
@@ -26,7 +23,6 @@ class ConsultationController extends Controller
 
     public function storeImportedConsultations(Request $request)
     {
-        // dd($request->file('import_file'));
         Excel::import(new ConsultationsImport(), $request->file('import_file'));
 
         return redirect('consultation')->with('toast_success', 'Data konsultasi berhasil diimpor');
