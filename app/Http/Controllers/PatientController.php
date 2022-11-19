@@ -14,18 +14,18 @@ use Yajra\DataTables\Facades\DataTables;
 
 class PatientController extends Controller
 {
-    public function index()
+    public function showListPatientPage()
     {
         return view('patient.index');
     }
 
-    public function add()
+    public function showAddPatientPage()
     {
         $data['villages'] = Village::all();
         return view('patient.add', $data);
     }
 
-    public function show($id)
+    public function showDetailPatientPage($id)
     {
         $data['patient'] = Patient::with('village')->find($id);
 
@@ -169,7 +169,7 @@ class PatientController extends Controller
         return (int)substr($string, 0, 4);
     }
 
-    public function store(Request $request)
+    public function storePatient(Request $request)
     {
 
         $validated = $request->validate([
@@ -209,7 +209,7 @@ class PatientController extends Controller
         return view('patient.edit', $data);
     }
 
-    public function save(Request $request)
+    public function updatePatient(Request $request)
     {
 
         $validated = $request->validate([
@@ -241,7 +241,7 @@ class PatientController extends Controller
         return redirect("/patient/$request->id");
     }
 
-    public function destroy(Request $request)
+    public function destroyPatient(Request $request)
     {
         $patientId = $request->id;
 

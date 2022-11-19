@@ -31,14 +31,14 @@ Route::group(['middleware' => 'auth'], function () {
         return view('dashboard');
     });
 
-    Route::get('/patient', [PatientController::class, 'index'])->name('patien.index');
-    Route::get('/patient/add', [PatientController::class, 'add']);
-    Route::post('/patient/store', [PatientController::class, 'store']);
-    Route::post('/patient/delete', [PatientController::class, 'destroy']);
+    Route::get('/patient', [PatientController::class, 'showListPatientPage']);
+    Route::get('/patient/add', [PatientController::class, 'showAddPatientPage']);
+    Route::post('/patient/store', [PatientController::class, 'storePatient']);
+    Route::post('/patient/delete', [PatientController::class, 'destroyPatient']);
     Route::get('/patient/getTensionHistory', [PatientController::class, 'getTensionHistory']);
-    Route::get('/patient/{id}', [PatientController::class, 'show']);
+    Route::get('/patient/{id}', [PatientController::class, 'showDetailPatientPage']);
     Route::get('/patient/{id}/edit', [PatientController::class, 'showEditPage']);
-    Route::post('/patient/{id}/edit', [PatientController::class, 'save']);
+    Route::post('/patient/{id}/update', [PatientController::class, 'updatePatient']);
 
     Route::get('/consultation', [ConsultationController::class, 'index']);
     Route::get('/consultation/import', [ConsultationController::class, 'showImportPage'])->middleware('role:admin');

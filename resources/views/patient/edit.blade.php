@@ -19,7 +19,7 @@
                     </div>
                     <div class="card-content">
                         <div class="card-body">
-                            <form class="form form-horizontal" action="{{ url('patient/' . $patient->id . '/edit') }}"
+                            <form class="form form-horizontal" action="{{ url('patient/' . $patient->id . '/update') }}"
                                 method="post">
                                 @csrf
                                 <div class="form-body">
