@@ -8,7 +8,7 @@ use App\Models\PatientHabit;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 
-class HabitController extends Controller
+class PatientHabitController extends Controller
 {
     public function showEditPage(Request $request)
     {

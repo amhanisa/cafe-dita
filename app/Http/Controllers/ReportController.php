@@ -143,7 +143,7 @@ class ReportController extends Controller
 
     public function exportReport(Request $request)
     {
-        // TODO: Set batas-batas yg memungkinkan dari 4 variabel ini
+        // TODO: Ubah jadi method post
         $startDate = $request->get('start_date') ?? '2010-01-01';
         $endDate = $request->get('end_date') ?? Carbon::now()->format('Y-m-d');
         $minAge = $request->get('min_age') ?? 0;

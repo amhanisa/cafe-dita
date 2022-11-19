@@ -2,8 +2,8 @@
 
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\ConsultationController;
-use App\Http\Controllers\HabitController;
 use App\Http\Controllers\PatientController;
+use App\Http\Controllers\PatientHabitController;
 use App\Http\Controllers\ReportController;
 use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
@@ -49,8 +49,8 @@ Route::group(['middleware' => 'auth'], function () {
     Route::get('/consultation/{id}/edit', [ConsultationController::class, 'showEditConsultationPage']);
     Route::post('/consultation/{id}/edit', [ConsultationController::class, 'updateConsultation']);
 
-    Route::get('/habit/edit', [HabitController::class, 'showEditPage']);
-    Route::post('/habit/edit', [HabitController::class, 'store']);
+    Route::get('/habit/edit', [PatientHabitController::class, 'showEditPage']);
+    Route::post('/habit/edit', [PatientHabitController::class, 'store']);
 
     Route::get('/report', [ReportController::class, 'index'])->middleware('role:admin');
     Route::get('/report/export', [ReportController::class, 'exportReport'])->middleware('role:admin');
