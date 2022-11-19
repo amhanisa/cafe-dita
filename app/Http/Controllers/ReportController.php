@@ -11,7 +11,7 @@ use Maatwebsite\Excel\Facades\Excel;
 
 class ReportController extends Controller
 {
-    public function index(Request $request)
+    public function showReportPage(Request $request)
     {
         // TODO: Set batas-batas yg memungkinkan dari 4 variabel ini
         $startDate = $request->get('start_date') ?? '2010-01-01';

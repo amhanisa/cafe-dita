@@ -52,7 +52,7 @@ Route::group(['middleware' => 'auth'], function () {
     Route::get('/patient-habit/edit', [PatientHabitController::class, 'showEditPatientHabitPage']);
     Route::post('/patient-habit/store', [PatientHabitController::class, 'storePatientHabit']);
 
-    Route::get('/report', [ReportController::class, 'index'])->middleware('role:admin');
+    Route::get('/report', [ReportController::class, 'showReportPage'])->middleware('role:admin');
     Route::get('/report/export', [ReportController::class, 'exportReport'])->middleware('role:admin');
 
     Route::get('/user', [UserController::class, 'index'])->middleware('role:admin');
