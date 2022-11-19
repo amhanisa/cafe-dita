@@ -10,7 +10,7 @@ use Illuminate\Http\Request;
 
 class PatientHabitController extends Controller
 {
-    public function showEditPage(Request $request)
+    public function showEditPatientHabitPage(Request $request)
     {
         $patientId = $request->query('patient');
         $year = $request->query('year');
@@ -27,7 +27,7 @@ class PatientHabitController extends Controller
         return view('habit.edit', $data);
     }
 
-    public function store(Request $request)
+    public function storePatientHabit(Request $request)
     {
         $habits = Habit::all();
 

@@ -49,8 +49,8 @@ Route::group(['middleware' => 'auth'], function () {
     Route::get('/consultation/{id}/edit', [ConsultationController::class, 'showEditConsultationPage']);
     Route::post('/consultation/{id}/update', [ConsultationController::class, 'updateConsultation']);
 
-    Route::get('/habit/edit', [PatientHabitController::class, 'showEditPage']);
-    Route::post('/habit/edit', [PatientHabitController::class, 'store']);
+    Route::get('/patient-habit/edit', [PatientHabitController::class, 'showEditPatientHabitPage']);
+    Route::post('/patient-habit/store', [PatientHabitController::class, 'storePatientHabit']);
 
     Route::get('/report', [ReportController::class, 'index'])->middleware('role:admin');
     Route::get('/report/export', [ReportController::class, 'exportReport'])->middleware('role:admin');

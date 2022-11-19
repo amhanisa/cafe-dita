@@ -235,7 +235,7 @@
                                             Januari
                                             <br>
                                             <a class="small fw-lighter"
-                                                href="{{ url('habit/edit?patient=' . $patient->id . '&year=' . $year . '&month=1') }}">
+                                                href="{{ url('patient-habit/edit?patient=' . $patient->id . '&year=' . $year . '&month=1') }}">
                                                 edit
                                             </a>
                                         </th>
@@ -243,7 +243,7 @@
                                             Februari
                                             <br>
                                             <a class="small fw-lighter"
-                                                href="{{ url('habit/edit?patient=' . $patient->id . '&year=' . $year . '&month=2') }}">
+                                                href="{{ url('patient-habit/edit?patient=' . $patient->id . '&year=' . $year . '&month=2') }}">
                                                 edit
                                             </a>
                                         </th>
@@ -251,7 +251,7 @@
                                             Maret
                                             <br>
                                             <a class="small fw-lighter"
-                                                href="{{ url('habit/edit?patient=' . $patient->id . '&year=' . $year . '&month=3') }}">
+                                                href="{{ url('patient-habit/edit?patient=' . $patient->id . '&year=' . $year . '&month=3') }}">
                                                 edit
                                             </a>
                                         </th>
@@ -259,7 +259,7 @@
                                             April
                                             <br>
                                             <a class="small fw-lighter"
-                                                href="{{ url('habit/edit?patient=' . $patient->id . '&year=' . $year . '&month=4') }}">
+                                                href="{{ url('patient-habit/edit?patient=' . $patient->id . '&year=' . $year . '&month=4') }}">
                                                 edit
                                             </a>
                                         </th>
@@ -267,7 +267,7 @@
                                             Mei
                                             <br>
                                             <a class="small fw-lighter"
-                                                href="{{ url('habit/edit?patient=' . $patient->id . '&year=' . $year . '&month=5') }}">
+                                                href="{{ url('patient-habit/edit?patient=' . $patient->id . '&year=' . $year . '&month=5') }}">
                                                 edit
                                             </a>
                                         </th>
@@ -275,7 +275,7 @@
                                             Juni
                                             <br>
                                             <a class="small fw-lighter"
-                                                href="{{ url('habit/edit?patient=' . $patient->id . '&year=' . $year . '&month=6') }}">
+                                                href="{{ url('patient-habit/edit?patient=' . $patient->id . '&year=' . $year . '&month=6') }}">
                                                 edit
                                             </a>
                                         </th>
@@ -283,7 +283,7 @@
                                             Juli
                                             <br>
                                             <a class="small fw-lighter"
-                                                href="{{ url('habit/edit?patient=' . $patient->id . '&year=' . $year . '&month=7') }}">
+                                                href="{{ url('patient-habit/edit?patient=' . $patient->id . '&year=' . $year . '&month=7') }}">
                                                 edit
                                             </a>
                                         </th>
@@ -291,7 +291,7 @@
                                             Agustus
                                             <br>
                                             <a class="small fw-lighter"
-                                                href="{{ url('habit/edit?patient=' . $patient->id . '&year=' . $year . '&month=8') }}">
+                                                href="{{ url('patient-habit/edit?patient=' . $patient->id . '&year=' . $year . '&month=8') }}">
                                                 edit
                                             </a>
                                         </th>
@@ -299,7 +299,7 @@
                                             September
                                             <br>
                                             <a class="small fw-lighter"
-                                                href="{{ url('habit/edit?patient=' . $patient->id . '&year=' . $year . '&month=9') }}">
+                                                href="{{ url('patient-habit/edit?patient=' . $patient->id . '&year=' . $year . '&month=9') }}">
                                                 edit
                                             </a>
                                         </th>
@@ -307,7 +307,7 @@
                                             Oktober
                                             <br>
                                             <a class="small fw-lighter"
-                                                href="{{ url('habit/edit?patient=' . $patient->id . '&year=' . $year . '&month=10') }}">
+                                                href="{{ url('patient-habit/edit?patient=' . $patient->id . '&year=' . $year . '&month=10') }}">
                                                 edit
                                             </a>
                                         </th>
@@ -315,7 +315,7 @@
                                             November
                                             <br>
                                             <a class="small fw-lighter"
-                                                href="{{ url('habit/edit?patient=' . $patient->id . '&year=' . $year . '&month=11') }}">
+                                                href="{{ url('patient-habit/edit?patient=' . $patient->id . '&year=' . $year . '&month=11') }}">
                                                 edit
                                             </a>
                                         </th>
@@ -323,7 +323,7 @@
                                             Desember
                                             <br>
                                             <a class="small fw-lighter"
-                                                href="{{ url('habit/edit?patient=' . $patient->id . '&year=' . $year . '&month=12') }}">
+                                                href="{{ url('patient-habit/edit?patient=' . $patient->id . '&year=' . $year . '&month=12') }}">
                                                 edit
                                             </a>
                                         </th>

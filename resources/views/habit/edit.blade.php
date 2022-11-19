@@ -19,7 +19,7 @@
                     </div>
                     <div class="card-content">
                         <div class="card-body">
-                            <form class="form form-horizontal" action="{{ url('habit/edit') }}" method="post">
+                            <form class="form form-horizontal" action="{{ url('patient-habit/store') }}" method="post">
                                 @csrf
                                 <input name="patient_id" type="hidden" value="{{ $patient->id }}">
                                 <input name="year" type="hidden" value="{{ $year }}">
