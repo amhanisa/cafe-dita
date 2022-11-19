@@ -98,4 +98,13 @@ class ConsultationController extends Controller
 
         return redirect("/patient/" . $consultation->patient_id);
     }
+
+    public function destroyConsultation(Request $request)
+    {
+        $consultation = Consultation::find($request->consultation_id);
+
+        $consultation->delete();
+
+        return redirect("patient/" . $consultation->patient_id)->with('toast_success', 'Data konsultasi berhasil dihapus');
+    }
 }

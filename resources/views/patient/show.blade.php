@@ -194,11 +194,18 @@
                                                         href="{{ '/consultation/' . $consultation->id . '/edit' }}">
                                                         Edit
                                                     </a>
+                                                    <button class="btn btn-danger delete-consultation"
+                                                        data-id="{{ $consultation->id }}">Hapus</button>
                                                 </td>
                                             </tr>
                                         @endforeach
                                     </tbody>
                                 </table>
+                                <form id="delete-consultation-form" action="{{ url('/consultation/delete') }}"
+                                    method="post">
+                                    @csrf
+                                    <input name="consultation_id" type="hidden">
+                                </form>
                             </div>
                         </div>
                     </div>
@@ -412,6 +419,26 @@
                     })
                     .then((willDelete) => {
                         if (willDelete.isConfirmed) {
+                            form.submit();
+                        }
+                    });
+            })
+
+            $('.delete-consultation').click(function() {
+                let form = $("#delete-consultation-form");
+                let consultation_id = $(this).data('id');
+                event.preventDefault();
+                Swal.fire({
+                        title: `Apakah anda yakin menghapus data konsultasi ini?`,
+                        text: "Jika anda menghapus, data tidak dapat dikembalikan",
+                        icon: "warning",
+                        buttons: true,
+                        showCancelButton: true,
+                        dangerMode: true,
+                    })
+                    .then((willDelete) => {
+                        if (willDelete.isConfirmed) {
+                            $('input[name="consultation_id"]').val(consultation_id);
                             form.submit();
                         }
                     });
