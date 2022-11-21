@@ -45,7 +45,7 @@ class PatientController extends Controller
         return view('patient.show', $data);
     }
 
-    function getAjaxTensionHistory(Request $request)
+    public function getAjaxTensionHistory(Request $request)
     {
         $consultations = Consultation::getPatientConsultations($request->patientId, 'asc');
 
@@ -70,7 +70,7 @@ class PatientController extends Controller
     // Maka ditetapkan hipertensi terkendali (false)
     // Jika nilai diatas batas 140/90
     // Maka ditetapkan hipertensi tidak terkendali (true)
-    function checkHypertensionStatus($last3MonthsConsultations)
+    private function checkHypertensionStatus($last3MonthsConsultations)
     {
         if ($last3MonthsConsultations->count() < 1) {
             return true;
@@ -98,7 +98,7 @@ class PatientController extends Controller
     // Jika selama 12 bulan ada 3 bulan berobat berturut
     // Maka ditetapkan berobat teratur (true)
     // Jika tidak ditetapkan berobat tidak teratur (false)
-    function checkTreatmentStatus($last12MonthsConsultations)
+    private function checkTreatmentStatus($last12MonthsConsultations)
     {
         if ($last12MonthsConsultations->count() < 1) {
             return false;
@@ -145,12 +145,12 @@ class PatientController extends Controller
         return false;
     }
 
-    function getMonth($string)
+    private function getMonth($string)
     {
         return (int)substr($string, 5, 2);
     }
 
-    function getYear($string)
+    private function getYear($string)
     {
         return (int)substr($string, 0, 4);
     }
