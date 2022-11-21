@@ -43,7 +43,7 @@
                                         </div>
                                     </div>
                                     <div class="row mb-3">
-                                        <label class="col-md-4 col-lg-2 col-form-label">Nomer Rekam Medik</label>
+                                        <label class="col-md-4 col-lg-2 col-form-label">Nomor Rekam Medis</label>
                                         <div class="col-md-8 col-lg-10">
                                             <input
                                                 class="form-control form-control-lg @error('medical_record_number') is-invalid @enderror"
@@ -130,7 +130,7 @@
                                     </div>
 
                                     <div class="row mb-3">
-                                        <label class="col-md-4 col-lg-2 col-form-label">Nomer Telepon</label>
+                                        <label class="col-md-4 col-lg-2 col-form-label">Nomor Telepon</label>
                                         <div class="col-md-8 col-lg-10">
                                             <input
                                                 class="form-control form-control-lg @error('phone_number') is-invalid @enderror"

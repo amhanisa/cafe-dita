@@ -33,7 +33,7 @@
                                         </div>
                                     </div>
                                     <div class="row mb-3">
-                                        <label class="col-md-4 col-lg-2 col-form-label">Nomer Rekam Medik</label>
+                                        <label class="col-md-4 col-lg-2 col-form-label">Nomor Rekam Medis</label>
                                         <div class="col-md-8 col-lg-10 col-form-label">
                                             {{ $consultation->patient->medical_record_number }}
                                         </div>

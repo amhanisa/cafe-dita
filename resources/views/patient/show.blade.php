@@ -24,7 +24,7 @@
                                         <div class="col-12 col-md-6 text-black">{{ $patient->name }}</div>
                                     </div>
                                     <div class="row mb-2">
-                                        <div class="col-12 col-md-4 col-lg-4 col-xl-3 text-muted font-semibold">Nomer Rekam
+                                        <div class="col-12 col-md-4 col-lg-4 col-xl-3 text-muted font-semibold">Nomor Rekam
                                             Medis
                                         </div>
                                         <div class="col-12 col-md-6 text-black">{{ $patient->medical_record_number }}</div>
@@ -63,7 +63,7 @@
                                         <div class="col-12 col-md-6 text-black">{{ $patient->job }}</div>
                                     </div>
                                     <div class="row mb-2">
-                                        <div class="col-12 col-md-4 col-lg-4 col-xl-3 text-muted font-semibold">Nomer
+                                        <div class="col-12 col-md-4 col-lg-4 col-xl-3 text-muted font-semibold">Nomor
                                             Telepon</div>
                                         <div class="col-12 col-md-6 text-black">{{ $patient->phone_number }}</div>
                                     </div>
@@ -172,6 +172,7 @@
                             <div class="table-responsive">
                                 <table class="table" id="consultations-table" width="100%">
                                     <thead>
+                                        <th>No.</th>
                                         <th>Tanggal Konsultasi</th>
                                         <th>Tensi Darah
                                             <br>
@@ -184,6 +185,7 @@
                                     <tbody>
                                         @foreach ($consultations as $consultation)
                                             <tr>
+                                                <td>{{ $loop->iteration }}</td>
                                                 <td>{{ $consultation->date }}</td>
                                                 <td>{{ $consultation->systole . '/' . $consultation->diastole }}</td>
                                                 <td>{{ $consultation->medicine }}</td>
@@ -400,9 +402,6 @@
         $(document).ready(function() {
             $('#consultations-table').DataTable({
                 scrollX: true,
-                order: [
-                    [0, 'desc']
-                ],
             });
 
             $('#delete-patient').click(function() {
@@ -444,7 +443,7 @@
             })
         });
 
-        let patientId = @json($patient->id)
+        let patientId = "{{ $patient->id }}"
 
         var areaOptions = {
             series: [],
@@ -527,8 +526,6 @@
         $.get(`/patient/getTensionHistory?patientId=${patientId}`).then(result => {
             let data = JSON.parse(result);
 
-            console.log(data.date)
-
             area.updateSeries([{
                 name: 'Sistol',
                 data: data.systole,
@@ -548,7 +545,7 @@
         })
         area.render()
 
-        const year = @json($year);
+        const year = "{{ $year }}";
 
         $('#habit-selector').val(year).change();
 

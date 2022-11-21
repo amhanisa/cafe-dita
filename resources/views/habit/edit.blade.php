@@ -27,19 +27,16 @@
                                 <div class="form-body">
                                     <div class="row mb-3">
                                         <label class="col-md-4 col-lg-2 col-form-label">Nama Lengkap</label>
-                                        <div class="col-md-8 col-lg-10">
-                                            <input class="form-control form-control-lg @error('name') is-invalid @enderror"
-                                                name="name" type="text" value="{{ $patient->name }}" disabled>
-                                        </div>
+                                        <label class="col-md-8 col-lg-10 col-form-label">{{ $patient->name }}</label>
                                     </div>
                                     <div class="row mb-3">
-                                        <label class="col-md-4 col-lg-2 col-form-label">Nomer Rekam Medik</label>
-                                        <div class="col-md-8 col-lg-10">
-                                            <input
-                                                class="form-control form-control-lg @error('medical_record_number') is-invalid @enderror"
-                                                name="medical_record_number" type="text"
-                                                value="{{ $patient->medical_record_number }}" disabled>
-                                        </div>
+                                        <label class="col-md-4 col-lg-2 col-form-label">NIK</label>
+                                        <label class="col-md-8 col-lg-10 col-form-label">{{ $patient->nik }}</label>
+                                    </div>
+                                    <div class="row mb-3">
+                                        <label class="col-md-4 col-lg-2 col-form-label">Nomor Rekam Medis</label>
+                                        <label
+                                            class="col-md-8 col-lg-10 col-form-label">{{ $patient->medical_record_number }}</label>
                                     </div>
 
                                     @foreach ($habits as $habit)
