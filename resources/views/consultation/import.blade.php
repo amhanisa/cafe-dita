@@ -20,22 +20,16 @@
 
                             <p class="card-text">Unggah data register dari web e-Link berformat .xlsx
                             </p>
-                            <div class="row justify-content-center">
-                                <div class="col-md-6 border border-1 rounded-4 p-4">
-                                    <form class="row row-cols-lg-auto g-3 align-items-center justify-content-center"
-                                        action="{{ url('consultation/import') }}" method="post"
-                                        enctype='multipart/form-data'>
-                                        @csrf
-                                        <div class="col-12">
-                                            <input class="form-control" id="formFile" name="import_file" type="file">
-                                        </div>
-                                        <div class="col-12">
-                                            <button class="btn btn-primary" type="submit">Upload</button>
-                                        </div>
-                                    </form>
+                            <form class="row row-cols-lg-auto g-3 align-items-center"
+                                action="{{ url('consultation/import') }}" method="post" enctype='multipart/form-data'>
+                                @csrf
+                                <div class="col-12">
+                                    <input class="form-control" id="formFile" name="import_file" type="file">
                                 </div>
-                            </div>
-
+                                <div class="col-12">
+                                    <button class="btn btn-primary" type="submit">Upload</button>
+                                </div>
+                            </form>
                         </div>
                     </div>
                 </div>
