@@ -20,10 +20,11 @@
 
                         </div>
                         <form action="{{ url('report') }}" method="get">
+                            <div class="row justify-content-center">
+                                <div class="col-lg-6">
 
-                            <div class="row mb-3">
-                                <div class="col-md-6">
-                                    <div class="row">
+                                    <div class="row mb-3">
+
                                         <div class="col-md-6">
                                             <div class="input-group mb-3">
                                                 <span class="input-group-text">Tanggal Awal</span>
@@ -33,42 +34,39 @@
                                         </div>
                                         <div class="col-md-6">
                                             <div class="input-group mb-3">
-                                                <span class="input-group-text">Tanggal Awal</span>
+                                                <span class="input-group-text">Tanggal Akhir</span>
                                                 <input class="form-control" name="end_date" type="date"
                                                     value="{{ request()->get('end_date') }}">
                                             </div>
                                         </div>
-                                    </div>
-                                </div>
-                            </div>
 
-                            <div class="row mb-3">
-                                <div class="col-md-6">
-                                    <div class="row">
+                                    </div>
+
+                                    <div class="row mb-3">
                                         <div class="col-md-6">
                                             <div class="input-group mb-3">
-                                                <span class="input-group-text">Umur Awal</span>
+                                                <span class="input-group-text">Batas Usia Bawah</span>
                                                 <input class="form-control" name="min_age" type="number"
                                                     value="{{ request()->get('min_age') }}">
                                             </div>
                                         </div>
                                         <div class="col-md-6">
                                             <div class="input-group mb-3">
-                                                <span class="input-group-text">Umur Akhir</span>
+                                                <span class="input-group-text">Batas Usia Atas</span>
                                                 <input class="form-control" name="max_age" type="number"
                                                     value="{{ request()->get('max_age') }}">
                                             </div>
                                         </div>
+
+                                    </div>
+
+                                    <div class="row mb-3 justify-content-center">
+                                        <div class="col-md-6">
+                                            <input class="btn btn-block btn-primary" type="submit" value="Cari">
+                                        </div>
                                     </div>
                                 </div>
                             </div>
-
-                            <div class="row mb-3">
-                                <div class="col-md-6">
-                                    <input class="btn btn-block btn-primary" type="submit" value="Cari">
-                                </div>
-                            </div>
-
                         </form>
                     </div>
                 </div>
@@ -77,9 +75,6 @@
         <section class="row">
             <div class="col-12">
                 <div class="card">
-                    <div class="card-header">
-                        <h4>Bar Chart</h4>
-                    </div>
                     <div class="card-body">
                         <div id="bar"></div>
                     </div>
@@ -89,18 +84,16 @@
         <section class="row">
             <div class="col-12">
                 <div class="card">
-                    <div class="card-header">
-                        <h4>Dashboard</h4>
-                        <a class="btn btn-primary mb-3" href="/report/export">Unduh Laporan</a>
-                    </div>
                     <div class="card-body">
-                        <div class="table-responsive">
-                            @include('report.table')
+                        <div class="d-flex justify-content-end">
+                            <a class="btn btn-primary mb-3" href="/report/export">Unduh Laporan</a>
                         </div>
+                        @include('report.table')
                     </div>
                 </div>
             </div>
-        </section>
+    </div>
+    </section>
     </div>
 @endsection
 
