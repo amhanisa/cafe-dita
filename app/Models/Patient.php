@@ -23,6 +23,11 @@ class Patient extends Model
         return $this->hasMany(Consultation::class);
     }
 
+    public static function getPatientWithVillage($id)
+    {
+        return Patient::with('village')->find($id);
+    }
+
     public static function getPatientsForReport($startDate, $endDate, $minAge, $maxAge)
     {
         $query = <<<EOD

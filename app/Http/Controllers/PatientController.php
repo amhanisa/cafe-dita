@@ -27,7 +27,7 @@ class PatientController extends Controller
 
     public function showDetailPatientPage($id)
     {
-        $data['patient'] = Patient::with('village')->find($id);
+        $data['patient'] = Patient::getPatientWithVillage($id);
 
         $data['consultations'] = Consultation::getPatientConsultations($id);
 
