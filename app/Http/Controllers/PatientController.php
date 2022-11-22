@@ -72,7 +72,7 @@ class PatientController extends Controller
     // Maka ditetapkan hipertensi tidak terkendali (true)
     private function checkHypertensionStatus($last3MonthsConsultations)
     {
-        if ($last3MonthsConsultations->count() < 1) {
+        if ($last3MonthsConsultations->count() < 3) {
             return true;
         }
 
@@ -93,12 +93,44 @@ class PatientController extends Controller
         return false;
     }
 
+    private function checkTreatmentStatus($last12MonthsConsultations)
+    {
+        if ($last12MonthsConsultations->count() < 3) {
+            return false;
+        }
+
+        $groupedConsultations = $last12MonthsConsultations->groupBy(function ($item) {
+            return Carbon::createFromFormat('Y-m-d', $item->date)->format('Y-m');
+        });
+
+        $months = $groupedConsultations->keys();
+
+        $counter = 1;
+
+        for ($i = 0; $i < count($months) - 1; $i++) {
+            $firstMonth = Carbon::parse($months[$i]);
+            $secondMonth = Carbon::parse($months[$i + 1]);
+
+            if ($firstMonth->diffInMonths($secondMonth) == 1) {
+                $counter++;
+            } else {
+                $counter = 1;
+            }
+
+            if ($counter == 3) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
     // Cara menentukan status berobat
     // Cek data konsultasi 12 bulan terakhir
     // Jika selama 12 bulan ada 3 bulan berobat berturut
     // Maka ditetapkan berobat teratur (true)
     // Jika tidak ditetapkan berobat tidak teratur (false)
-    private function checkTreatmentStatus($last12MonthsConsultations)
+    private function checkTreatmentStatus2($last12MonthsConsultations)
     {
         if ($last12MonthsConsultations->count() < 1) {
             return false;
