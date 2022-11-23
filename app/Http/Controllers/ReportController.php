@@ -165,4 +165,9 @@ class ReportController extends Controller
 
         return Excel::download(new ReportExport($villages), 'report.xlsx');
     }
+
+    public function getAjaxBarChart(Request $request)
+    {
+        //TODO tolong dikerjakan
+    }
 }
