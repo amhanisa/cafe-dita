@@ -23,6 +23,8 @@ class ConsultationController extends Controller
 
     public function storeImportedConsultations(Request $request)
     {
+        $request->validate(["import_file" => 'required']);
+
         Excel::import(new ConsultationsImport(), $request->file('import_file'));
 
         return redirect('consultation')->with('toast_success', 'Data konsultasi berhasil diimpor');
