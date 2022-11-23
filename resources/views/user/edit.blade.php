@@ -57,7 +57,7 @@
                                         </div>
                                     </div>
                                     <div class="row mb-3">
-                                        <label class="col-md-4 col-lg-2 col-form-label">Retype Password</label>
+                                        <label class="col-md-4 col-lg-2 col-form-label">Konfirmasi Password</label>
                                         <div class="col-md-8 col-lg-10">
                                             <input
                                                 class="form-control form-control-lg @error('password_confirmation') is-invalid @enderror"
