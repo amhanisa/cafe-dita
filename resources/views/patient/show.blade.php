@@ -166,6 +166,9 @@
                     <div class="card-content">
                         <div class="card-body">
                             <div class="mb-3">
+                                <h4>
+                                    Riwayat Konsultasi
+                                </h4>
                                 <a class="btn btn-primary" href="{{ '/consultation/' . $patient->id . '/add' }}">Tambah
                                     Konsultasi</a>
                             </div>
