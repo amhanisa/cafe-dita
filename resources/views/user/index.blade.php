@@ -25,7 +25,7 @@
                                         <th>Nama</th>
                                         <th>Username</th>
                                         <th>Role</th>
-                                        <th>Action</th>
+                                        <th style="white-space: nowrap">Action</th>
                                     </thead>
                                     <tbody>
                                         @foreach ($users as $key => $user)
@@ -34,7 +34,7 @@
                                                 <td>{{ $user->name }}</td>
                                                 <td>{{ $user->username }}</td>
                                                 <td>{{ $user->role->name }}</td>
-                                                <td><a class="btn btn-secondary"
+                                                <td style="white-space: nowrap"><a class="btn btn-secondary"
                                                         href="{{ '/user/' . $user->id . '/edit' }}">
                                                         Edit
                                                     </a>

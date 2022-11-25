@@ -183,7 +183,7 @@
                                         </th>
                                         <th>Obat</th>
                                         <th>Keterangan</th>
-                                        <th>Action</th>
+                                        <th style="white-space: nowrap">Action</th>
                                     </thead>
                                     <tbody>
                                         @foreach ($consultations as $consultation)
@@ -193,7 +193,7 @@
                                                 <td>{{ $consultation->systole . '/' . $consultation->diastole }}</td>
                                                 <td>{{ $consultation->medicine }}</td>
                                                 <td>{{ $consultation->note }}</td>
-                                                <td>
+                                                <td style="white-space: nowrap">
                                                     <a class="btn btn-secondary"
                                                         href="{{ '/consultation/' . $consultation->id . '/edit' }}">
                                                         Edit
