@@ -23,7 +23,7 @@ return new class extends Migration
             $table->date('birthday');
             $table->string('address');
             $table->foreignIdFor(Village::class);
-            $table->string('job');
+            $table->string('job')->nullable();
             $table->string('phone_number')->nullable();
             $table->timestamps();
         });
