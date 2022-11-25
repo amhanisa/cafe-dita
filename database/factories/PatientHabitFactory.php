@@ -17,7 +17,15 @@ class PatientHabitFactory extends Factory
     public function definition()
     {
         return [
-            //
+            'patient_id' => 1,
+            'habit_id' => 1,
+            'year' => 2022,
+            'month' => 1,
+            'week1' => fake()->boolean(),
+            'week2' => fake()->boolean(),
+            'week3' => fake()->boolean(),
+            'week4' => fake()->boolean(),
+            'note' => fake()->sentence()
         ];
     }
 }

@@ -18,12 +18,12 @@ class ConsultationFactory extends Factory
     public function definition()
     {
         return [
-            'patient_id' => fake()->randomElement(Patient::pluck('id')),
-            'date' => fake()->dateTimeInInterval('-3 years', '+3 years'),
-            'systole' => fake()->numberBetween(120, 200),
-            'diastole' => fake()->numberBetween(70, 120),
-            'medicine' => fake()->words(2, true),
-            'note' => fake()->words(5, true)
+            'patient_id' => 1,
+            'date' => fake()->dateTimeInInterval('-2 years', '+2 years'),
+            'systole' => fake()->numberBetween(100, 150),
+            'diastole' => fake()->numberBetween(60, 100),
+            'medicine' => fake()->sentence(),
+            'note' => fake()->sentence()
         ];
     }
 }

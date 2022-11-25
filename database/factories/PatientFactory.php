@@ -17,16 +17,19 @@ class PatientFactory extends Factory
      */
     public function definition()
     {
+        $genders = ['male' => 'L', 'female' => 'P'];
+        $gender = array_rand($genders);
+
         return [
-            'name' => fake("id_ID")->name(),
+            'name' => fake()->name($gender),
             'medical_record_number' => fake()->unique()->numberBetween(10000, 99999),
-            'nik' => fake('id_ID')->nik(),
-            'sex' => fake()->randomElement(['L', 'P']),
+            'nik' => fake()->nik(),
+            'sex' => $genders[$gender],
             'birthday' => fake()->dateTimeInInterval('-70 years', '+55 years'),
-            'address' => fake('id_ID')->streetAddress(),
-            'village_id' => fake()->randomElement(Village::pluck('id')),
-            'phone_number' => fake('id_ID')->phoneNumber(),
-            'job' => fake('id_ID')->jobTitle(),
+            'address' => fake()->streetAddress(),
+            'village_id' => fake()->numberBetween(1, 12),
+            'phone_number' => fake()->phoneNumber(),
+            'job' => fake()->jobTitle(),
         ];
     }
 }
