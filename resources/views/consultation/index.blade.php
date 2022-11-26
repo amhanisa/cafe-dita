@@ -15,7 +15,11 @@
                     <div class="card-content">
                         <div class="card-body">
                             <div class="mb-3">
-                                <a class="btn btn-primary" href="{{ url('consultation/import') }}">Impor Data Konsultasi</a>
+                                @if (Auth::user()->role_id == 1)
+                                    <a class="btn btn-primary" href="{{ url('consultation/import') }}">
+                                        Impor Data Konsultasi
+                                    </a>
+                                @endif
                             </div>
                             <div class="table-responsive">
                                 <table class="table" id="consultations-table" width="100%">

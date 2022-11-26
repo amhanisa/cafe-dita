@@ -90,30 +90,32 @@
 
             </li>
 
-            <li class="sidebar-item {{ request()->is('report*') ? 'active' : '' }}">
-                <a class="sidebar-link" href="{{ url('report') }}">
-                    <svg class="bi bi-file-earmark-spreadsheet-fill" xmlns="http://www.w3.org/2000/svg" width="16"
-                        height="16" fill="currentColor" viewBox="0 0 16 16">
-                        <path d="M6 12v-2h3v2H6z" />
-                        <path
-                            d="M9.293 0H4a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h8a2 2 0 0 0 2-2V4.707A1 1 0 0 0 13.707 4L10 .293A1 1 0 0 0 9.293 0zM9.5 3.5v-2l3 3h-2a1 1 0 0 1-1-1zM3 9h10v1h-3v2h3v1h-3v2H9v-2H6v2H5v-2H3v-1h2v-2H3V9z" />
-                    </svg>
-                    <span>Laporan</span>
-                </a>
+            @if (Auth::user()->role_id == 1)
+                <li class="sidebar-item {{ request()->is('report*') ? 'active' : '' }}">
+                    <a class="sidebar-link" href="{{ url('report') }}">
+                        <svg class="bi bi-file-earmark-spreadsheet-fill" xmlns="http://www.w3.org/2000/svg"
+                            width="16" height="16" fill="currentColor" viewBox="0 0 16 16">
+                            <path d="M6 12v-2h3v2H6z" />
+                            <path
+                                d="M9.293 0H4a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h8a2 2 0 0 0 2-2V4.707A1 1 0 0 0 13.707 4L10 .293A1 1 0 0 0 9.293 0zM9.5 3.5v-2l3 3h-2a1 1 0 0 1-1-1zM3 9h10v1h-3v2h3v1h-3v2H9v-2H6v2H5v-2H3v-1h2v-2H3V9z" />
+                        </svg>
+                        <span>Laporan</span>
+                    </a>
 
-            </li>
+                </li>
 
-            <li class="sidebar-item {{ request()->is('user*') ? 'active' : '' }}">
-                <a class="sidebar-link" href="{{ url('user') }}">
-                    <svg class="bi bi-person-badge" xmlns="http://www.w3.org/2000/svg" width="16" height="16"
-                        fill="currentColor" viewBox="0 0 16 16">
-                        <path d="M6.5 2a.5.5 0 0 0 0 1h3a.5.5 0 0 0 0-1h-3zM11 8a3 3 0 1 1-6 0 3 3 0 0 1 6 0z" />
-                        <path
-                            d="M4.5 0A2.5 2.5 0 0 0 2 2.5V14a2 2 0 0 0 2 2h8a2 2 0 0 0 2-2V2.5A2.5 2.5 0 0 0 11.5 0h-7zM3 2.5A1.5 1.5 0 0 1 4.5 1h7A1.5 1.5 0 0 1 13 2.5v10.795a4.2 4.2 0 0 0-.776-.492C11.392 12.387 10.063 12 8 12s-3.392.387-4.224.803a4.2 4.2 0 0 0-.776.492V2.5z" />
-                    </svg>
-                    <span>Petugas</span>
-                </a>
-            </li>
+                <li class="sidebar-item {{ request()->is('user*') ? 'active' : '' }}">
+                    <a class="sidebar-link" href="{{ url('user') }}">
+                        <svg class="bi bi-person-badge" xmlns="http://www.w3.org/2000/svg" width="16"
+                            height="16" fill="currentColor" viewBox="0 0 16 16">
+                            <path d="M6.5 2a.5.5 0 0 0 0 1h3a.5.5 0 0 0 0-1h-3zM11 8a3 3 0 1 1-6 0 3 3 0 0 1 6 0z" />
+                            <path
+                                d="M4.5 0A2.5 2.5 0 0 0 2 2.5V14a2 2 0 0 0 2 2h8a2 2 0 0 0 2-2V2.5A2.5 2.5 0 0 0 11.5 0h-7zM3 2.5A1.5 1.5 0 0 1 4.5 1h7A1.5 1.5 0 0 1 13 2.5v10.795a4.2 4.2 0 0 0-.776-.492C11.392 12.387 10.063 12 8 12s-3.392.387-4.224.803a4.2 4.2 0 0 0-.776.492V2.5z" />
+                        </svg>
+                        <span>Petugas</span>
+                    </a>
+                </li>
+            @endif
 
             <li class="sidebar-item">
                 <div style="margin-top: 2rem; padding: 0.7rem 1rem;">
