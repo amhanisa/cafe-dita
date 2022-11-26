@@ -13,7 +13,6 @@ class ReportController extends Controller
 {
     public function showReportPage(Request $request)
     {
-        // TODO: Set batas-batas yg memungkinkan dari 4 variabel ini
         if (!$request->query()) {
             return view('report.filter');
         }
@@ -183,41 +182,49 @@ class ReportController extends Controller
 
     public function exportReport(Request $request)
     {
-        // TODO: Ubah jadi method post
-        $startDate = $request->get('start_date') ?? '2010-01-01';
-        $endDate = $request->get('end_date') ?? Carbon::now()->format('Y-m-d');
-        $minAge = $request->get('min_age') ?? 0;
-        $maxAge = $request->get('max_age') ?? 100;
+        $request->validate([
+            'start_date' => 'required|date|before:end_date',
+            'end_date' => 'required|date|before:tomorrow',
+            'min_age' => 'required|numeric|integer|min:0|',
+            'max_age' => 'required|numeric|integer|gte:min_age'
+        ]);
 
-        $patients = Patient::getPatientsForReport($startDate, $endDate, $minAge, $maxAge);
+        $data['startDate'] = $request->get('start_date');
+        $data['endDate'] = $request->get('end_date');
+        $data['minAge'] = $request->get('min_age');
+        $data['maxAge'] = $request->get('max_age');
 
-        $calculatedPatients = $this->calculatePatientsStatus($patients, $endDate);
+        $patients = Patient::getPatientsForReport($data['startDate'], $data['endDate'], $data['minAge'], $data['maxAge']);
+
+        $calculatedPatients = $this->calculatePatientsStatus($patients, $data["endDate"]);
 
         $hypertension = $calculatedPatients->groupBy(['village_id', 'hypertension_status', 'sex']);
         $treatment = $calculatedPatients->groupBy(['village_id', 'treatment_status', 'sex']);
 
         $villages = Village::all();
 
+        // Untuk Tabel
         $villages->map(function ($village, $key) use ($hypertension, $treatment) {
-            $village->hypertension = $hypertension[$village->id];
-            $village->treatment = $treatment[$village->id];
+            // TODO CHECK THIS SHIT
+            $village->hypertension = $hypertension[$village->id] ?? [];
+            $village->treatment = $treatment[$village->id] ?? [];
         });
 
         $data['villages'] = $villages;
 
-        $data['hypertensionCount'] = $calculatedPatients->groupBy('hypertension_status')[1]->count();
-        $data['notHypertensionCount'] = $calculatedPatients->groupBy('hypertension_status')[0]->count();
-        $data['routineTreatmentCount'] = $calculatedPatients->groupBy('treatment_status')[1]->count();
-        $data['notRoutineTreatmentCount'] = $calculatedPatients->groupBy('treatment_status')[0]->count();
+        $data['hypertensionCount'] = count($calculatedPatients->groupBy('hypertension_status')[1] ?? []);
+        $data['notHypertensionCount'] = count($calculatedPatients->groupBy('hypertension_status')[0] ?? []);
+        $data['routineTreatmentCount'] = count($calculatedPatients->groupBy('treatment_status')[1] ?? []);
+        $data['notRoutineTreatmentCount'] = count($calculatedPatients->groupBy('treatment_status')[0] ?? []);
 
-        $data['hypertensionCountMale'] = $calculatedPatients->groupBy(['hypertension_status', 'sex'])[1]['L']->count();
-        $data['notHypertensionCountMale'] = $calculatedPatients->groupBy(['hypertension_status', 'sex'])[0]['L']->count();
-        $data['routineTreatmentCountMale'] = $calculatedPatients->groupBy(['treatment_status', 'sex'])[1]['L']->count();
-        $data['notRoutineTreatmentCountMale'] = $calculatedPatients->groupBy(['treatment_status', 'sex'])[0]['L']->count();
-        $data['hypertensionCountFemale'] = $calculatedPatients->groupBy(['hypertension_status', 'sex'])[1]['P']->count();
-        $data['notHypertensionCountFemale'] = $calculatedPatients->groupBy(['hypertension_status', 'sex'])[0]['P']->count();
-        $data['routineTreatmentCountFemale'] = $calculatedPatients->groupBy(['treatment_status', 'sex'])[1]['P']->count();
-        $data['notRoutineTreatmentCountFemale'] = $calculatedPatients->groupBy(['treatment_status', 'sex'])[0]['P']->count();
+        $data['hypertensionCountMale'] = count($calculatedPatients->groupBy(['hypertension_status', 'sex'])[1]['L'] ?? []);
+        $data['notHypertensionCountMale'] = count($calculatedPatients->groupBy(['hypertension_status', 'sex'])[0]['L'] ?? []);
+        $data['routineTreatmentCountMale'] = count($calculatedPatients->groupBy(['treatment_status', 'sex'])[1]['L'] ?? []);
+        $data['notRoutineTreatmentCountMale'] = count($calculatedPatients->groupBy(['treatment_status', 'sex'])[0]['L'] ?? []);
+        $data['hypertensionCountFemale'] = count($calculatedPatients->groupBy(['hypertension_status', 'sex'])[1]['P'] ?? []);
+        $data['notHypertensionCountFemale'] = count($calculatedPatients->groupBy(['hypertension_status', 'sex'])[0]['P'] ?? []);
+        $data['routineTreatmentCountFemale'] = count($calculatedPatients->groupBy(['treatment_status', 'sex'])[1]['P'] ?? []);
+        $data['notRoutineTreatmentCountFemale'] = count($calculatedPatients->groupBy(['treatment_status', 'sex'])[0]['P'] ?? []);
 
         return Excel::download(new ReportExport($data), 'report.xlsx');
     }
