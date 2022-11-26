@@ -25,9 +25,9 @@ class UserController extends Controller
     public function storeUser(Request $request)
     {
         $request->validate([
-            'username' => 'required|unique:users,username',
+            'username' => 'required|min:8|unique:users,username',
             'name' => 'required',
-            'password' => 'required|confirmed',
+            'password' => 'required|min:8|confirmed',
             'role_id' => 'required',
         ]);
 
@@ -52,9 +52,9 @@ class UserController extends Controller
     public function updateUser(Request $request)
     {
         $request->validate([
-            'username' => 'required|unique:users,username,' . $request->id,
+            'username' => 'required|min:8|unique:users,username,' . $request->id,
             'name' => 'required',
-            'password' => 'confirmed',
+            'password' => 'nullable|confirmed|min:8',
             'role_id' => 'required',
         ]);
 
