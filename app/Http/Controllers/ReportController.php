@@ -30,25 +30,26 @@ class ReportController extends Controller
 
         // Untuk Tabel
         $villages->map(function ($village, $key) use ($hypertension, $treatment) {
-            $village->hypertension = $hypertension[$village->id];
-            $village->treatment = $treatment[$village->id];
+            // TODO CHECK THIS SHIT
+            $village->hypertension = $hypertension[$village->id] ?? [];
+            $village->treatment = $treatment[$village->id] ?? [];
         });
 
         $data['villages'] = $villages;
 
-        $data['hypertensionCount'] = $calculatedPatients->groupBy('hypertension_status')[1]->count();
-        $data['notHypertensionCount'] = $calculatedPatients->groupBy('hypertension_status')[0]->count();
-        $data['routineTreatmentCount'] = $calculatedPatients->groupBy('treatment_status')[1]->count();
-        $data['notRoutineTreatmentCount'] = $calculatedPatients->groupBy('treatment_status')[0]->count();
+        $data['hypertensionCount'] = count($calculatedPatients->groupBy('hypertension_status')[1] ?? []);
+        $data['notHypertensionCount'] = count($calculatedPatients->groupBy('hypertension_status')[0] ?? []);
+        $data['routineTreatmentCount'] = count($calculatedPatients->groupBy('treatment_status')[1] ?? []);
+        $data['notRoutineTreatmentCount'] = count($calculatedPatients->groupBy('treatment_status')[0] ?? []);
 
-        $data['hypertensionCountMale'] = $calculatedPatients->groupBy(['hypertension_status', 'sex'])[1]['L']->count();
-        $data['notHypertensionCountMale'] = $calculatedPatients->groupBy(['hypertension_status', 'sex'])[0]['L']->count();
-        $data['routineTreatmentCountMale'] = $calculatedPatients->groupBy(['treatment_status', 'sex'])[1]['L']->count();
-        $data['notRoutineTreatmentCountMale'] = $calculatedPatients->groupBy(['treatment_status', 'sex'])[0]['L']->count();
-        $data['hypertensionCountFemale'] = $calculatedPatients->groupBy(['hypertension_status', 'sex'])[1]['P']->count();
-        $data['notHypertensionCountFemale'] = $calculatedPatients->groupBy(['hypertension_status', 'sex'])[0]['P']->count();
-        $data['routineTreatmentCountFemale'] = $calculatedPatients->groupBy(['treatment_status', 'sex'])[1]['P']->count();
-        $data['notRoutineTreatmentCountFemale'] = $calculatedPatients->groupBy(['treatment_status', 'sex'])[0]['P']->count();
+        $data['hypertensionCountMale'] = count($calculatedPatients->groupBy(['hypertension_status', 'sex'])[1]['L'] ?? []);
+        $data['notHypertensionCountMale'] = count($calculatedPatients->groupBy(['hypertension_status', 'sex'])[0]['L'] ?? []);
+        $data['routineTreatmentCountMale'] = count($calculatedPatients->groupBy(['treatment_status', 'sex'])[1]['L'] ?? []);
+        $data['notRoutineTreatmentCountMale'] = count($calculatedPatients->groupBy(['treatment_status', 'sex'])[0]['L'] ?? []);
+        $data['hypertensionCountFemale'] = count($calculatedPatients->groupBy(['hypertension_status', 'sex'])[1]['P'] ?? []);
+        $data['notHypertensionCountFemale'] = count($calculatedPatients->groupBy(['hypertension_status', 'sex'])[0]['P'] ?? []);
+        $data['routineTreatmentCountFemale'] = count($calculatedPatients->groupBy(['treatment_status', 'sex'])[1]['P'] ?? []);
+        $data['notRoutineTreatmentCountFemale'] = count($calculatedPatients->groupBy(['treatment_status', 'sex'])[0]['P'] ?? []);
 
         // Untuk Bar Chart
         $data['hypertensionCountPerVillage'] = [];
@@ -57,10 +58,10 @@ class ReportController extends Controller
         $data['notRoutineTreatmentCountPerVillage'] = [];
 
         foreach (range(1, 12) as $index) {
-            $data['hypertensionCountPerVillage'][] = $hypertension[$index][1]['L']->count() + $hypertension[$index][1]['P']->count();
-            $data['notHypertensionCountPerVillage'][] = $hypertension[$index][0]['L']->count() + $hypertension[$index][0]['P']->count();
-            $data['routineTreatmentCountPerVillage'][] = $treatment[$index][1]['L']->count() + $treatment[$index][1]['P']->count();
-            $data['notRoutineTreatmentCountPerVillage'][] = $treatment[$index][0]['L']->count() + $treatment[$index][0]['P']->count();
+            $data['hypertensionCountPerVillage'][] = count($hypertension[$index][1]['L'] ?? []) + count($hypertension[$index][1]['P'] ?? []);
+            $data['notHypertensionCountPerVillage'][] = count($hypertension[$index][0]['L'] ?? []) + count($hypertension[$index][0]['P'] ?? []);
+            $data['routineTreatmentCountPerVillage'][] = count($treatment[$index][1]['L'] ?? []) + count($treatment[$index][1]['P'] ?? []);
+            $data['notRoutineTreatmentCountPerVillage'][] = count($treatment[$index][0]['L'] ?? []) + count($treatment[$index][0]['P'] ?? []);
         }
 
         return view('report.index', $data);
