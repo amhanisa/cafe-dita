@@ -18,7 +18,7 @@
                                 <a class="btn btn-primary" href="/patient/add">Tambah Pasien</a>
                             </div>
                             <div class="table-responsive">
-                                <table class="table" id="patients-table">
+                                <table class="table" id="patients-table" width="100%">
                                     <thead>
                                         <th>No</th>
                                         <th>Nama</th>
@@ -56,6 +56,9 @@
             processing: true,
             responsive: true,
             scrollX: true,
+            language: {
+                emptyTable: "Belum ada data pasien"
+            },
             ajax: {
                 url: "{{ route('datatable.patient') }}",
             },

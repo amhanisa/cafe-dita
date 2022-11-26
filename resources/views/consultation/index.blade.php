@@ -57,6 +57,9 @@
                 processing: true,
                 responsive: true,
                 scrollX: true,
+                language: {
+                    emptyTable: "Belum ada data konsultasi"
+                },
                 ajax: "{{ route('datatable.consultation') }}",
                 columns: [{
                     data: 'DT_RowIndex',

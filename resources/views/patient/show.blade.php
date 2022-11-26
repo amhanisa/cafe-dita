@@ -405,6 +405,9 @@
         $(document).ready(function() {
             $('#consultations-table').DataTable({
                 scrollX: true,
+                language: {
+                    emptyTable: "Belum ada data konsultasi"
+                },
             });
 
             $('#delete-patient').click(function() {
