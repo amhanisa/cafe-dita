@@ -97,7 +97,7 @@ class ReportController extends Controller
     // Maka ditetapkan hipertensi tidak terkendali (true)
     private function checkHypertensionStatus($last3MonthsConsultations)
     {
-        if ($last3MonthsConsultations->count() < 1) {
+        if ($last3MonthsConsultations->count() < 3) {
             return true;
         }
 
@@ -125,59 +125,34 @@ class ReportController extends Controller
     // Jika tidak ditetapkan berobat tidak teratur (false)
     private function checkTreatmentStatus($last12MonthsConsultations)
     {
-        if ($last12MonthsConsultations->count() < 1) {
+        if ($last12MonthsConsultations->count() < 3) {
             return false;
         }
 
-        $firstDate = $last12MonthsConsultations[0]->date;
-        $firstYear = $this->getYear($firstDate);
+        $groupedConsultations = $last12MonthsConsultations->groupBy(function ($item) {
+            return Carbon::createFromFormat('Y-m-d', $item->date)->format('Y-m');
+        });
 
-        $data = [];
-        $lenght = $last12MonthsConsultations->count();
+        $months = $groupedConsultations->keys();
 
-        // Ubah Tanggal Menjadi Bulan Saja Menghilangkan Tahun
-        // Agar Bisa Dikalkulasi
-        // 2022-11 -> 11
-        // 2022-12 -> 12
-        // 2023-01 -> 13
-        // 2024-02 -> 14
-        for ($i = 0; $i < $lenght; $i++) {
-            $consultationMonth = $this->getMonth($last12MonthsConsultations[$i]->date);
-            $consultationYear = $this->getYear($last12MonthsConsultations[$i]->date);
+        $counter = 1;
 
-            if ($consultationYear == $firstYear) {
-                $data[$i] = $consultationMonth;
+        for ($i = 0; $i < count($months) - 1; $i++) {
+            $firstMonth = Carbon::parse($months[$i]);
+            $secondMonth = Carbon::parse($months[$i + 1]);
+
+            if ($firstMonth->diffInMonths($secondMonth) == 1) {
+                $counter++;
             } else {
-                $data[$i] = $consultationMonth + 12;
-            }
-        }
-
-        $iteration = 0;
-
-        // Cek Array Apakah Ada 3 Angka Yang Berurutan
-        for ($i = 0; $i < count($data) - 1; $i++) {
-            if ($data[$i] + 1 == $data[$i + 1]) {
-                $iteration += 1;
-            } else if ($data[$i] + 1 < $data[$i + 1]) {
-                $iteration = 0;
+                $counter = 1;
             }
 
-            if ($iteration == 2) {
+            if ($counter == 3) {
                 return true;
             }
         }
 
         return false;
-    }
-
-    private function getMonth($string)
-    {
-        return (int)substr($string, 5, 2);
-    }
-
-    private function getYear($string)
-    {
-        return (int)substr($string, 0, 4);
     }
 
     public function exportReport(Request $request)
