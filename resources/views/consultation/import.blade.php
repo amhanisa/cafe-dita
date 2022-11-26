@@ -29,6 +29,9 @@
                                 <div class="col-12">
                                     <button class="btn btn-primary" type="submit">Upload</button>
                                 </div>
+                                @error('import_file')
+                                    <span class="validation-error"> {{ $message }} </span>
+                                @enderror
                             </form>
                         </div>
                     </div>

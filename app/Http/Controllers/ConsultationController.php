@@ -23,7 +23,7 @@ class ConsultationController extends Controller
 
     public function storeImportedConsultations(Request $request)
     {
-        $request->validate(["import_file" => 'required']);
+        $request->validate(["import_file" => 'required|mimes:xlsx']);
 
         Excel::import(new ConsultationsImport(), $request->file('import_file'));
 
