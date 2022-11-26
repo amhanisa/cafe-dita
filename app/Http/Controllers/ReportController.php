@@ -14,14 +14,25 @@ class ReportController extends Controller
     public function showReportPage(Request $request)
     {
         // TODO: Set batas-batas yg memungkinkan dari 4 variabel ini
-        $startDate = $request->get('start_date') ?? '2010-01-01';
-        $endDate = $request->get('end_date') ?? Carbon::now()->format('Y-m-d');
-        $minAge = $request->get('min_age') ?? 0;
-        $maxAge = $request->get('max_age') ?? 100;
+        if (!$request->query()) {
+            return view('report.filter');
+        }
 
-        $patients = Patient::getPatientsForReport($startDate, $endDate, $minAge, $maxAge);
+        $request->validate([
+            'start_date' => 'required|date|before:end_date',
+            'end_date' => 'required|date|before:tomorrow',
+            'min_age' => 'required|numeric|integer|min:0|',
+            'max_age' => 'required|numeric|integer|gte:min_age'
+        ]);
 
-        $calculatedPatients = $this->calculatePatientsStatus($patients, $endDate);
+        $data['startDate'] = $request->get('start_date');
+        $data['endDate'] = $request->get('end_date');
+        $data['minAge'] = $request->get('min_age');
+        $data['maxAge'] = $request->get('max_age');
+
+        $patients = Patient::getPatientsForReport($data['startDate'], $data['endDate'], $data['minAge'], $data['maxAge']);
+
+        $calculatedPatients = $this->calculatePatientsStatus($patients, $data["endDate"]);
 
         $hypertension = $calculatedPatients->groupBy(['village_id', 'hypertension_status', 'sex']);
         $treatment = $calculatedPatients->groupBy(['village_id', 'treatment_status', 'sex']);

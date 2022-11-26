@@ -1,7 +1,7 @@
 <p class="text-center font-bold">
     Laporan Penderita Hipertensi di Cafe DITA Puskesmas Karangan, Trenggalek <br>
-    1 Januari 2020 - 31 Desember 20220 <br>
-    Rentang Usia 1 - 100 <br>
+    {{ $startDate }} - {{ $endDate }} <br>
+    Rentang Usia {{ $minAge }} - {{ $maxAge }} <br>
 </p>
 <div class="table-responsive">
     <table class="table table-bordered">

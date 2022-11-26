@@ -6,7 +6,7 @@
 
 @section('content')
     <div class="page-heading">
-        <h3>Dashboard</h3>
+        <h3>Laporan</h3>
     </div>
     <div class="page-content">
         <section class="row">
@@ -16,58 +16,7 @@
                         <h4>Filter</h4>
                     </div>
                     <div class="card-body">
-                        <div class="row mb-3">
-
-                        </div>
-                        <form action="{{ url('report') }}" method="get">
-                            <div class="row justify-content-center">
-                                <div class="col-lg-6">
-
-                                    <div class="row mb-3">
-
-                                        <div class="col-md-6">
-                                            <div class="input-group mb-3">
-                                                <span class="input-group-text">Tanggal Awal</span>
-                                                <input class="form-control" name="start_date" type="date"
-                                                    value="{{ request()->get('start_date') }}">
-                                            </div>
-                                        </div>
-                                        <div class="col-md-6">
-                                            <div class="input-group mb-3">
-                                                <span class="input-group-text">Tanggal Akhir</span>
-                                                <input class="form-control" name="end_date" type="date"
-                                                    value="{{ request()->get('end_date') }}">
-                                            </div>
-                                        </div>
-
-                                    </div>
-
-                                    <div class="row mb-3">
-                                        <div class="col-md-6">
-                                            <div class="input-group mb-3">
-                                                <span class="input-group-text">Batas Usia Bawah</span>
-                                                <input class="form-control" name="min_age" type="number"
-                                                    value="{{ request()->get('min_age') }}">
-                                            </div>
-                                        </div>
-                                        <div class="col-md-6">
-                                            <div class="input-group mb-3">
-                                                <span class="input-group-text">Batas Usia Atas</span>
-                                                <input class="form-control" name="max_age" type="number"
-                                                    value="{{ request()->get('max_age') }}">
-                                            </div>
-                                        </div>
-
-                                    </div>
-
-                                    <div class="row mb-3 justify-content-center">
-                                        <div class="col-md-6">
-                                            <input class="btn btn-block btn-primary" type="submit" value="Cari">
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </form>
+                        @include('report.form')
                     </div>
                 </div>
             </div>
