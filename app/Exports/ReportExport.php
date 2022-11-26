@@ -7,17 +7,15 @@ use Maatwebsite\Excel\Concerns\FromView;
 
 class ReportExport implements FromView
 {
-    protected $villages;
+    protected $data;
 
-    function __construct($villages)
+    function __construct($data)
     {
-        $this->villages = $villages;
+        $this->data = $data;
     }
 
     public function view(): View
     {
-        return view('report.table', [
-            'villages' => $this->villages
-        ]);
+        return view('report.table', $this->data);
     }
 }

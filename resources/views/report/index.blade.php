@@ -100,22 +100,31 @@
 @push('script')
     <script src="https://cdnjs.cloudflare.com/ajax/libs/apexcharts/3.36.0/apexcharts.min.js"></script>
     <script>
+        var a = @json($hypertensionCountPerVillage);
+        var b = @json($notHypertensionCountPerVillage);
+        var c = @json($routineTreatmentCountPerVillage);
+        var d = @json($notRoutineTreatmentCountPerVillage);
+
         var barOptions = {
             series: [{
-                    name: "Berobat Teratur",
-                    data: [44, 55, 57, 56, 61, 58, 63, 60, 66],
-                },
-                {
                     name: "Berobat Tidak Teratur",
-                    data: [76, 85, 101, 98, 87, 105, 91, 114, 94],
+                    data: d,
+                    color: '#feb019',
                 },
                 {
-                    name: "Terkendali",
-                    data: [35, 41, 36, 26, 45, 48, 52, 53, 41],
+                    name: "Berobat Teratur",
+                    data: c,
+                    color: '#008ffb'
                 },
                 {
                     name: "Tidak Terkendali",
-                    data: [35, 42, 3, 6, 5, 8, 54, 57, 45],
+                    data: a,
+                    color: '#ff4560'
+                },
+                {
+                    name: "Terkendali",
+                    data: b,
+                    color: '#00e396'
                 },
             ],
             chart: {
@@ -135,25 +144,19 @@
             stroke: {
                 show: true,
                 width: 2,
-                colors: ["transparent"],
             },
             xaxis: {
-                categories: ["Desa 1", "Desa 2", "Desa 3", "Desa 4", "Desa 5", "Desa 6", "Desa 7", "Desa 8", "Desa 9"],
+                categories: ["Buluagung", "Jati", "Jatiprahu", 'Karangan', 'Kayen', 'Kedungsigit', 'Kerjo', 'Ngentrong',
+                    'Salamrejo', 'Sukowetan', 'Sumber', 'Sumberingin'
+                ],
             },
             yaxis: {
                 title: {
-                    text: "$ (thousands)",
+                    text: "jumlah penderita",
                 },
             },
             fill: {
                 opacity: 1,
-            },
-            tooltip: {
-                y: {
-                    formatter: function(val) {
-                        return "$ " + val + " thousands"
-                    },
-                },
             },
         }
         var bar = new ApexCharts(document.querySelector("#bar"), barOptions);

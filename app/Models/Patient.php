@@ -28,7 +28,7 @@ class Patient extends Model
         return Patient::with('village')->find($id);
     }
 
-    public static function getPatientsForReport($startDate, $endDate, $minAge, $maxAge)
+    public static function getPatientsForReport2($startDate, $endDate, $minAge, $maxAge)
     {
         $query = <<<EOD
         SELECT id FROM (
@@ -50,5 +50,21 @@ class Patient extends Model
         return (new static)::with(['consultations' => function ($query) use ($endDate) {
             $query->whereBetween('date', [Carbon::parse($endDate)->subYear(), $endDate])->orderBy('date', 'asc');
         }])->whereIn('id', $patientsId)->get();
+    }
+
+    public static function getPatientsForReport($startDate, $endDate, $minAge, $maxAge)
+    {
+        return (new static)::with([
+            'consultations' => function ($query) use ($endDate) {
+                $query->select('id', 'patient_id', 'date', 'systole', 'diastole')
+                    ->whereBetween('date', [Carbon::parse($endDate)->subYear(), $endDate])
+                    ->orderBy('date', 'asc');
+            }
+        ])->select('id', 'sex', 'village_id')
+            ->whereRaw("FLOOR (DATEDIFF(NOW(),birthday) /365.2425) >= ?", [$minAge])
+            ->whereRaw("FLOOR (DATEDIFF(NOW(),birthday) /365.2425) <= ?", [$maxAge])
+            ->whereRelation('consultations', 'date', '>', $startDate)
+            ->whereRelation('consultations', 'date', '<', $endDate)
+            ->get();
     }
 }
