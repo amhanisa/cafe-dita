@@ -87,21 +87,29 @@
             </tr>
             <tr>
                 <td>Persentase</td>
-                <td>{{ round(($notRoutineTreatmentCountMale / $notRoutineTreatmentCount) * 100, 2) . '%' }}</td>
-                <td>{{ round(($notRoutineTreatmentCountFemale / $notRoutineTreatmentCount) * 100, 2) . '%' }}</td>
-                <td>{{ round(($notRoutineTreatmentCount / ($notRoutineTreatmentCount + $routineTreatmentCount)) * 100, 2) . '%' }}
+                <td>{{ $notRoutineTreatmentCount == 0 ? '0%' : round(($notRoutineTreatmentCountMale / $notRoutineTreatmentCount) * 100, 2) . '%' }}
                 </td>
-                <td>{{ round(($routineTreatmentCountMale / $routineTreatmentCount) * 100, 2) . '%' }}</td>
-                <td>{{ round(($routineTreatmentCountFemale / $routineTreatmentCount) * 100, 2) . '%' }}</td>
-                <td>{{ round(($routineTreatmentCount / ($notRoutineTreatmentCount + $routineTreatmentCount)) * 100, 2) . '%' }}
+                <td>{{ $notRoutineTreatmentCount == 0 ? '0%' : round(($notRoutineTreatmentCountFemale / $notRoutineTreatmentCount) * 100, 2) . '%' }}
                 </td>
-                <td>{{ round(($hypertensionCountMale / $hypertensionCount) * 100, 2) . '%' }}</td>
-                <td>{{ round(($hypertensionCountFemale / $hypertensionCount) * 100, 2) . '%' }}</td>
-                <td>{{ round(($hypertensionCount / ($notHypertensionCount + $hypertensionCount)) * 100, 2) . '%' }}
+                <td>{{ $notRoutineTreatmentCount == 0 ? '0%' : round(($notRoutineTreatmentCount / ($notRoutineTreatmentCount + $routineTreatmentCount)) * 100, 2) . '%' }}
                 </td>
-                <td>{{ round(($notHypertensionCountMale / $notHypertensionCount) * 100, 2) . '%' }}</td>
-                <td>{{ round(($notHypertensionCountFemale / $notHypertensionCount) * 100, 2) . '%' }}</td>
-                <td>{{ round(($notHypertensionCount / ($notHypertensionCount + $hypertensionCount)) * 100, 2) . '%' }}
+                <td>{{ $routineTreatmentCount == 0 ? '0%' : round(($routineTreatmentCountMale / $routineTreatmentCount) * 100, 2) . '%' }}
+                </td>
+                <td>{{ $routineTreatmentCount == 0 ? '0%' : round(($routineTreatmentCountFemale / $routineTreatmentCount) * 100, 2) . '%' }}
+                </td>
+                <td>{{ $routineTreatmentCount == 0 ? '0%' : round(($routineTreatmentCount / ($notRoutineTreatmentCount + $routineTreatmentCount)) * 100, 2) . '%' }}
+                </td>
+                <td>{{ $hypertensionCount == 0 ? '0%' : round(($hypertensionCountMale / $hypertensionCount) * 100, 2) . '%' }}
+                </td>
+                <td>{{ $hypertensionCount == 0 ? '0%' : round(($hypertensionCountFemale / $hypertensionCount) * 100, 2) . '%' }}
+                </td>
+                <td>{{ $hypertensionCount == 0 ? '0%' : round(($hypertensionCount / ($notHypertensionCount + $hypertensionCount)) * 100, 2) . '%' }}
+                </td>
+                <td>{{ $notHypertensionCount == 0 ? '0%' : round(($notHypertensionCountMale / $notHypertensionCount) * 100, 2) . '%' }}
+                </td>
+                <td>{{ $notHypertensionCount == 0 ? '0%' : round(($notHypertensionCountFemale / $notHypertensionCount) * 100, 2) . '%' }}
+                </td>
+                <td>{{ $notHypertensionCount == 0 ? '0%' : round(($notHypertensionCount / ($notHypertensionCount + $hypertensionCount)) * 100, 2) . '%' }}
                 </td>
             </tr>
         </tfoot>
