@@ -141,7 +141,7 @@ return [
         'medical_record_number' => 'Nomor Rekam Medis',
         'medicine'              => 'Obat',
         'minute'                => 'Menit',
-        'min_date'              => 'Batas Usia Bawah',
+        'min_age'              => 'Batas Usia Bawah',
         'mobile'                => 'Seluler',
         'month'                 => 'Bulan',
         'name'                  => 'Nama',
