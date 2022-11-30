@@ -151,10 +151,18 @@
         <section class="row">
             <div class="col-12">
                 <div class="card">
-                    <div class="card-body">
-                        <h4>
+                    <div class="card-header d-flex justify-content-between align-items-center">
+                        <h4 class="mb-0">
                             Riwayat Tensi
                         </h4>
+                        <button
+                            class="btn btn-outline-secondary button-collapse d-flex justify-content-center align-items-center"
+                            data-bs-toggle="collapse" data-bs-target="#riwayat-tensi" type="button" aria-expanded="false"
+                            aria-controls="riwayat-tensi">
+                            <i class="collapse-icon"></i>
+                        </button>
+                    </div>
+                    <div class="card-body collapse" id="riwayat-tensi">
                         <div id="area"></div>
                     </div>
                 </div>
@@ -164,14 +172,20 @@
             <div class="col-12">
                 <div class="card">
                     <div class="card-content">
-                        <div class="card-body">
-                            <div class="mb-3">
-                                <h4>
-                                    Riwayat Konsultasi
-                                </h4>
-                                <a class="btn btn-primary" href="{{ '/consultation/' . $patient->id . '/add' }}">Tambah
-                                    Konsultasi</a>
-                            </div>
+                        <div class="card-header d-flex justify-content-between align-items-center">
+                            <h4 class="mb-0">
+                                Riwayat Konsultasi
+                            </h4>
+                            <button
+                                class="btn btn-outline-secondary button-collapse d-flex justify-content-center align-items-center"
+                                data-bs-toggle="collapse" data-bs-target="#riwayat-konsultasi" type="button"
+                                aria-expanded="false" aria-controls="riwayat-konsultasi">
+                                <i class="collapse-icon"></i>
+                            </button>
+                        </div>
+                        <div class="card-body collapse" id="riwayat-konsultasi" width="100%">
+                            <a class="btn btn-primary mb-3" href="{{ '/consultation/' . $patient->id . '/add' }}">Tambah
+                                Konsultasi</a>
                             <div class="table-responsive">
                                 <table class="table" id="consultations-table" width="100%">
                                     <thead>
@@ -219,10 +233,18 @@
         <section class="row">
             <div class="col-12">
                 <div class="card">
-                    <div class="card-body">
-                        <h4>
+                    <div class="card-header d-flex justify-content-between align-items-center">
+                        <h4 class="mb-0">
                             Riwayat Kebiasaan
                         </h4>
+                        <button
+                            class="btn btn-outline-secondary button-collapse d-flex justify-content-center align-items-center"
+                            data-bs-toggle="collapse" data-bs-target="#riwayat-kebiasaan" type="button"
+                            aria-expanded="false" aria-controls="riwayat-kebiasaan">
+                            <i class="collapse-icon"></i>
+                        </button>
+                    </div>
+                    <div class="card-body collapse" id="riwayat-kebiasaan">
                         <div class="row justify-content-end">
                             <div class="col-12 col-md-4 col-xl-4 col-xxl-2">
                                 <div class="input-group mb-3">
@@ -559,5 +581,29 @@
             const link = window.location.href.split('?')[0] + '?year=' + this.value;
             window.location.replace(link);
         })
+
+
+        $(".collapse").on("shown.bs.collapse", function() {
+            localStorage.setItem("coll_" + this.id, true);
+            console.log('SHOW ' + this.id);
+            $.each($.fn.dataTable.tables(true), function() {
+                $(this).DataTable().columns.adjust().draw();
+            });
+        });
+
+        $(".collapse").on("hidden.bs.collapse", function() {
+            localStorage.removeItem("coll_" + this.id);
+            console.log('HIDE' + this.id);
+        });
+
+        $(".collapse").each(function() {
+            console.log('EACH ' + this.id);
+            if (localStorage.getItem("coll_" + this.id) === "true") {
+                $(this).addClass("show");
+            } else {
+                $("button[data-bs-target='#" + this.id + "']").addClass('collapsed');
+                $(this).addClass("hide");
+            }
+        });
     </script>
 @endpush

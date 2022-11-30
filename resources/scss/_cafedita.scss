@@ -74,6 +74,26 @@ table.dataTable td {
     margin: auto;
 }
 
+//collapse
+.collapse-icon {
+    content: "";
+    height: 20px;
+    width: 20px;
+    display: inline-block;
+    background-image: url("../icon/caret-up.svg");
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-position: bottom center, 50%, 50%;
+    margin: auto;
+    transition: 500ms cubic-bezier(0.075, 0.82, 0.165, 1);
+}
+
+.button-collapse.collapsed {
+    .collapse-icon {
+        transform: rotate(180deg);
+    }
+}
+
 //callout
 .callout {
     padding: 1.25rem;
