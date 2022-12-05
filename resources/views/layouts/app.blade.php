@@ -9,7 +9,6 @@
 
     @stack('style-before')
     @vite('resources/scss/app.scss')
-    @vite('resources/scss/themes/dark/app-dark.scss')
     @stack('style-after')
 </head>
 
