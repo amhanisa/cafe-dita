@@ -114,8 +114,8 @@ class PatientController extends Controller
         $counter = 1;
 
         for ($i = 0; $i < count($months) - 1; $i++) {
-            $firstMonth = Carbon::parse($months[$i]);
-            $secondMonth = Carbon::parse($months[$i + 1]);
+            $firstMonth = Carbon::parse($months[$i], 'UTC');
+            $secondMonth = Carbon::parse($months[$i + 1], 'UTC');
 
             if ($firstMonth->diffInMonths($secondMonth) == 1) {
                 $counter++;
