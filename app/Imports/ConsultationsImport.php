@@ -59,7 +59,7 @@ class ConsultationsImport implements ToCollection, WithHeadingRow
             ], [
                 'systole' => $systole,
                 'diastole' => $diastole,
-                'medicine' => 'apaya',
+                'medicine' => $row['tindakan'],
                 'note' => $row['terapi'],
             ]);
         }
