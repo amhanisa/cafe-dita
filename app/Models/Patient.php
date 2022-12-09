@@ -54,10 +54,10 @@ class Patient extends Model
 
     public static function getPatientsForReport($startDate, $endDate, $minAge, $maxAge)
     {
-        return (new static)::with([
+        return Patient::with([
             'consultations' => function ($query) use ($endDate) {
                 $query->select('id', 'patient_id', 'date', 'systole', 'diastole')
-                    ->whereBetween('date', [Carbon::parse($endDate)->subYear(), $endDate])
+                    ->whereBetween('date', [Carbon::parse($endDate)->endOfMonth()->subYear(), $endDate])
                     ->orderBy('date', 'asc');
             }
         ])->select('id', 'sex', 'village_id')

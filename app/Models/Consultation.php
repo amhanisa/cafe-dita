@@ -20,7 +20,7 @@ class Consultation extends Model
     {
         return Consultation::where('patient_id', $patientId)
             ->when($limitMonths, function ($query) use ($limitMonths) {
-                $query->whereDate('date', '>', \Carbon\Carbon::now()->subMonths($limitMonths));
+                $query->whereDate('date', '>', \Carbon\Carbon::now()->endOfMonth()->subMonths($limitMonths));
             })
             ->orderBy('date', $orderBy)
             ->get();
