@@ -13,53 +13,53 @@ class ReportController extends Controller
 {
     public function showReportPage(Request $request)
     {
-        if (!$request->query()) {
-            return view('report.filter');
-        }
+        // if (!$request->query()) {
+        //     return view('report.filter');
+        // }
 
-        $request->validate([
-            'start_date' => 'required|date|before:end_date',
-            'end_date' => 'required|date|before:tomorrow',
-            'min_age' => 'required|numeric|integer|min:0|',
-            'max_age' => 'required|numeric|integer|gte:min_age'
-        ]);
+        // $request->validate([
+        //     'start_date' => 'required|date|before:end_date',
+        //     'end_date' => 'required|date|before:tomorrow',
+        //     'min_age' => 'required|numeric|integer|min:0|',
+        //     'max_age' => 'required|numeric|integer|gte:min_age'
+        // ]);
 
         $data['startDate'] = $request->get('start_date');
         $data['endDate'] = $request->get('end_date');
         $data['minAge'] = $request->get('min_age');
         $data['maxAge'] = $request->get('max_age');
 
-        $patients = Patient::getPatientsForReport($data['startDate'], $data['endDate'], $data['minAge'], $data['maxAge']);
+        $patients = Patient::getPatientsForReport();
 
-        $calculatedPatients = $this->calculatePatientsStatus($patients, $data["endDate"]);
+        // dd($patients);
+        // $calculatedPatients = $this->calculatePatientsStatus($patients, $data["endDate"]);
 
-        $hypertension = $calculatedPatients->groupBy(['village_id', 'hypertension_status', 'sex']);
-        $treatment = $calculatedPatients->groupBy(['village_id', 'treatment_status', 'sex']);
+        $hypertension = $patients->groupBy(['village_id', 'is_hypertension', 'sex']);
+        $treatment = $patients->groupBy(['village_id', 'is_routine', 'sex']);
 
         $villages = Village::all();
 
         // Untuk Tabel
         $villages->map(function ($village, $key) use ($hypertension, $treatment) {
-            // TODO CHECK THIS SHIT
             $village->hypertension = $hypertension[$village->id] ?? [];
             $village->treatment = $treatment[$village->id] ?? [];
         });
 
         $data['villages'] = $villages;
 
-        $data['hypertensionCount'] = count($calculatedPatients->groupBy('hypertension_status')[1] ?? []);
-        $data['notHypertensionCount'] = count($calculatedPatients->groupBy('hypertension_status')[0] ?? []);
-        $data['routineTreatmentCount'] = count($calculatedPatients->groupBy('treatment_status')[1] ?? []);
-        $data['notRoutineTreatmentCount'] = count($calculatedPatients->groupBy('treatment_status')[0] ?? []);
+        $data['hypertensionCount'] = count($patients->groupBy('is_hypertension')[1] ?? []);
+        $data['notHypertensionCount'] = count($patients->groupBy('is_hypertension')[0] ?? []);
+        $data['routineTreatmentCount'] = count($patients->groupBy('is_routine')[1] ?? []);
+        $data['notRoutineTreatmentCount'] = count($patients->groupBy('is_routine')[0] ?? []);
 
-        $data['hypertensionCountMale'] = count($calculatedPatients->groupBy(['hypertension_status', 'sex'])[1]['L'] ?? []);
-        $data['notHypertensionCountMale'] = count($calculatedPatients->groupBy(['hypertension_status', 'sex'])[0]['L'] ?? []);
-        $data['routineTreatmentCountMale'] = count($calculatedPatients->groupBy(['treatment_status', 'sex'])[1]['L'] ?? []);
-        $data['notRoutineTreatmentCountMale'] = count($calculatedPatients->groupBy(['treatment_status', 'sex'])[0]['L'] ?? []);
-        $data['hypertensionCountFemale'] = count($calculatedPatients->groupBy(['hypertension_status', 'sex'])[1]['P'] ?? []);
-        $data['notHypertensionCountFemale'] = count($calculatedPatients->groupBy(['hypertension_status', 'sex'])[0]['P'] ?? []);
-        $data['routineTreatmentCountFemale'] = count($calculatedPatients->groupBy(['treatment_status', 'sex'])[1]['P'] ?? []);
-        $data['notRoutineTreatmentCountFemale'] = count($calculatedPatients->groupBy(['treatment_status', 'sex'])[0]['P'] ?? []);
+        $data['hypertensionCountMale'] = count($patients->groupBy(['is_hypertension', 'sex'])[1]['L'] ?? []);
+        $data['notHypertensionCountMale'] = count($patients->groupBy(['is_hypertension', 'sex'])[0]['L'] ?? []);
+        $data['routineTreatmentCountMale'] = count($patients->groupBy(['is_routine', 'sex'])[1]['L'] ?? []);
+        $data['notRoutineTreatmentCountMale'] = count($patients->groupBy(['is_routine', 'sex'])[0]['L'] ?? []);
+        $data['hypertensionCountFemale'] = count($patients->groupBy(['is_hypertension', 'sex'])[1]['P'] ?? []);
+        $data['notHypertensionCountFemale'] = count($patients->groupBy(['is_hypertension', 'sex'])[0]['P'] ?? []);
+        $data['routineTreatmentCountFemale'] = count($patients->groupBy(['is_routine', 'sex'])[1]['P'] ?? []);
+        $data['notRoutineTreatmentCountFemale'] = count($patients->groupBy(['is_routine', 'sex'])[0]['P'] ?? []);
 
         // Untuk Bar Chart
         $data['hypertensionCountPerVillage'] = [];

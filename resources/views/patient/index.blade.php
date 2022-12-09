@@ -86,7 +86,7 @@
                     data: 'address'
                 },
                 {
-                    data: 'village.name'
+                    data: 'village_name'
                 },
                 {
                     data: 'job'

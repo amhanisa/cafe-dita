@@ -10,6 +10,7 @@ use App\Models\PatientHabit;
 use App\Models\Village;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Yajra\DataTables\Facades\DataTables;
 
 class PatientController extends Controller
@@ -27,16 +28,9 @@ class PatientController extends Controller
 
     public function showDetailPatientPage($id)
     {
-        $data['patient'] = Patient::getPatientWithVillage($id);
+        $data['patient'] = (new Patient)->getPatientDetail($id);
 
         $data['consultations'] = Consultation::getPatientConsultations($id);
-
-        $last3MonthsConsultations = Consultation::getPatientConsultations($id, 'asc', 3);
-
-        $last12MonthsConsultations = Consultation::getPatientConsultations($id, 'asc', 12);
-
-        $data['hypertensionStatus'] = $this->checkHypertensionStatus($last3MonthsConsultations);
-        $data['treatmentStatus'] = $this->checkTreatmentStatus($last12MonthsConsultations);
 
         $data['year'] = request('year') ?? Carbon::now()->year;
 
@@ -216,24 +210,70 @@ class PatientController extends Controller
 
     public function getAjaxDatatable(Request $request)
     {
-        $patients = Patient::with('village');
+        $query = <<<EOD
+        select patients.id, patients.name, medical_record_number, nik, sex, birthday, address, 
+            v.name as village_name, job, phone_number, ifnull(monthcount, 0) as count_month, 
+            ifnull(max(systole), 0) as max_systole, ifnull(max(diastole), 0) as max_diastole,
+            if(ifnull(max(systole), 0) < 140 and ifnull(max(diastole), 0) < 90
+            and ifnull(monthcount, 0) = 3, 0, 1) as is_hypertension,
+            maks, if(maks >= 3, 1, 0) as is_routine
+        from patients 
+        left join
+            (
+            select patient_id, count(month) as monthcount
+            from
+                (
+                select distinct patient_id, month(date) as month
+                from consultations 
+                where date
+                between date_add(date_sub(last_day(now()), interval 3 month), interval 1 day)
+                and last_day(now())
+                ) cm
+            group by patient_id
+            ) mc on patients.id = mc.patient_id
+        left join 
+            (
+            select distinct patient_id, systole, diastole
+            from consultations 
+            where date between date_add(date_sub(last_day(now()), interval 3 month), interval 1 day)
+            and last_day(now())
+            ) c on patients.id = c.patient_id
+        left join
+            (
+            select patient_id, max(numMonths) as maks from (
+            select patient_id, count(*) as numMonths
+            from (select patient_id, ym, @ym, @person,
+                        if(@person = patient_id  and @ym = ym - 1, @grp, @grp := @grp + 1) as grp,
+                        @person := patient_id ,
+                        @ym := ym
+                from (select distinct patient_id, year(date)*12+month(date) as ym
+                        from consultations r
+                        where date >= DATE_SUB(NOW(), INTERVAL 1 YEAR)
+                    ) r cross join
+                    (select @person := '', @ym := 0, @grp := 0) const
+                order by 1, 2
+                ) pym
+            group by patient_id, grp
+            ) gpym group by patient_id
+            ) x on patients.id = x.patient_id
+        left join
+            (
+            select id, name from villages
+            ) v on patients.village_id = v.id
+        group by patients.id
+        EOD;
+
+        $patients = DB::select(DB::raw($query));
 
         return DataTables::of($patients)
             ->addIndexColumn()
-            ->editColumn('birthday', function (Patient $patient) {
+            ->editColumn('birthday', function ($patient) {
                 return Carbon::parse($patient->birthday)->age;
             })
-            ->addColumn('status', function ($data) {
-                $status = array();
+            ->addColumn('status', function ($patient) {
+                $status = [];
 
-                $last3MonthsConsultations = Consultation::getPatientConsultations($data->id, 'asc', 3);
-
-                $last12MonthsConsultations = Consultation::getPatientConsultations($data->id, 'asc', 12);
-
-                $hypertensionStatus = $this->checkHypertensionStatus($last3MonthsConsultations);
-                $treatmentStatus = $this->checkTreatmentStatus($last12MonthsConsultations);
-
-                if ($hypertensionStatus) {
+                if ($patient->is_hypertension) {
                     $html = "<span class='badge bg-danger'>Tidak Terkendali</span>";
                     array_push($status, $html);
                 } else {
@@ -241,7 +281,7 @@ class PatientController extends Controller
                     array_push($status, $html);
                 }
 
-                if ($treatmentStatus) {
+                if ($patient->is_routine) {
                     $html = "<span class='badge bg-success'>Teratur</span>";
                     array_push($status, $html);
                 } else {

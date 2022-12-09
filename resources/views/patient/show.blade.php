@@ -54,7 +54,7 @@
                                     <div class="row mb-2">
                                         <div class="col-12 col-md-4 col-lg-4 col-xl-3 text-muted font-semibold">Alamat</div>
                                         <div class="col-12 col-md-6 text-black">
-                                            {{ $patient->address . ', Desa ' . $patient->village->name }}
+                                            {{ $patient->address . ', Desa ' . $patient->village_name }}
                                         </div>
                                     </div>
                                     <div class="row mb-2">
@@ -70,7 +70,7 @@
                                 </div>
                                 <div class="col-lg-4">
                                     <div class="mb-3">
-                                        @if ($treatmentStatus)
+                                        @if ($patient->is_routine)
                                             <div class="callout callout-info d-flex justify-content-between mb-3">
                                                 <span class="text-sm fw-bold text-uppercase text-muted">
                                                     Status Berobat
@@ -97,7 +97,7 @@
                                         @endif
                                     </div>
                                     <div class="mb-3">
-                                        @if ($hypertensionStatus)
+                                        @if ($patient->is_hypertension)
                                             <div class="callout callout-danger d-flex justify-content-between mb-3">
                                                 <span class="text-sm fw-bold text-uppercase text-muted">
                                                     Status Hipertensi
