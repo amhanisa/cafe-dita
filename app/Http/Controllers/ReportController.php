@@ -80,7 +80,7 @@ class ReportController extends Controller
     private function calculatePatientsStatus($patients, $endDate)
     {
         foreach ($patients as $patient) {
-            $last3MonthsConsultations = $patient->consultations->whereBetween('date', [Carbon::parse($endDate)->endOfMonth()->subMonths(3), $endDate]);
+            $last3MonthsConsultations = $patient->consultations->whereBetween('date', [Carbon::now()->endOfMonth()->subMonths(3)->format('Y-m-d'), now()]);
 
             $patient->hypertension_status = $this->checkHypertensionStatus($last3MonthsConsultations);
             $patient->treatment_status = $this->checkTreatmentStatus($patient->consultations);
