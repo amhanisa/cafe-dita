@@ -22,7 +22,7 @@ return new class extends Migration
             $table->char('sex', 1);
             $table->date('birthday');
             $table->string('address');
-            $table->foreignIdFor(Village::class);
+            $table->foreignIdFor(Village::class)->constrained()->restrictOnDelete();
             $table->string('job')->nullable();
             $table->string('phone_number')->nullable();
             $table->timestamps();

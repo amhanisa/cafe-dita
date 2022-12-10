@@ -17,8 +17,8 @@ return new class extends Migration
     {
         Schema::create('patient_habits', function (Blueprint $table) {
             $table->id();
-            $table->foreignIdFor(Patient::class);
-            $table->foreignIdFor(Habit::class);
+            $table->foreignIdFor(Patient::class)->constrained()->cascadeOnDelete();
+            $table->foreignIdFor(Habit::class)->constrained();
             $table->year('year');
             $table->integer('month');
             $table->boolean('week1')->nullable();

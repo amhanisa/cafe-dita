@@ -16,7 +16,7 @@ return new class extends Migration
     {
         Schema::create('consultations', function (Blueprint $table) {
             $table->id();
-            $table->foreignIdFor(Patient::class);
+            $table->foreignIdFor(Patient::class)->constrained()->cascadeOnDelete();
             $table->date('date');
             $table->integer('systole');
             $table->integer('diastole');
