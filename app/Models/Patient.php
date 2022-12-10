@@ -23,51 +23,6 @@ class Patient extends Model
         return $this->hasMany(Consultation::class);
     }
 
-    public static function getPatientWithVillage($id)
-    {
-        return Patient::with('village')->find($id);
-    }
-
-    public static function getPatientsForReport2($startDate, $endDate, $minAge, $maxAge)
-    {
-        $query = <<<EOD
-        SELECT id FROM (
-            SELECT *, FLOOR (DATEDIFF(NOW(),birthday) /365.2425) AS 'age' FROM patients
-            WHERE id IN (
-                SELECT DISTINCT(patient_id) FROM consultations
-                WHERE DATE > "$startDate"
-                AND DATE < "$endDate"
-                ORDER BY patient_id
-            )
-        ) AS p
-        WHERE age > $minAge AND age < $maxAge
-        EOD;
-
-        $patientList = DB::select(DB::raw($query));
-
-        $patientsId = array_column($patientList, 'id');
-
-        return (new static)::with(['consultations' => function ($query) use ($endDate) {
-            $query->whereBetween('date', [Carbon::parse($endDate)->subYear(), $endDate])->orderBy('date', 'asc');
-        }])->whereIn('id', $patientsId)->get();
-    }
-
-    public static function getPatientsForReport3($startDate, $endDate, $minAge, $maxAge)
-    {
-        return Patient::with([
-            'consultations' => function ($query) use ($endDate) {
-                $query->select('id', 'patient_id', 'date', 'systole', 'diastole')
-                    ->whereBetween('date', [Carbon::parse($endDate)->endOfMonth()->subYear(), $endDate])
-                    ->orderBy('date', 'asc');
-            }
-        ])->select('id', 'sex', 'village_id')
-            ->whereRaw("FLOOR (DATEDIFF(NOW(),birthday) /365.2425) >= ?", [$minAge])
-            ->whereRaw("FLOOR (DATEDIFF(NOW(),birthday) /365.2425) <= ?", [$maxAge])
-            ->whereRelation('consultations', 'date', '>', $startDate)
-            ->whereRelation('consultations', 'date', '<', $endDate)
-            ->get();
-    }
-
     public function getPatientDetail($id)
     {
         $query = <<<EOD
@@ -87,9 +42,8 @@ class Patient extends Model
                 from consultations 
                 where 
                 patient_id = $id and
-                date
-                between date_add(date_sub(last_day(now()), interval 3 month), interval 1 day)
-                and last_day(now())
+                date between date_add(last_day(date_sub(now(), interval 4 month)), interval 1 day)
+                and last_day(date_sub(now(), interval 1 month))
                 ) cm
             group by patient_id
             ) mc on patients.id = mc.patient_id
@@ -99,8 +53,8 @@ class Patient extends Model
             from consultations 
             where 
             patient_id = $id and
-            date between date_add(date_sub(last_day(now()), interval 3 month), interval 1 day)
-            and last_day(now())
+            date between date_add(last_day(date_sub(now(), interval 4 month)), interval 1 day)
+            and last_day(date_sub(now(), interval 1 month))
             ) c on patients.id = c.patient_id
         left join
             (
@@ -114,7 +68,8 @@ class Patient extends Model
                         from consultations r
                         where 
                         patient_id = $id and
-                        date >= DATE_SUB(NOW(), INTERVAL 1 YEAR)
+                        date between date_add(last_day(date_sub(now(), interval 13 month)), interval 1 day)
+                        and last_day(date_sub(now(), interval 1 month))
                     ) r cross join
                     (select @person := '', @ym := 0, @grp := 0) const
                 order by 1, 2
@@ -133,15 +88,30 @@ class Patient extends Model
         return DB::selectOne(DB::raw($query));
     }
 
-    public static function getPatientsForReport()
+    public static function getPatientsForReport($type, $month, $year)
     {
+        if ($type == 'monthly') {
+            $date = Carbon::create($year, $month)->format('Y-m-d');
+            $interval = 3;
+        } else {
+            $date = Carbon::create($year, 12)->format('Y-m-d');
+            $interval = 12;
+        }
+
         $query = <<<EOD
         select id, village_id, sex, ifnull(monthcount, 0) as count_month, 
             ifnull(max(systole), 0) as max_systole, ifnull(max(diastole), 0) as max_diastole,
             if(ifnull(max(systole), 0) < 140 and ifnull(max(diastole), 0) < 90
             and ifnull(monthcount, 0) = 3, 0, 1) as is_hypertension,
             maks, if(maks >= 3, 1, 0) as is_routine
-        from patients 
+        from patients
+        right join 
+            (
+            select distinct patient_id, systole, diastole
+            from consultations 
+            where date between date_add(last_day(date_sub("$date", interval $interval month)), interval 1 day)
+            and last_day("$date")
+            ) c on patients.id = c.patient_id
         left join
             (
             select patient_id, count(month) as monthcount
@@ -150,18 +120,11 @@ class Patient extends Model
                 select distinct patient_id, month(date) as month
                 from consultations 
                 where date
-                between date_add(date_sub(last_day(now()), interval 3 month), interval 1 day)
-                and last_day(now())
+                between date_add(last_day(date_sub("$date", interval 3 month)), interval 1 day)
+                and last_day("$date")
                 ) cm
             group by patient_id
             ) mc on patients.id = mc.patient_id
-        left join 
-            (
-            select distinct patient_id, systole, diastole
-            from consultations 
-            where date between date_add(date_sub(last_day(now()), interval 3 month), interval 1 day)
-            and last_day(now())
-            ) c on patients.id = c.patient_id
         left join
             (
             select patient_id, max(numMonths) as maks from (
@@ -172,7 +135,8 @@ class Patient extends Model
                         @ym := ym
                 from (select distinct patient_id, year(date)*12+month(date) as ym
                         from consultations r
-                        where date >= DATE_SUB(NOW(), INTERVAL 1 YEAR)
+                        where date between date_add(last_day(date_sub("$date", interval 12 month)), interval 1 day)
+                        and last_day("$date")
                     ) r cross join
                     (select @person := '', @ym := 0, @grp := 0) const
                 order by 1, 2

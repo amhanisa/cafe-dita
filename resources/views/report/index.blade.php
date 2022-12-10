@@ -36,10 +36,9 @@
                     <div class="card-body">
                         <div class="d-flex justify-content-end">
                             <form action="{{ url('report/export') }}">
-                                <input name="start_date" type="hidden" value="{{ $startDate }}">
-                                <input name="end_date" type="hidden" value="{{ $endDate }}">
-                                <input name="min_age" type="hidden" value="{{ $minAge }}">
-                                <input name="max_age" type="hidden" value="{{ $maxAge }}">
+                                <input name="type" type="hidden" value="{{ $type }}">
+                                <input name="month" type="hidden" value="{{ $month }}">
+                                <input name="year" type="hidden" value="{{ $year }}">
                                 <button class="btn btn-primary mb-3">Unduh Laporan</button>
                             </form>
                         </div>
@@ -118,4 +117,3 @@
         bar.render();
     </script>
 @endpush
-

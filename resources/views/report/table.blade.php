@@ -1,7 +1,11 @@
 <p class="text-center font-bold">
     Laporan Penderita Hipertensi di Cafe DITA Puskesmas Karangan, Trenggalek <br>
-    {{ $startDate }} - {{ $endDate }} <br>
-    Rentang Usia {{ $minAge }} - {{ $maxAge }} <br>
+    @if ($type == 'monthly')
+        Bulan {{ \Carbon\Carbon::create($year, $month)->locale('id')->translatedFormat('F Y') }}
+    @else
+        Tahun {{ $year }}
+    @endif
+    <br>
 </p>
 <div class="table-responsive">
     <table class="table table-bordered">
@@ -115,4 +119,3 @@
         </tfoot>
     </table>
 </div>
-

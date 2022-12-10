@@ -32,97 +32,21 @@ class PatientController extends Controller
 
         $data['consultations'] = Consultation::getPatientConsultations($id);
 
+        $data['systole'] = [];
+        $data['diastole'] = [];
+        $data['date'] = [];
+
+        foreach ($data['consultations']->reverse() as $consultation) {
+            array_push($data['systole'], $consultation->systole);
+            array_push($data['diastole'], $consultation->diastole);
+            array_push($data['date'], $consultation->date);
+        }
+
         $data['year'] = request('year') ?? Carbon::now()->year;
 
         $data['patientHabits'] = Habit::getPatientHabits($id, $data['year']);
 
         return view('patient.show', $data);
-    }
-
-    public function getAjaxTensionHistory(Request $request)
-    {
-        $consultations = Consultation::getPatientConsultations($request->patientId, 'asc');
-
-        $systole = [];
-        $diastole = [];
-        $date = [];
-
-        foreach ($consultations as $consultation) {
-            array_push($systole, $consultation->systole);
-            array_push($diastole, $consultation->diastole);
-            array_push($date, $consultation->date);
-        }
-
-        $data = ['systole' => $systole, 'diastole' => $diastole, 'date' => $date];
-
-        return json_encode($data);
-    }
-
-    // Cara menentukan status hipertensi
-    // Cek data konsultasi 3 bulan terakhir
-    // Jika selama 3 bulan nilainya dibawah batas 140/90
-    // Maka ditetapkan hipertensi terkendali (false)
-    // Jika nilai diatas batas 140/90
-    // Maka ditetapkan hipertensi tidak terkendali (true)
-    private function checkHypertensionStatus($last3MonthsConsultations)
-    {
-        if ($last3MonthsConsultations->count() < 3) {
-            return true;
-        }
-
-        $groupedConsultations = $last3MonthsConsultations->groupBy(function ($item) {
-            return Carbon::createFromFormat('Y-m-d', $item->date)->format('Y-m');
-        });
-
-        if ($groupedConsultations->count() < 3) {
-            return true;
-        }
-
-        foreach ($last3MonthsConsultations as $consultation) {
-            if ($consultation->systole >= 140 || $consultation->diastole >= 90) {
-                return true;
-            }
-        }
-
-        return false;
-    }
-
-
-    // Cara menentukan status berobat
-    // Cek data konsultasi 12 bulan terakhir
-    // Jika selama 12 bulan ada 3 bulan berobat berturut
-    // Maka ditetapkan berobat teratur (true)
-    // Jika tidak ditetapkan berobat tidak teratur (false)
-    private function checkTreatmentStatus($last12MonthsConsultations)
-    {
-        if ($last12MonthsConsultations->count() < 3) {
-            return false;
-        }
-
-        $groupedConsultations = $last12MonthsConsultations->groupBy(function ($item) {
-            return Carbon::createFromFormat('Y-m-d', $item->date)->format('Y-m');
-        });
-
-        $months = $groupedConsultations->keys();
-
-        $counter = 1;
-
-        for ($i = 0; $i < count($months) - 1; $i++) {
-            $firstMonth = Carbon::parse($months[$i], 'UTC');
-            $secondMonth = Carbon::parse($months[$i + 1], 'UTC');
-
-            if ($firstMonth->diffInMonths($secondMonth) == 1) {
-                $counter++;
-            } else {
-                $counter = 1;
-            }
-
-            if ($counter == 3) {
-                return true;
-            }
-        }
-
-        return false;
     }
 
     public function storePatient(Request $request)

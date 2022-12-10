@@ -32,7 +32,6 @@ Route::group(['middleware' => 'auth'], function () {
     Route::get('/patient/add', [PatientController::class, 'showAddPatientPage']);
     Route::post('/patient/store', [PatientController::class, 'storePatient']);
     Route::post('/patient/delete', [PatientController::class, 'destroyPatient']);
-    Route::get('/patient/getTensionHistory', [PatientController::class, 'getAjaxTensionHistory']);
     Route::get('/patient/{id}', [PatientController::class, 'showDetailPatientPage']);
     Route::get('/patient/{id}/edit', [PatientController::class, 'showEditPage']);
     Route::post('/patient/{id}/update', [PatientController::class, 'updatePatient']);

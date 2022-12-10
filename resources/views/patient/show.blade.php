@@ -473,8 +473,20 @@
 
         let patientId = "{{ $patient->id }}"
 
+        let dt = @json($date);
+        let s = @json($systole);
+        let d = @json($diastole);
+
         var areaOptions = {
-            series: [],
+            series: [{
+                name: 'Sistol',
+                data: s,
+                color: '#2E93fA'
+            }, {
+                name: 'Diastol',
+                data: d,
+                color: '#66DA26'
+            }],
             chart: {
                 height: 350,
                 type: "line",
@@ -539,6 +551,7 @@
             },
             xaxis: {
                 type: "datetime",
+                categories: dt
             },
             tooltip: {
                 x: {
@@ -546,31 +559,10 @@
                 },
             },
             noData: {
-                text: 'Loading...'
+                text: 'Belum ada data konsultasi'
             }
         }
         var area = new ApexCharts(document.querySelector("#area"), areaOptions)
-
-        $.get(`/patient/getTensionHistory?patientId=${patientId}`).then(result => {
-            let data = JSON.parse(result);
-
-            area.updateSeries([{
-                name: 'Sistol',
-                data: data.systole,
-                color: '#2E93fA'
-            }, {
-                name: 'Diastol',
-                data: data.diastole,
-                color: '#66DA26'
-            }])
-
-
-            area.updateOptions({
-                xaxis: {
-                    categories: data.date
-                }
-            })
-        })
         area.render()
 
         const year = "{{ $year }}";
