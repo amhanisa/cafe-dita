@@ -27,29 +27,9 @@ class PatientController extends Controller
 
     public function showDetailPatientPage($id)
     {
-        $data['patient'] = Patient::getPatientWithVillage($id);
+        $patient = Patient::getPatientWithVillage($id);
 
-        $data['consultations'] = Consultation::getPatientConsultations($id);
-
-        $last12MonthsConsultations = Consultation::getPatientConsultations($id, 'asc', 12);
-
-        $data['hypertensionStatus'] = $this->checkHypertensionStatus($last12MonthsConsultations);
-        if ($data['hypertensionStatus']) {
-            $data['treatmentStatus'] = $this->checkTreatmentStatus($last12MonthsConsultations);
-        } else {
-            $data['treatmentStatus'] = true;
-        }
-
-        $data['year'] = request('year') ?? Carbon::now()->year;
-
-        $data['patientHabits'] = Habit::getPatientHabits($id, $data['year']);
-
-        return view('patient.show', $data);
-    }
-
-    public function getAjaxTensionHistory(Request $request)
-    {
-        $consultations = Consultation::getPatientConsultations($request->patientId, 'asc');
+        $consultations = Consultation::getPatientConsultations($id);
 
         $systole = [];
         $diastole = [];
@@ -61,9 +41,20 @@ class PatientController extends Controller
             array_push($date, $consultation->date);
         }
 
-        $data = ['systole' => $systole, 'diastole' => $diastole, 'date' => $date];
+        $last12MonthsConsultations = Consultation::getPatientConsultations($id, 'asc', 12);
 
-        return json_encode($data);
+        $hypertensionStatus = $this->checkHypertensionStatus($last12MonthsConsultations);
+        if ($hypertensionStatus) {
+            $treatmentStatus = $this->checkTreatmentStatus($last12MonthsConsultations);
+        } else {
+            $treatmentStatus = true;
+        }
+
+        $year = request('year') ?? Carbon::now()->year;
+
+        $patientHabits = Habit::getPatientHabits($id, $year);
+
+        return view('patient.show', compact('patient', 'consultations', 'systole', 'diastole', 'date', 'hypertensionStatus', 'treatmentStatus', 'year', 'patientHabits'));
     }
 
     private function checkHypertensionStatus($last12MonthsConsultations)

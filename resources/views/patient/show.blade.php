@@ -473,8 +473,20 @@
 
         let patientId = "{{ $patient->id }}"
 
+        let s = @json($systole);
+        let d = @json($diastole);
+        let dt = @json($date);
+
         var areaOptions = {
-            series: [],
+            series: [{
+                name: 'Sistol',
+                data: s,
+                color: '#2E93fA'
+            }, {
+                name: 'Diastol',
+                data: d,
+                color: '#66DA26'
+            }],
             chart: {
                 height: 350,
                 type: "line",
@@ -490,10 +502,12 @@
                 yaxis: [{
                         y: 140,
                         borderColor: '#febc3b',
-                        borderWidth: 2,
+                        borderWidth: 1,
                         opacity: 1,
                         strokeDashArray: 10,
                         label: {
+                            position: 'left',
+                            offsetX: 75,
                             borderColor: '#febc3b',
                             style: {
                                 color: '#fff',
@@ -509,6 +523,8 @@
                         opacity: 0.3,
                         strokeDashArray: 10,
                         label: {
+                            position: 'left',
+                            offsetX: 75,
                             borderColor: '#febc3b',
                             style: {
                                 color: '#fff',
@@ -539,6 +555,7 @@
             },
             xaxis: {
                 type: "datetime",
+                categories: dt
             },
             tooltip: {
                 x: {
@@ -546,31 +563,11 @@
                 },
             },
             noData: {
-                text: 'Loading...'
+                text: 'Belum ada data konsultasi'
             }
         }
+
         var area = new ApexCharts(document.querySelector("#area"), areaOptions)
-
-        $.get(`/patient/getTensionHistory?patientId=${patientId}`).then(result => {
-            let data = JSON.parse(result);
-
-            area.updateSeries([{
-                name: 'Sistol',
-                data: data.systole,
-                color: '#2E93fA'
-            }, {
-                name: 'Diastol',
-                data: data.diastole,
-                color: '#66DA26'
-            }])
-
-
-            area.updateOptions({
-                xaxis: {
-                    categories: data.date
-                }
-            })
-        })
         area.render()
 
         const year = "{{ $year }}";
