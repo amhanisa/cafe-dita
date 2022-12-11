@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Exports\ReportExport;
 use App\Models\Patient;
 use App\Models\Village;
+use App\Services\PatientStatusService;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Maatwebsite\Excel\Facades\Excel;
@@ -79,99 +80,15 @@ class ReportController extends Controller
     private function calculatePatientsStatus($patients, $endDate)
     {
         foreach ($patients as $patient) {
-            $patient->hypertension_status = $this->checkHypertensionStatus($patient->consultations);
+            $patient->hypertension_status = PatientStatusService::checkHypertensionStatus($patient->consultations);
             if ($patient->hypertension_status) {
-                $patient->treatment_status = $this->checkTreatmentStatus($patient->consultations);
+                $patient->treatment_status = PatientStatusService::checkTreatmentStatus($patient->consultations);
             } else {
                 $patient->treatment_status = true;
             }
         };
 
         return $patients;
-    }
-
-    private function checkHypertensionStatus($last12MonthsConsultations)
-    {
-        if ($last12MonthsConsultations->count() < 3) {
-            return true;
-        }
-
-        $aboveThreshold = $last12MonthsConsultations->reverse()->search(function ($consultation) {
-            return $consultation->systole >= 140 || $consultation->diastole >= 90;
-        });
-
-        if ($aboveThreshold !== false) {
-            $filtered = $last12MonthsConsultations->reject(function ($value, $key) use ($aboveThreshold) {
-                return $key <= $aboveThreshold;
-            });
-        } else {
-            $filtered = $last12MonthsConsultations;
-        }
-
-        $grouped = $filtered->groupBy(function ($item) {
-            return Carbon::createFromFormat('Y-m-d', $item->date)->format('Y-m');
-        });
-
-        if ($grouped->count() < 3) {
-            return true;
-        }
-
-        $months = $grouped->keys();
-
-        $counter = 1;
-
-        for ($i = 0; $i < count($months) - 1; $i++) {
-            $firstMonth = Carbon::parse($months[$i], 'UTC');
-            $secondMonth = Carbon::parse($months[$i + 1], 'UTC');
-
-            if ($firstMonth->diffInMonths($secondMonth) == 1) {
-                $counter++;
-            } else {
-                $counter = 1;
-            }
-
-            if ($counter == 3) {
-                return false;
-            }
-        }
-
-        return true;
-    }
-
-    private function checkTreatmentStatus($last12MonthsConsultations)
-    {
-        if ($last12MonthsConsultations->count() < 3) {
-            return false;
-        }
-
-        $groupedConsultations = $last12MonthsConsultations->groupBy(function ($item) {
-            return Carbon::createFromFormat('Y-m-d', $item->date)->format('Y-m');
-        });
-
-        if ($groupedConsultations->count() < 3) {
-            return false;
-        }
-
-        $months = $groupedConsultations->keys();
-
-        $counter = 1;
-
-        for ($i = 0; $i < count($months) - 1; $i++) {
-            $firstMonth = Carbon::parse($months[$i], 'UTC');
-            $secondMonth = Carbon::parse($months[$i + 1], 'UTC');
-
-            if ($firstMonth->diffInMonths($secondMonth) == 1) {
-                $counter++;
-            } else {
-                $counter = 1;
-            }
-
-            if ($counter == 3) {
-                return true;
-            }
-        }
-
-        return false;
     }
 
     public function exportReport(Request $request)

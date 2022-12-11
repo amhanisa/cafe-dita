@@ -8,6 +8,7 @@ use App\Models\Habit;
 use App\Models\Patient;
 use App\Models\PatientHabit;
 use App\Models\Village;
+use App\Services\PatientStatusService;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Yajra\DataTables\Facades\DataTables;
@@ -43,9 +44,9 @@ class PatientController extends Controller
 
         $last12MonthsConsultations = Consultation::getPatientConsultations($id, 'asc', 12);
 
-        $hypertensionStatus = $this->checkHypertensionStatus($last12MonthsConsultations);
+        $hypertensionStatus = PatientStatusService::checkHypertensionStatus($last12MonthsConsultations);
         if ($hypertensionStatus) {
-            $treatmentStatus = $this->checkTreatmentStatus($last12MonthsConsultations);
+            $treatmentStatus = PatientStatusService::checkTreatmentStatus($last12MonthsConsultations);
         } else {
             $treatmentStatus = true;
         }
@@ -55,86 +56,6 @@ class PatientController extends Controller
         $patientHabits = Habit::getPatientHabits($id, $year);
 
         return view('patient.show', compact('patient', 'consultations', 'systole', 'diastole', 'date', 'hypertensionStatus', 'treatmentStatus', 'year', 'patientHabits'));
-    }
-
-    private function checkHypertensionStatus($last12MonthsConsultations)
-    {
-        if ($last12MonthsConsultations->count() < 3) {
-            return true;
-        }
-
-        $aboveThreshold = $last12MonthsConsultations->reverse()->search(function ($consultation) {
-            return $consultation->systole >= 140 || $consultation->diastole >= 90;
-        });
-
-        if ($aboveThreshold !== false) {
-            $filtered = $last12MonthsConsultations->reject(function ($value, $key) use ($aboveThreshold) {
-                return $key <= $aboveThreshold;
-            });
-        } else {
-            $filtered = $last12MonthsConsultations;
-        }
-
-        $grouped = $filtered->groupBy(function ($item) {
-            return Carbon::createFromFormat('Y-m-d', $item->date)->format('Y-m');
-        });
-
-        if ($grouped->count() < 3) {
-            return true;
-        }
-
-        $months = $grouped->keys();
-
-        $counter = 1;
-
-        for ($i = 0; $i < count($months) - 1; $i++) {
-            $firstMonth = Carbon::parse($months[$i], 'UTC');
-            $secondMonth = Carbon::parse($months[$i + 1], 'UTC');
-
-            if ($firstMonth->diffInMonths($secondMonth) == 1) {
-                $counter++;
-            } else {
-                $counter = 1;
-            }
-
-            if ($counter == 3) {
-                return false;
-            }
-        }
-
-        return true;
-    }
-
-    private function checkTreatmentStatus($last12MonthsConsultations)
-    {
-        if ($last12MonthsConsultations->count() < 3) {
-            return false;
-        }
-
-        $groupedConsultations = $last12MonthsConsultations->groupBy(function ($item) {
-            return Carbon::createFromFormat('Y-m-d', $item->date)->format('Y-m');
-        });
-
-        $months = $groupedConsultations->keys();
-
-        $counter = 1;
-
-        for ($i = 0; $i < count($months) - 1; $i++) {
-            $firstMonth = Carbon::parse($months[$i], 'UTC');
-            $secondMonth = Carbon::parse($months[$i + 1], 'UTC');
-
-            if ($firstMonth->diffInMonths($secondMonth) == 1) {
-                $counter++;
-            } else {
-                $counter = 1;
-            }
-
-            if ($counter == 3) {
-                return true;
-            }
-        }
-
-        return false;
     }
 
     public function storePatient(Request $request)
@@ -234,9 +155,9 @@ class PatientController extends Controller
 
                 $last12MonthsConsultations = Consultation::getPatientConsultations($data->id, 'asc', 12);
 
-                $hypertensionStatus = $this->checkHypertensionStatus($last12MonthsConsultations);
+                $hypertensionStatus = PatientStatusService::checkHypertensionStatus($last12MonthsConsultations);
                 if ($hypertensionStatus) {
-                    $treatmentStatus = $this->checkTreatmentStatus($last12MonthsConsultations);
+                    $treatmentStatus = PatientStatusService::checkTreatmentStatus($last12MonthsConsultations);
                 } else {
                     $treatmentStatus = true;
                 }
