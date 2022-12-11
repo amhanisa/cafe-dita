@@ -38,8 +38,6 @@
                             <form action="{{ url('report/export') }}">
                                 <input name="start_date" type="hidden" value="{{ $startDate }}">
                                 <input name="end_date" type="hidden" value="{{ $endDate }}">
-                                <input name="min_age" type="hidden" value="{{ $minAge }}">
-                                <input name="max_age" type="hidden" value="{{ $maxAge }}">
                                 <button class="btn btn-primary mb-3">Unduh Laporan</button>
                             </form>
                         </div>
@@ -118,4 +116,3 @@
         bar.render();
     </script>
 @endpush
-

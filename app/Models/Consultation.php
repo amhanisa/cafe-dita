@@ -21,7 +21,7 @@ class Consultation extends Model
     {
         return Consultation::where('patient_id', $patientId)
             ->when($limitMonths, function ($query) use ($limitMonths) {
-                $query->whereBetween('date', [Carbon::now()->subMonths($limitMonths)->startOfMonth()->format('Y-m-d'), Carbon::now()->subMonths(1)->endOfMonth()->format('Y-m-d')]);
+                $query->whereBetween('date', [Carbon::now()->subMonths($limitMonths)->format('Y-m-d'), Carbon::now()->format('Y-m-d')]);
             })
             ->orderBy('date', $orderBy)
             ->get();

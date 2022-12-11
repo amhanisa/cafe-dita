@@ -1,7 +1,6 @@
 <p class="text-center font-bold">
     Laporan Penderita Hipertensi di Cafe DITA Puskesmas Karangan, Trenggalek <br>
     {{ $startDate }} - {{ $endDate }} <br>
-    Rentang Usia {{ $minAge }} - {{ $maxAge }} <br>
 </p>
 <div class="table-responsive">
     <table class="table table-bordered">
@@ -115,4 +114,3 @@
         </tfoot>
     </table>
 </div>
-

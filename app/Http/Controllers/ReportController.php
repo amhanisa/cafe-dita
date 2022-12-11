@@ -21,16 +21,12 @@ class ReportController extends Controller
         $request->validate([
             'start_date' => 'required|date|before:end_date',
             'end_date' => 'required|date|before:tomorrow',
-            'min_age' => 'required|numeric|integer|min:0|',
-            'max_age' => 'required|numeric|integer|gte:min_age'
         ]);
 
         $data['startDate'] = $request->get('start_date');
         $data['endDate'] = $request->get('end_date');
-        $data['minAge'] = $request->get('min_age');
-        $data['maxAge'] = $request->get('max_age');
 
-        $patients = Patient::getPatientsForReport($data['startDate'], $data['endDate'], $data['minAge'], $data['maxAge']);
+        $patients = Patient::getPatientsForReport($data['startDate'], $data['endDate']);
 
         $calculatedPatients = $this->calculatePatientsStatus($patients, $data["endDate"]);
 
@@ -96,16 +92,12 @@ class ReportController extends Controller
         $request->validate([
             'start_date' => 'required|date|before:end_date',
             'end_date' => 'required|date|before:tomorrow',
-            'min_age' => 'required|numeric|integer|min:0|',
-            'max_age' => 'required|numeric|integer|gte:min_age'
         ]);
 
         $data['startDate'] = $request->get('start_date');
         $data['endDate'] = $request->get('end_date');
-        $data['minAge'] = $request->get('min_age');
-        $data['maxAge'] = $request->get('max_age');
 
-        $patients = Patient::getPatientsForReport($data['startDate'], $data['endDate'], $data['minAge'], $data['maxAge']);
+        $patients = Patient::getPatientsForReport($data['startDate'], $data['endDate']);
 
         $calculatedPatients = $this->calculatePatientsStatus($patients, $data["endDate"]);
 
