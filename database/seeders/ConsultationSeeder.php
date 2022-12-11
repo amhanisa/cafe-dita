@@ -25,8 +25,8 @@ class ConsultationSeeder extends Seeder
                 $data[] = [
                     'patient_id' => $patient->id,
                     'date' => fake()->dateTimeInInterval('-2 years', '+2 years'),
-                    'systole' => fake()->numberBetween(100, 150),
-                    'diastole' => fake()->numberBetween(60, 100),
+                    'systole' => fake()->numberBetween(100, 145),
+                    'diastole' => fake()->numberBetween(60, 95),
                     'medicine' => fake()->sentence(),
                     'note' => fake()->sentence(),
                     'created_at' => now(),
