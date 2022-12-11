@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
@@ -20,7 +21,7 @@ class Consultation extends Model
     {
         return Consultation::where('patient_id', $patientId)
             ->when($limitMonths, function ($query) use ($limitMonths) {
-                $query->whereDate('date', '>', \Carbon\Carbon::now()->endOfMonth()->subMonths($limitMonths));
+                $query->whereBetween('date', [Carbon::now()->subMonths($limitMonths)->startOfMonth()->format('Y-m-d'), Carbon::now()->subMonths(1)->endOfMonth()->format('Y-m-d')]);
             })
             ->orderBy('date', $orderBy)
             ->get();

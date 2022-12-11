@@ -40,7 +40,6 @@ class ReportController extends Controller
 
         // Untuk Tabel
         $villages->map(function ($village, $key) use ($hypertension, $treatment) {
-            // TODO CHECK THIS SHIT
             $village->hypertension = $hypertension[$village->id] ?? [];
             $village->treatment = $treatment[$village->id] ?? [];
         });
@@ -80,49 +79,65 @@ class ReportController extends Controller
     private function calculatePatientsStatus($patients, $endDate)
     {
         foreach ($patients as $patient) {
-            $last3MonthsConsultations = $patient->consultations->whereBetween('date', [Carbon::now()->endOfMonth()->subMonths(3)->format('Y-m-d'), now()]);
-
-            $patient->hypertension_status = $this->checkHypertensionStatus($last3MonthsConsultations);
-            $patient->treatment_status = $this->checkTreatmentStatus($patient->consultations);
+            $patient->hypertension_status = $this->checkHypertensionStatus($patient->consultations);
+            if ($patient->hypertension_status) {
+                $patient->treatment_status = $this->checkTreatmentStatus($patient->consultations);
+            } else {
+                $patient->treatment_status = true;
+            }
         };
 
         return $patients;
     }
 
-    // Cara menentukan status hipertensi
-    // Cek data konsultasi 3 bulan terakhir
-    // Jika selama 3 bulan nilainya dibawah batas 140/90
-    // Maka ditetapkan hipertensi terkendali (false)
-    // Jika nilai diatas batas 140/90
-    // Maka ditetapkan hipertensi tidak terkendali (true)
-    private function checkHypertensionStatus($last3MonthsConsultations)
+    private function checkHypertensionStatus($last12MonthsConsultations)
     {
-        if ($last3MonthsConsultations->count() < 3) {
+        if ($last12MonthsConsultations->count() < 3) {
             return true;
         }
 
-        $groupedConsultations = $last3MonthsConsultations->groupBy(function ($item) {
+        $aboveThreshold = $last12MonthsConsultations->reverse()->search(function ($consultation) {
+            return $consultation->systole >= 140 || $consultation->diastole >= 90;
+        });
+
+        if ($aboveThreshold !== false) {
+            $filtered = $last12MonthsConsultations->reject(function ($value, $key) use ($aboveThreshold) {
+                return $key <= $aboveThreshold;
+            });
+        } else {
+            $filtered = $last12MonthsConsultations;
+        }
+
+        $grouped = $filtered->groupBy(function ($item) {
             return Carbon::createFromFormat('Y-m-d', $item->date)->format('Y-m');
         });
 
-        if ($groupedConsultations->count() < 3) {
+        if ($grouped->count() < 3) {
             return true;
         }
 
-        foreach ($last3MonthsConsultations as $consultation) {
-            if ($consultation->systole >= 140 || $consultation->diastole >= 90) {
-                return true;
+        $months = $grouped->keys();
+
+        $counter = 1;
+
+        for ($i = 0; $i < count($months) - 1; $i++) {
+            $firstMonth = Carbon::parse($months[$i], 'UTC');
+            $secondMonth = Carbon::parse($months[$i + 1], 'UTC');
+
+            if ($firstMonth->diffInMonths($secondMonth) == 1) {
+                $counter++;
+            } else {
+                $counter = 1;
+            }
+
+            if ($counter == 3) {
+                return false;
             }
         }
 
-        return false;
+        return true;
     }
 
-    // Cara menentukan status berobat
-    // Cek data konsultasi 12 bulan terakhir
-    // Jika selama 12 bulan ada 3 bulan berobat berturut
-    // Maka ditetapkan berobat teratur (true)
-    // Jika tidak ditetapkan berobat tidak teratur (false)
     private function checkTreatmentStatus($last12MonthsConsultations)
     {
         if ($last12MonthsConsultations->count() < 3) {
@@ -132,6 +147,10 @@ class ReportController extends Controller
         $groupedConsultations = $last12MonthsConsultations->groupBy(function ($item) {
             return Carbon::createFromFormat('Y-m-d', $item->date)->format('Y-m');
         });
+
+        if ($groupedConsultations->count() < 3) {
+            return false;
+        }
 
         $months = $groupedConsultations->keys();
 
@@ -178,9 +197,7 @@ class ReportController extends Controller
 
         $villages = Village::all();
 
-        // Untuk Tabel
         $villages->map(function ($village, $key) use ($hypertension, $treatment) {
-            // TODO CHECK THIS SHIT
             $village->hypertension = $hypertension[$village->id] ?? [];
             $village->treatment = $treatment[$village->id] ?? [];
         });

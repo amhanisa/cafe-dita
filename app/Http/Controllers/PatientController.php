@@ -31,12 +31,14 @@ class PatientController extends Controller
 
         $data['consultations'] = Consultation::getPatientConsultations($id);
 
-        $last3MonthsConsultations = Consultation::getPatientConsultations($id, 'asc', 3);
-
         $last12MonthsConsultations = Consultation::getPatientConsultations($id, 'asc', 12);
 
-        $data['hypertensionStatus'] = $this->checkHypertensionStatus($last3MonthsConsultations);
-        $data['treatmentStatus'] = $this->checkTreatmentStatus($last12MonthsConsultations);
+        $data['hypertensionStatus'] = $this->checkHypertensionStatus($last12MonthsConsultations);
+        if ($data['hypertensionStatus']) {
+            $data['treatmentStatus'] = $this->checkTreatmentStatus($last12MonthsConsultations);
+        } else {
+            $data['treatmentStatus'] = true;
+        }
 
         $data['year'] = request('year') ?? Carbon::now()->year;
 
@@ -64,41 +66,54 @@ class PatientController extends Controller
         return json_encode($data);
     }
 
-    // Cara menentukan status hipertensi
-    // Cek data konsultasi 3 bulan terakhir
-    // Jika selama 3 bulan nilainya dibawah batas 140/90
-    // Maka ditetapkan hipertensi terkendali (false)
-    // Jika nilai diatas batas 140/90
-    // Maka ditetapkan hipertensi tidak terkendali (true)
-    private function checkHypertensionStatus($last3MonthsConsultations)
+    private function checkHypertensionStatus($last12MonthsConsultations)
     {
-        if ($last3MonthsConsultations->count() < 3) {
+        if ($last12MonthsConsultations->count() < 3) {
             return true;
         }
 
-        $groupedConsultations = $last3MonthsConsultations->groupBy(function ($item) {
+        $aboveThreshold = $last12MonthsConsultations->reverse()->search(function ($consultation) {
+            return $consultation->systole >= 140 || $consultation->diastole >= 90;
+        });
+
+        if ($aboveThreshold !== false) {
+            $filtered = $last12MonthsConsultations->reject(function ($value, $key) use ($aboveThreshold) {
+                return $key <= $aboveThreshold;
+            });
+        } else {
+            $filtered = $last12MonthsConsultations;
+        }
+
+        $grouped = $filtered->groupBy(function ($item) {
             return Carbon::createFromFormat('Y-m-d', $item->date)->format('Y-m');
         });
 
-        if ($groupedConsultations->count() < 3) {
+        if ($grouped->count() < 3) {
             return true;
         }
 
-        foreach ($last3MonthsConsultations as $consultation) {
-            if ($consultation->systole >= 140 || $consultation->diastole >= 90) {
-                return true;
+        $months = $grouped->keys();
+
+        $counter = 1;
+
+        for ($i = 0; $i < count($months) - 1; $i++) {
+            $firstMonth = Carbon::parse($months[$i], 'UTC');
+            $secondMonth = Carbon::parse($months[$i + 1], 'UTC');
+
+            if ($firstMonth->diffInMonths($secondMonth) == 1) {
+                $counter++;
+            } else {
+                $counter = 1;
+            }
+
+            if ($counter == 3) {
+                return false;
             }
         }
 
-        return false;
+        return true;
     }
 
-
-    // Cara menentukan status berobat
-    // Cek data konsultasi 12 bulan terakhir
-    // Jika selama 12 bulan ada 3 bulan berobat berturut
-    // Maka ditetapkan berobat teratur (true)
-    // Jika tidak ditetapkan berobat tidak teratur (false)
     private function checkTreatmentStatus($last12MonthsConsultations)
     {
         if ($last12MonthsConsultations->count() < 3) {
@@ -226,12 +241,14 @@ class PatientController extends Controller
             ->addColumn('status', function ($data) {
                 $status = array();
 
-                $last3MonthsConsultations = Consultation::getPatientConsultations($data->id, 'asc', 3);
-
                 $last12MonthsConsultations = Consultation::getPatientConsultations($data->id, 'asc', 12);
 
-                $hypertensionStatus = $this->checkHypertensionStatus($last3MonthsConsultations);
-                $treatmentStatus = $this->checkTreatmentStatus($last12MonthsConsultations);
+                $hypertensionStatus = $this->checkHypertensionStatus($last12MonthsConsultations);
+                if ($hypertensionStatus) {
+                    $treatmentStatus = $this->checkTreatmentStatus($last12MonthsConsultations);
+                } else {
+                    $treatmentStatus = true;
+                }
 
                 if ($hypertensionStatus) {
                     $html = "<span class='badge bg-danger'>Tidak Terkendali</span>";

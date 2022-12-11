@@ -57,14 +57,10 @@ class Patient extends Model
         return Patient::with([
             'consultations' => function ($query) use ($endDate) {
                 $query->select('id', 'patient_id', 'date', 'systole', 'diastole')
-                    ->whereBetween('date', [Carbon::parse($endDate)->endOfMonth()->subYear(), $endDate])
+                    ->whereBetween('date', [Carbon::now()->subYear()->startOfMonth()->format('Y-m-d'), Carbon::now()->subMonth()->endOfMonth()->format('Y-m-d')])
                     ->orderBy('date', 'asc');
             }
         ])->select('id', 'sex', 'village_id')
-            ->whereRaw("FLOOR (DATEDIFF(NOW(),birthday) /365.2425) >= ?", [$minAge])
-            ->whereRaw("FLOOR (DATEDIFF(NOW(),birthday) /365.2425) <= ?", [$maxAge])
-            ->whereRelation('consultations', 'date', '>', $startDate)
-            ->whereRelation('consultations', 'date', '<', $endDate)
             ->get();
     }
 }
