@@ -20,7 +20,7 @@ class PatientHabitController extends Controller
         $data['habits'] =  (new Habit)->getPatientHabitsByMonth($patientId, $year, $month);
         $data['year'] = $year;
         $data['month'] = $month;
-        $data['monthName'] = date("F", mktime(0, 0, 0, $month, 10));;
+        $data['monthName'] = Carbon::create($year, $month)->translatedFormat('F Y');
 
         return view('habit.edit', $data);
     }
