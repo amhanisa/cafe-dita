@@ -17,16 +17,17 @@ class PatientSeeder extends Seeder
     public function run()
     {
         $genders = ['male' => 'L', 'female' => 'P'];
-        $gender = array_rand($genders);
 
         $data = [];
 
         foreach (range(1, 4000) as $index) {
+            $gender = array_rand($genders);
+
             $data[] = [
                 'name' => fake()->name($gender),
                 'medical_record_number' => fake()->unique()->numberBetween(10000, 99999),
                 'nik' => fake()->nik(),
-                'sex' => fake()->randomElement($genders),
+                'sex' => $genders[$gender],
                 'birthday' => fake()->dateTimeInInterval('-70 years', '+55 years'),
                 'address' => fake()->streetAddress(),
                 'village_id' => fake()->numberBetween(1, 12),
