@@ -39,20 +39,16 @@ class ConsultationController extends Controller
 
     public function storeConsultation(Request $request)
     {
-        $request->validate([
+        $validated = $this->validate($request, [
+            'patient_id' => 'required',
             'date' => 'required',
             'systole' => 'required|numeric|integer',
             'diastole' => 'required|numeric|integer',
+            'medicine' => 'nullable|string|max:255',
+            'note' => 'nullable|string|max:255'
         ]);
 
-        $consultation = new Consultation();
-        $consultation->patient_id = $request->patient_id;
-        $consultation->date = $request->date;
-        $consultation->systole = $request->systole;
-        $consultation->diastole = $request->diastole;
-        $consultation->medicine = $request->medicine;
-        $consultation->note = $request->note;
-        $consultation->save();
+        Consultation::create($validated);
 
         return redirect("/patient/" . $request->patient_id)->with('toast_success', 'Data konsultasi berhasil ditambah');
     }

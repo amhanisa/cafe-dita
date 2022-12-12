@@ -61,7 +61,7 @@ class PatientController extends Controller
     public function storePatient(Request $request)
     {
 
-        $validated = $request->validate([
+        $validated = $this->validate($request, [
             'name' => 'required|string|max:50',
             'medical_record_number' => 'required|digits:6|unique:patients',
             'nik' => 'nullable|digits:16|unique:patients',
@@ -73,19 +73,7 @@ class PatientController extends Controller
             'phone_number' => 'nullable|string|max:50',
         ]);
 
-        $patient = new Patient();
-
-        $patient->name = $request->name;
-        $patient->medical_record_number = $request->medical_record_number;
-        $patient->nik = $request->nik;
-        $patient->sex = $request->sex;
-        $patient->birthday = $request->birthday;
-        $patient->address = $request->address;
-        $patient->village_id = $request->village_id;
-        $patient->job = $request->job;
-        $patient->phone_number = $request->phone_number;
-
-        $patient->save();
+        Patient::create($validated);
 
         return redirect('/patient')->with('toast_success', 'Data pasien berhasil ditambah');
     }
@@ -100,7 +88,6 @@ class PatientController extends Controller
 
     public function updatePatient(Request $request)
     {
-
         $validated = $request->validate([
             'name' => 'required|max:50',
             'medical_record_number' => 'required|digits:6|unique:patients,medical_record_number,' . $request->id,
