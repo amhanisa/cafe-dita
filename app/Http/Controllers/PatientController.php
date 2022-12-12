@@ -62,15 +62,15 @@ class PatientController extends Controller
     {
 
         $validated = $request->validate([
-            'name' => 'required|string',
-            'medical_record_number' => 'required|unique:patients',
-            'nik' => 'required|unique:patients',
+            'name' => 'required|string|max:50',
+            'medical_record_number' => 'required|digits:6|unique:patients',
+            'nik' => 'nullable|digits:16|unique:patients',
             'sex' => 'required',
             'birthday' => 'required|date',
-            'address' => 'required|string',
+            'address' => 'required|string|max:255',
             'village_id' => 'required',
-            'job' => 'nullable|string',
-            'phone_number' => 'nullable|string',
+            'job' => 'nullable|string|max:50',
+            'phone_number' => 'nullable|string|max:50',
         ]);
 
         $patient = new Patient();
@@ -102,15 +102,15 @@ class PatientController extends Controller
     {
 
         $validated = $request->validate([
-            'name' => 'required|max:255',
-            'medical_record_number' => 'required|unique:patients,medical_record_number,' . $request->id,
-            'nik' => 'required|unique:patients,nik,' . $request->id,
+            'name' => 'required|max:50',
+            'medical_record_number' => 'required|digits:6|unique:patients,medical_record_number,' . $request->id,
+            'nik' => 'nullable|digits:16|unique:patients,nik,' . $request->id,
             'sex' => 'required',
             'birthday' => 'required|string',
-            'address' => 'required|string',
+            'address' => 'required|string|max:255',
             'village_id' => 'required',
-            'job' => 'nullable|string',
-            'phone_number' => 'nullable|string',
+            'job' => 'nullable|string|max:50',
+            'phone_number' => 'nullable|string|max:50',
         ]);
 
         $patient = Patient::find($request->id);
