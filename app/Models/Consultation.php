@@ -17,9 +17,9 @@ class Consultation extends Model
         return $this->belongsTo(Patient::class);
     }
 
-    public static function getPatientConsultations($patientId, $orderBy = 'desc', $limitMonths = null)
+    public function getPatientConsultations($patientId, $orderBy = 'desc', $limitMonths = null)
     {
-        return Consultation::where('patient_id', $patientId)
+        return $this->where('patient_id', $patientId)
             ->when($limitMonths, function ($query) use ($limitMonths) {
                 $query->whereBetween('date', [Carbon::now()->subMonths($limitMonths)->format('Y-m-d'), Carbon::now()->format('Y-m-d')]);
             })
@@ -27,8 +27,8 @@ class Consultation extends Model
             ->get();
     }
 
-    public static function getConsultationWithPatient($consultationId)
+    public function getConsultationWithPatient($consultationId)
     {
-        return Consultation::with('patient')->find($consultationId);
+        return $this->with('patient')->find($consultationId);
     }
 }

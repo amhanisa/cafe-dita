@@ -28,9 +28,9 @@ class PatientController extends Controller
 
     public function showDetailPatientPage($id)
     {
-        $patient = Patient::getPatientWithVillage($id);
+        $patient = (new Patient)->getPatientWithVillage($id);
 
-        $consultations = Consultation::getPatientConsultations($id);
+        $consultations = (new Consultation)->getPatientConsultations($id);
 
         $systole = [];
         $diastole = [];
@@ -42,7 +42,7 @@ class PatientController extends Controller
             array_push($date, $consultation->date);
         }
 
-        $last12MonthsConsultations = Consultation::getPatientConsultations($id, 'asc', 12);
+        $last12MonthsConsultations = (new Consultation)->getPatientConsultations($id, 'asc', 12);
 
         $hypertensionStatus = PatientStatusService::checkHypertensionStatus($last12MonthsConsultations);
         if ($hypertensionStatus) {
@@ -53,7 +53,7 @@ class PatientController extends Controller
 
         $year = request('year') ?? Carbon::now()->year;
 
-        $patientHabits = Habit::getPatientHabits($id, $year);
+        $patientHabits = (new Habit)->getPatientHabits($id, $year);
 
         return view('patient.show', compact('patient', 'consultations', 'systole', 'diastole', 'date', 'hypertensionStatus', 'treatmentStatus', 'year', 'patientHabits'));
     }
@@ -153,7 +153,7 @@ class PatientController extends Controller
             ->addColumn('status', function ($data) {
                 $status = array();
 
-                $last12MonthsConsultations = Consultation::getPatientConsultations($data->id, 'asc', 12);
+                $last12MonthsConsultations = (new Consultation)->getPatientConsultations($data->id, 'asc', 12);
 
                 $hypertensionStatus = PatientStatusService::checkHypertensionStatus($last12MonthsConsultations);
                 if ($hypertensionStatus) {

@@ -26,7 +26,7 @@ class ReportController extends Controller
         $data['startDate'] = $request->get('start_date');
         $data['endDate'] = $request->get('end_date');
 
-        $patients = Patient::getPatientsForReport($data['startDate'], $data['endDate']);
+        $patients = (new Patient)->getPatientsForReport($data['startDate'], $data['endDate']);
 
         $calculatedPatients = $this->calculatePatientsStatus($patients, $data["endDate"]);
 
@@ -97,7 +97,7 @@ class ReportController extends Controller
         $data['startDate'] = $request->get('start_date');
         $data['endDate'] = $request->get('end_date');
 
-        $patients = Patient::getPatientsForReport($data['startDate'], $data['endDate']);
+        $patients = (new Patient)->getPatientsForReport($data['startDate'], $data['endDate']);
 
         $calculatedPatients = $this->calculatePatientsStatus($patients, $data["endDate"]);
 

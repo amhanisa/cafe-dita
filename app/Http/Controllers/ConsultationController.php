@@ -59,7 +59,7 @@ class ConsultationController extends Controller
 
     public function showEditConsultationPage($consultation_id)
     {
-        $data['consultation'] = Consultation::getConsultationWithPatient($consultation_id);
+        $data['consultation'] = (new Consultation)->getConsultationWithPatient($consultation_id);
 
         return view('consultation.edit', $data);
     }

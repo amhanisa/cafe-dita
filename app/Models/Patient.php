@@ -23,14 +23,14 @@ class Patient extends Model
         return $this->hasMany(Consultation::class);
     }
 
-    public static function getPatientWithVillage($id)
+    public function getPatientWithVillage($id)
     {
-        return Patient::with('village')->find($id);
+        return $this->with('village')->find($id);
     }
 
-    public static function getPatientsForReport($startDate, $endDate)
+    public function getPatientsForReport($startDate, $endDate)
     {
-        return Patient::with([
+        return $this->with([
             'consultations' => function ($query) use ($endDate) {
                 $query->select('id', 'patient_id', 'date', 'systole', 'diastole')
                     ->whereBetween('date', [Carbon::parse($endDate)->subYear()->format('Y-m-d'), Carbon::parse($endDate)->format('Y-m-d')])
