@@ -149,7 +149,7 @@
                                             <label class="col-md-4 col-lg-2 col-form-label">Catatan</label>
                                             <div class="col-md-8 col-lg-10">
                                                 <input class="form-control form-control-lg" name="note-{{ $habit->id }}"
-                                                    type="text" value="{{ $habit->patientHabits[0]->note }}">
+                                                    type="text" value="{{ $habit->patientHabits[0]->note ?? '' }}">
                                             </div>
                                         </div>
 
