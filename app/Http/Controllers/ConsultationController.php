@@ -11,7 +11,7 @@ use Yajra\DataTables\Facades\DataTables;
 
 class ConsultationController extends Controller
 {
-    public function showListConsultationPage(Request $request)
+    public function showListConsultationPage()
     {
         return view('consultation.index');
     }

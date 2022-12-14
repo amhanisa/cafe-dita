@@ -6,7 +6,6 @@ use App\Models\Patient;
 use App\Models\PatientHabit;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
-use Illuminate\Support\LazyCollection;
 
 class PatientHabitSeeder extends Seeder
 {

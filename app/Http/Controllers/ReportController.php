@@ -6,7 +6,6 @@ use App\Exports\ReportExport;
 use App\Models\Patient;
 use App\Models\Village;
 use App\Services\PatientStatusService;
-use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Maatwebsite\Excel\Facades\Excel;
 

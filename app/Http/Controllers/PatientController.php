@@ -2,11 +2,9 @@
 
 namespace App\Http\Controllers;
 
-use App\DataTables\PatientsDataTable;
 use App\Models\Consultation;
 use App\Models\Habit;
 use App\Models\Patient;
-use App\Models\PatientHabit;
 use App\Models\Village;
 use App\Services\PatientStatusService;
 use Carbon\Carbon;
@@ -122,7 +120,7 @@ class PatientController extends Controller
         return redirect('patient')->with('toast_success', 'Data pasien berhasil dihapus');
     }
 
-    public function getAjaxDatatable(Request $request)
+    public function getAjaxDatatable()
     {
         $patients = Patient::with('village');
 
