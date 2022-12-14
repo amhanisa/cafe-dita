@@ -44,8 +44,8 @@ class ConsultationController extends Controller
             'date' => 'required',
             'systole' => 'required|numeric|integer',
             'diastole' => 'required|numeric|integer',
-            'medicine' => 'nullable|string|max:255',
-            'note' => 'nullable|string|max:255'
+            'medicine' => 'nullable|string',
+            'note' => 'nullable|string'
         ]);
 
         Consultation::create($validated);

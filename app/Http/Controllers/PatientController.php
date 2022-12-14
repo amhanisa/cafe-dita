@@ -56,20 +56,20 @@ class PatientController extends Controller
     {
 
         $validated = $this->validate($request, [
-            'name' => 'required|string|max:50',
-            'medical_record_number' => 'required|digits:6|unique:patients',
-            'nik' => 'nullable|digits:16|unique:patients',
+            'name' => 'required|string',
+            'medical_record_number' => 'required|unique:patients',
+            'nik' => 'nullable|unique:patients',
             'sex' => 'required',
             'birthday' => 'required|date',
-            'address' => 'required|string|max:255',
+            'address' => 'required|string',
             'village_id' => 'required',
-            'job' => 'nullable|string|max:50',
-            'phone_number' => 'nullable|string|max:50',
+            'job' => 'nullable|string',
+            'phone_number' => 'nullable|string',
         ]);
 
-        Patient::create($validated);
+        $patient = Patient::create($validated);
 
-        return redirect('/patient')->with('toast_success', 'Data pasien berhasil ditambah');
+        return redirect('/patient/' . $patient->id)->with('toast_success', 'Data pasien berhasil ditambah');
     }
 
     public function showEditPage($id)
@@ -83,15 +83,15 @@ class PatientController extends Controller
     public function updatePatient(Request $request)
     {
         $validated = $request->validate([
-            'name' => 'required|max:50',
-            'medical_record_number' => 'required|digits:6|unique:patients,medical_record_number,' . $request->id,
-            'nik' => 'nullable|digits:16|unique:patients,nik,' . $request->id,
+            'name' => 'required',
+            'medical_record_number' => 'required|unique:patients,medical_record_number,' . $request->id,
+            'nik' => 'nullable|unique:patients,nik,' . $request->id,
             'sex' => 'required',
             'birthday' => 'required|string',
-            'address' => 'required|string|max:255',
+            'address' => 'required|string',
             'village_id' => 'required',
-            'job' => 'nullable|string|max:50',
-            'phone_number' => 'nullable|string|max:50',
+            'job' => 'nullable|string',
+            'phone_number' => 'nullable|string',
         ]);
 
         $patient = Patient::find($request->id);
