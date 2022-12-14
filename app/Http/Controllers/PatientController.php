@@ -32,15 +32,9 @@ class PatientController extends Controller
 
         $consultations = (new Consultation)->getPatientConsultations($id);
 
-        $systole = [];
-        $diastole = [];
-        $date = [];
-
-        foreach ($consultations as $consultation) {
-            array_push($systole, $consultation->systole);
-            array_push($diastole, $consultation->diastole);
-            array_push($date, $consultation->date);
-        }
+        $systole = $consultations->pluck('systole');
+        $diastole = $consultations->pluck('diastole');
+        $date = $consultations->pluck('date');
 
         $last12MonthsConsultations = (new Consultation)->getPatientConsultations($id, 'asc', 12);
 
