@@ -20,9 +20,9 @@ class DatabaseSeeder extends Seeder
             RoleSeeder::class,
             UserSeeder::class,
 
-            PatientSeeder::class,
-            ConsultationSeeder::class,
-            PatientHabitSeeder::class,
+            // PatientSeeder::class,
+            // ConsultationSeeder::class,
+            // PatientHabitSeeder::class,
         ]);
     }
 }
