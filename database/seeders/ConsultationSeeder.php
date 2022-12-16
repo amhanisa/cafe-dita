@@ -4,6 +4,7 @@ namespace Database\Seeders;
 
 use App\Models\Consultation;
 use App\Models\Patient;
+use Carbon\Carbon;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 
@@ -21,10 +22,11 @@ class ConsultationSeeder extends Seeder
         $data = [];
 
         foreach ($patients as $patient) {
+            $startDate = Carbon::now();
             foreach (range(1, 20) as $index) {
                 $data[] = [
                     'patient_id' => $patient->id,
-                    'date' => fake()->dateTimeInInterval('-2 years', '+2 years'),
+                    'date' => $startDate->subDays(fake()->numberBetween(1, 15))->subMonths(fake()->numberBetween(0, 2))->format('Y-m-d'),
                     'systole' => fake()->numberBetween(100, 145),
                     'diastole' => fake()->numberBetween(60, 95),
                     'medicine' => fake()->sentence(),
