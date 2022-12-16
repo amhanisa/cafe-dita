@@ -23,6 +23,7 @@ return new class extends Migration
             $table->string('medicine')->nullable();
             $table->string('note')->nullable();
             $table->timestamps();
+            $table->unique(["patient_id", "date"], 'patient_date_unique');
         });
     }
 

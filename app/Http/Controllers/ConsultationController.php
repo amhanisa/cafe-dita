@@ -41,7 +41,7 @@ class ConsultationController extends Controller
     {
         $validated = $this->validate($request, [
             'patient_id' => 'required',
-            'date' => 'required',
+            'date' => 'required|unique:consultations,date,NULL,id,patient_id,' . $request->patient_id,
             'systole' => 'required|numeric|integer',
             'diastole' => 'required|numeric|integer',
             'medicine' => 'nullable|string',
@@ -62,13 +62,16 @@ class ConsultationController extends Controller
 
     public function updateConsultation(Request $request)
     {
+        $consultation = Consultation::find($request->consultation_id);
+
         $request->validate([
-            'date' => 'required',
+            'date' => 'required|unique:consultations,date,' . $request->consultation_id . ',id,patient_id,' . $consultation->patient_id,
             'systole' => 'required|numeric|integer',
             'diastole' => 'required|numeric|integer',
+            'medicine' => 'nullable|string',
+            'note' => 'nullable|string'
         ]);
 
-        $consultation = Consultation::find($request->consultation_id);
         $consultation->date = $request->date;
         $consultation->systole = $request->systole;
         $consultation->diastole = $request->diastole;

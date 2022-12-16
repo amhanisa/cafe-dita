@@ -6,11 +6,13 @@ use App\Models\Consultation;
 use App\Models\Patient;
 use App\Models\Village;
 use Carbon\Carbon;
-use Illuminate\Support\Collection;
-use Maatwebsite\Excel\Concerns\ToCollection;
+use Maatwebsite\Excel\Concerns\ToModel;
+use Maatwebsite\Excel\Concerns\WithBatchInserts;
 use Maatwebsite\Excel\Concerns\WithHeadingRow;
+use Maatwebsite\Excel\Concerns\WithUpsertColumns;
+use Maatwebsite\Excel\Concerns\WithUpserts;
 
-class ConsultationsImport implements ToCollection, WithHeadingRow
+class ConsultationsImport implements ToModel, WithBatchInserts, WithUpserts, WithUpsertColumns, WithHeadingRow
 {
     private $patients, $villages;
 
@@ -20,53 +22,67 @@ class ConsultationsImport implements ToCollection, WithHeadingRow
         $this->villages = Village::select('id', 'name')->get();
     }
 
-    public function collection(Collection $rows)
+    public function model(array $row)
     {
-        foreach ($rows as $row) {
-            $medicalRecordNumber = ltrim($row['no_rm'], "`");
-            $patient = $this->patients->where('medical_record_number', $medicalRecordNumber)->first();
+        $medicalRecordNumber = ltrim($row['no_rm'], "`");
+        $patient = $this->patients->where('medical_record_number', $medicalRecordNumber)->first();
 
-            if (!$patient) {
-                $nik = ltrim($row['no_ktp'], "`");
-                if (empty($nik)) {
-                    $nik = null;
-                }
-                $village = $this->villages->where('name', $row['desa'])->first();
-
-                $patient = new Patient;
-                $patient->name = $row['nama'];
-                $patient->medical_record_number = $medicalRecordNumber;
-                $patient->nik = $nik;
-                $patient->sex = $row['lp'];
-                $patient->birthday = Carbon::parse($row['tanggal_lahir'])->toDate();
-                $patient->address = $row['alamat'];
-                $patient->village_id = $village->id;
-                $patient->job = $row['pekerjaan'];
-                $patient->phone_number = $row['no_hp'];
-                $patient->save();
+        if (!$patient) {
+            $nik = ltrim($row['no_ktp'], "`");
+            if (empty($nik)) {
+                $nik = null;
             }
+            $village = $this->villages->where('name', $row['desa'])->first();
 
-            $date = Carbon::parse($row['tanggal'])->toDate();
+            $patient = new Patient;
+            $patient->name = $row['nama'];
+            $patient->medical_record_number = $medicalRecordNumber;
+            $patient->nik = $nik;
+            $patient->sex = $row['lp'];
+            $patient->birthday = Carbon::parse($row['tanggal_lahir'])->toDate();
+            $patient->address = $row['alamat'];
+            $patient->village_id = $village->id;
+            $patient->job = $row['pekerjaan'];
+            $patient->phone_number = $row['no_hp'];
+            $patient->save();
 
-            $bloodtension = $row['tensi'];
-            $split = explode("/", $bloodtension);
-            $systole = empty($split[0]) ? 0 : $split[0];
-            $diastole = empty($split[1]) ? 0 : $split[1];
-
-            Consultation::updateOrCreate([
-                'patient_id' => $patient->id,
-                'date' => $date
-            ], [
-                'systole' => $systole,
-                'diastole' => $diastole,
-                'medicine' => $row['tindakan'],
-                'note' => $row['terapi'],
-            ]);
+            $this->patients[] = $patient;
         }
+
+        $date = Carbon::parse($row['tanggal'])->toDate();
+
+        $bloodtension = $row['tensi'];
+        $split = explode("/", $bloodtension);
+        $systole = empty($split[0]) ? 0 : $split[0];
+        $diastole = empty($split[1]) ? 0 : $split[1];
+
+        return new Consultation([
+            'patient_id' => $patient->id,
+            'date' => $date,
+            'systole' => $systole,
+            'diastole' => $diastole,
+            'medicine' => $row['tindakan'],
+            'note' => $row['terapi'],
+        ]);
     }
 
     public function headingRow(): int
     {
         return 5;
+    }
+
+    public function batchSize(): int
+    {
+        return 100;
+    }
+
+    public function uniqueBy()
+    {
+        return ['patient_id', 'date'];
+    }
+
+    public function upsertColumns()
+    {
+        return ['systole', 'diastole', 'medicine', 'note'];
     }
 }
