@@ -5,6 +5,7 @@ use App\Http\Controllers\ConsultationController;
 use App\Http\Controllers\PatientController;
 use App\Http\Controllers\PatientHabitController;
 use App\Http\Controllers\ReportController;
+use App\Http\Controllers\TestController;
 use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
 
@@ -63,4 +64,7 @@ Route::group(['middleware' => 'auth'], function () {
         Route::get('patient', [PatientController::class, 'getAjaxDatatable'])->name('datatable.patient');
         Route::get('consultation', [ConsultationController::class, 'getAjaxDatatable'])->name('datatable.consultation');
     });
+
+    Route::get('/test/import/{count}/{skip}', [TestController::class, 'generateImport']);
+    Route::get('/test/register/{count}/{skip}', [TestController::class, 'generateRegister']);
 });
