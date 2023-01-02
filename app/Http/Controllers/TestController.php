@@ -13,7 +13,9 @@ class TestController extends Controller
 {
     public function generateImport($count, $skip = 0)
     {
-        $data['patients'] = Patient::with(['consultations', 'village'])->skip($skip * $count)->take($count)->get();
+        $data['patients'] = Patient::with(['consultations' => function ($query) {
+            $query->whereBetween('date', [Carbon::now()->endOfMonth()->subYear()->format('Y-m-d'), Carbon::now()->format('Y-m-d')]);
+        }, 'village'])->skip($skip * $count)->take($count)->get();
 
         // return view('test.import',  $data);
 
