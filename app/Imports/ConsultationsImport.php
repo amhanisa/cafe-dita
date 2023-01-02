@@ -14,25 +14,17 @@ use Maatwebsite\Excel\Concerns\WithUpserts;
 
 class ConsultationsImport implements ToModel, WithBatchInserts, WithUpserts, WithUpsertColumns, WithHeadingRow
 {
-    private $patients, $villages;
-
-    public function __construct()
-    {
-        $this->patients = Patient::select('id', 'medical_record_number')->get();
-        $this->villages = Village::select('id', 'name')->get();
-    }
-
     public function model(array $row)
     {
         $medicalRecordNumber = ltrim($row['no_rm'], "`");
-        $patient = $this->patients->where('medical_record_number', $medicalRecordNumber)->first();
+        $patient = Patient::where('medical_record_number', $medicalRecordNumber)->first();
 
         if (!$patient) {
             $nik = ltrim($row['no_ktp'], "`");
             if (empty($nik)) {
                 $nik = null;
             }
-            $village = $this->villages->where('name', $row['desa'])->first();
+            $village = Village::where('name', $row['desa'])->first();
 
             $patient = new Patient;
             $patient->name = $row['nama'];
@@ -45,8 +37,6 @@ class ConsultationsImport implements ToModel, WithBatchInserts, WithUpserts, Wit
             $patient->job = $row['pekerjaan'];
             $patient->phone_number = $row['no_hp'];
             $patient->save();
-
-            $this->patients[] = $patient;
         }
 
         $date = Carbon::parse($row['tanggal'])->toDate();
