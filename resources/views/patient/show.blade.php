@@ -250,6 +250,7 @@
                                 <div class="input-group mb-3">
                                     <label class="input-group-text">Tahun</label>
                                     <select class="form-select" id="habit-selector">
+                                        <option>2023</option>
                                         <option>2022</option>
                                         <option>2021</option>
                                         <option>2020</option>
