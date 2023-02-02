@@ -22,7 +22,7 @@ class HabitSeeder extends Seeder
             'name' => 'Rutin Olahraga'
         ]);
         Habit::create([
-            'name' => 'Tidak Merokok'
+            'name' => 'Merokok'
         ]);
         Habit::create([
             'name' => 'Rutin Minum Obat'
