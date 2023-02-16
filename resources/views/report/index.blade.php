@@ -57,6 +57,7 @@
         var b = @json($notHypertensionCountPerVillage);
         var c = @json($routineTreatmentCountPerVillage);
         var d = @json($notRoutineTreatmentCountPerVillage);
+        var villagesName = @json($villagesName);
 
         var barOptions = {
             series: [{
@@ -99,9 +100,7 @@
                 width: 2,
             },
             xaxis: {
-                categories: ["Buluagung", "Jati", "Jatiprahu", 'Karangan', 'Kayen', 'Kedungsigit', 'Kerjo', 'Ngentrong',
-                    'Salamrejo', 'Sukowetan', 'Sumber', 'Sumberingin'
-                ],
+                categories: villagesName
             },
             yaxis: {
                 title: {

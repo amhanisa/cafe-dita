@@ -64,12 +64,13 @@ class ReportController extends Controller
         $data['notRoutineTreatmentCountFemale'] = count($patients->groupBy(['treatment_status', 'sex'])[0]['P'] ?? []);
 
         // Untuk Bar Chart
+        $data['villagesName'] = $villages->pluck('name');
         $data['hypertensionCountPerVillage'] = [];
         $data['notHypertensionCountPerVillage'] = [];
         $data['routineTreatmentCountPerVillage'] = [];
         $data['notRoutineTreatmentCountPerVillage'] = [];
 
-        foreach (range(1, 12) as $index) {
+        foreach (range(1, count($villages)) as $index) {
             $data['hypertensionCountPerVillage'][] = count($hypertension[$index][1]['L'] ?? []) + count($hypertension[$index][1]['P'] ?? []);
             $data['notHypertensionCountPerVillage'][] = count($hypertension[$index][0]['L'] ?? []) + count($hypertension[$index][0]['P'] ?? []);
             $data['routineTreatmentCountPerVillage'][] = count($treatment[$index][1]['L'] ?? []) + count($treatment[$index][1]['P'] ?? []);
