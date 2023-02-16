@@ -18,10 +18,10 @@ return new class extends Migration
             $table->id();
             $table->string('name');
             $table->string('medical_record_number')->unique();
-            $table->string('nik')->unique()->nullable();
-            $table->char('sex', 1);
-            $table->date('birthday');
-            $table->string('address');
+            $table->string('nik')->nullable();
+            $table->char('sex', 1)->nullable();
+            $table->date('birthday')->nullable();
+            $table->string('address')->nullable();
             $table->foreignIdFor(Village::class)->constrained()->restrictOnDelete();
             $table->string('job')->nullable();
             $table->string('phone_number')->nullable();

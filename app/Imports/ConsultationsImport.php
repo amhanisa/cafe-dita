@@ -6,6 +6,7 @@ use App\Models\Consultation;
 use App\Models\Patient;
 use App\Models\Village;
 use Carbon\Carbon;
+use Maatwebsite\Excel\Concerns\Importable;
 use Maatwebsite\Excel\Concerns\ToModel;
 use Maatwebsite\Excel\Concerns\WithBatchInserts;
 use Maatwebsite\Excel\Concerns\WithHeadingRow;
@@ -14,8 +15,19 @@ use Maatwebsite\Excel\Concerns\WithUpserts;
 
 class ConsultationsImport implements ToModel, WithBatchInserts, WithUpserts, WithUpsertColumns, WithHeadingRow
 {
+
+    use Importable;
+
     public function model(array $row)
     {
+        if (!isset($row['no'])) {
+            return null;
+        }
+
+        if (strcasecmp($row['diagnosa'], 'i10') != 0 && strcasecmp($row[36], 'i10') != 0 && strcasecmp($row[38], 'i10') != 0) {
+            return null;
+        }
+
         $medicalRecordNumber = ltrim($row['no_rm'], "`");
         $patient = Patient::where('medical_record_number', $medicalRecordNumber)->first();
 
@@ -24,14 +36,17 @@ class ConsultationsImport implements ToModel, WithBatchInserts, WithUpserts, Wit
             if (empty($nik)) {
                 $nik = null;
             }
-            $village = Village::where('name', $row['desa'])->first();
+
+            $village = Village::where('name', $row['desa'])->firstOrCreate([
+                'name' => $row['desa']
+            ]);
 
             $patient = new Patient;
             $patient->name = $row['nama'];
             $patient->medical_record_number = $medicalRecordNumber;
             $patient->nik = $nik;
             $patient->sex = $row['lp'];
-            $patient->birthday = Carbon::parse($row['tanggal_lahir'])->toDate();
+            $patient->birthday = Carbon::instance(\PhpOffice\PhpSpreadsheet\Shared\Date::excelToDateTimeObject($row['tanggal_lahir']));
             $patient->address = $row['alamat'];
             $patient->village_id = $village->id;
             $patient->job = $row['pekerjaan'];
@@ -39,7 +54,7 @@ class ConsultationsImport implements ToModel, WithBatchInserts, WithUpserts, Wit
             $patient->save();
         }
 
-        $date = Carbon::parse($row['tanggal'])->toDate();
+        $date = Carbon::instance(\PhpOffice\PhpSpreadsheet\Shared\Date::excelToDateTimeObject($row['tanggal']));
 
         $bloodtension = $row['tensi'];
         $split = explode("/", $bloodtension);
@@ -51,14 +66,14 @@ class ConsultationsImport implements ToModel, WithBatchInserts, WithUpserts, Wit
             'date' => $date,
             'systole' => $systole,
             'diastole' => $diastole,
-            'medicine' => $row['tindakan'],
-            'note' => $row['terapi'],
+            'medicine' => $row['terapi'],
+            'note' => $row['keluhan'],
         ]);
     }
 
     public function headingRow(): int
     {
-        return 5;
+        return 4;
     }
 
     public function batchSize(): int
