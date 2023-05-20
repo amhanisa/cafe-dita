@@ -18,7 +18,7 @@
                     <img class="mb-3" src="{{ asset('logo.svg') }}" alt="Cafe DITA" style="height: 2rem" />
                 </div>
 
-                <h3 class="text-center">Login</h1>
+                <h3 class="text-center">Masuk</h1>
 
                     <form action="{{ url('login') }}" method="POST">
                         @csrf
